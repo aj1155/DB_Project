@@ -1,0 +1,57 @@
+* {
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
+	outline: none;
+}
+body {
+
+}
+a{
+  /*font: 15px/1.6em Lato, serif;*/
+}
+h2{
+  color:white;
+}
+form[role=login] {
+	/*font: 15px/1.6em Lato, serif;*/
+	color: #696969;
+	max-width: 383px;
+	margin: 0 auto;
+	margin-top: 100px;
+	background: #fff;
+	padding: 50px;
+	border-radius: 10px;
+}
+	form[role=login] > section {
+		max-width: 278px;
+		margin: 0 auto;
+	}
+	form[role=login] > section div {
+		margin: 30px 0 0 0;
+	}
+	form[role=login] > section a {
+		display: block;
+		margin: 15px 0 30px 0;
+		color: #0251c7;
+	}
+	form[role=login] input[type=text],
+	form[role=login] input[type=password] {
+		font-size: 15px;
+		border: none;
+		background: #e5e4e4;
+		box-shadow: none;
+	}
+	form[role=login] > section button.btn-success {
+		font-size: 17px;
+		background: #14a016;
+	}
+
+.signup {
+	font-size: 15px;
+	text-align: center;
+	margin: 2em 0;
+}
+	.signup a {
+		color: #fff;
+	}

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <!-- Meta, title, CSS, favicons, etc. -->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>성공회대학교</title>
+        <% include ../common/css.ejs %>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script>
+        function getThumbnailPrivew(html, $target) {
+          if (html.files && html.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+              $target.css('display', '');
+              //$target.css('background-image', 'url(\"' + e.target.result + '\")'); // 배경으로 지정시
+              $target.html('<img src="' + e.target.result + '" border="0" alt="" />');
+            }
+            reader.readAsDataURL(html.files[0]);
+          }
+        }
+    </script>
+    <style>
+    .filebox label {
+      display: inline-block;
+      padding: .5em .75em;
+      color: #999;
+      font-size: inherit;
+      line-height: normal;
+      vertical-align: middle;
+      background-color: #fdfdfd;
+      cursor: pointer;
+      border: 1px solid #ebebeb;
+      border-bottom-color: #e2e2e2;
+      border-radius: .25em;
+
+    }
+
+    .filebox input[type="file"] {  /* 파일 필드 숨기기 */
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip:rect(0,0,0,0);
+      border: 0;
+    }
+
+    img{
+      width:100%;
+      height:100%;
+      border-radius: 100%;
+    }
+    </style>
+    </head>
+
+    <body class="nav-md">
+        <div class="container body">
+            <div class="main_container">
+                <% include ../common/nav.ejs %>
+
+            <!-- page content -->
+            <div class="right_col" role="main">
+              <div class="">
+                <div class="page-title">
+                  <div class="title_left">
+                    <h3>Profile</h3>
+                  </div>
+
+
+                </div>
+                <div class="clearfix"></div>
+
+                <div class="row">
+
+                  <div class="col-md-12 col-xs-12">
+                    <div class="x_panel">
+                      <div class="x_title">
+                        <h2>개인정보 변경</h2>
+                        <div class="clearfix"></div>
+                      </div>
+                      <div class="x_content">
+                        <br />
+
+                          <!-- <div class="profile"> -->
+                            <div class="profile_pic1">
+                              <!-- <img src="images/img.jpg" alt="..." class="img-circle profile_img"> -->
+
+                              <div class="col-md-6">
+                                <form name="form" class="form-group" id="form" action="" method="post" enctype="multipart/form-data" autocomplete="off">
+                                  <div class="filebox" style="margin-left : 0%;">
+                                    <label for="cma_file" >프로필 사진 편집</label>
+                                    <input type="file" name="cma_file" id="cma_file" accept="image/*" capture="camera" onchange="getThumbnailPrivew(this,$('#cma_image'))"/>
+                                    <br /><br />
+                                    <!-- <div id="cma_image" style="width:100%; max-width:100%; display:none;"></div> -->
+                                    <div id="cma_image" style="width:70%; max-width:70%;"></div>
+                                  </div>
+                                </form>
+                              </div>
+                            </div>
+                          <!-- </div> -->
+
+                      <div class="col-md-6">
+                        <form class="form-horizontal form-label-left">
+
+
+                          <!-- <div class="form-group" style="display:inline-block"> -->
+
+
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">아이디(ID) </label>
+                            <div class="col-md-4 col-sm-9 col-xs-12">
+                              <input type="text" class="form-control" disabled="disabled" placeholder="01063743982">
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">이름 </label>
+                            <div class="col-md-4 col-sm-9 col-xs-12">
+                              <input type="text" class="form-control" disabled="disabled" placeholder="강철진">
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">기수 </label>
+                            <div class="col-md-4 col-sm-9 col-xs-12">
+                              <input type="text" class="form-control" disabled="disabled" placeholder="8기">
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">비밀번호</label>
+                            <div class="col-md-4 col-sm-9 col-xs-12">
+                              <input type="password" class="form-control" value="">
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">비밀번호 확인</label>
+                            <div class="col-md-4 col-sm-9 col-xs-12">
+                              <input type="password" class="form-control" value="">
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">소속지위</label>
+                            <div class="col-md-4 col-sm-9 col-xs-12">
+                              <input type="text" class="form-control" value="">
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <label class="col-md-3 col-sm-3 col-xs-12 control-label">지위 공개 여부
+                              <br>
+                            </label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <div class="radio">
+                                <label>
+                                  <input type="radio" class="flat" checked name="iCheck1"> 동의
+                                  <input type="radio" class="flat" name="iCheck1"> 비동의
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">휴대전화</label>
+                            <div class="col-md-4 col-sm-9 col-xs-12">
+                              <input type="text" class="form-control" value="01063743982">
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <label class="col-md-3 col-sm-3 col-xs-12 control-label">휴대전화 공개 여부
+                              <br>
+                            </label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <div class="radio">
+                                <label>
+                                  <input type="radio" class="flat" checked name="iCheck2"> 동의
+                                  <input type="radio" class="flat" name="iCheck2"> 비동의
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">직장전화</label>
+                            <div class="col-md-4 col-sm-9 col-xs-12">
+                              <input type="text" class="form-control" value="">
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <label class="col-md-3 col-sm-3 col-xs-12 control-label">직장전화 공개 여부
+                              <br>
+                            </label>
+                            <div class="col-md-4 col-sm-9 col-xs-12">
+                              <div class="radio">
+                                <label>
+                                  <input type="radio" class="flat" checked name="iCheck3"> 동의
+                                  <input type="radio" class="flat" name="iCheck3"> 비동의
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">e-mail</label>
+                            <div class="col-md-4 col-sm-9 col-xs-12">
+                              <input type="text" class="form-control" value="kcj091857@gmail.com">
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <label class="col-md-3 col-sm-3 col-xs-12 control-label">e-mail 공개 여부
+                              <br>
+                            </label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <div class="radio">
+                                <label>
+                                  <input type="radio" class="flat" checked name="iCheck4"> 동의
+                                  <input type="radio" class="flat" name="iCheck4"> 비동의
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- <div class="ln_solid"></div> -->
+                        </br>
+                          <div class="form-group">
+                            <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                              <button type="submit" class="btn btn-success">수정</button>
+                              <button type="submit" class="btn btn-primary">취소</button>
+                            </div>
+                          </div>
+
+                        </form>
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            <!-- /page content -->
+        </div>
+        <!-- footer content -->
+        <footer>
+            <div class="pull-right">
+                성공회대학교 동문회 관리 시스템
+            </div>
+            <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+    </div>
+
+    <% include ../common/script.ejs %>
+</body>
+</html>

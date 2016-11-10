@@ -1,0 +1,15 @@
+
+@font-face{
+  font-family: 'InterparkGothicMedium';
+  src:url('/res/font/InterparkGothicMedium.ttf') format('truetype');
+}
+@font-face{
+  font-family: 'InterparkGothicBold';
+  src:url(/'res/font/InterparkGothicBold.ttf') format('truetype');
+}
+ul.nav li a{
+  font-family: InterParkGothicBold
+}
+body div.body,div.foot{
+  font-family: InterParkGothicMedium
+}
