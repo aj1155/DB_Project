@@ -23,35 +23,37 @@ var userDao = require('../query/user/user');
 passport.use(new LocalStrategy({
     usernameField: 'login_id', // 이 부분은 login form에 input tag name과 동일 해야 하며 그 value를 담는 부분이다*/
     passwordField: 'password',
-    passReqToCallback:true
-}, function(req,login_id,password,done){
-  /*해당 data를 form으로 부터 정상적으로 받았다면  db에서 User를 조회한다*/
-    auth.UserAuth(login_id,function(user){
-      if(!user){
-          return done(null, false);
-      }
-      if(user.password !== password){
-        /*done메소드의 두번째 parameter가 false이면 로그인 실패를 의미하고 err 메시지를 띄운다*/
-          return done(null, false);
-      }
-      /*done(null,user)는 LocalStrategy의 기능이고  serializeUser에 parameter로 user객체를 넘긴다*/
-      return done(null, user);
+    passReqToCallback: true
+}, function (req, login_id, password, done) {
+    /*해당 data를 form으로 부터 정상적으로 받았다면  db에서 User를 조회한다*/
+    auth.UserAuth(login_id,req.params.category, function (user) {
+        if (!user) {
+            return done(null, false, req.flash('error', 'ID가 존재하지 않습니다.'));
+        }
+        if (user.password !== password) {
+            /*done메소드의 두번째 parameter가 false이면 로그인 실패를 의미하고 세번째 파라미터는 session 에 에러 메시지를 저장한다.*/
+            return done(null, false, req.flash('error', '패스워드 틀렸습니다.'));
+        }
+
+        /*done(null,user)는 LocalStrategy의 기능이고  serializeUser에 parameter로 user객체를 넘긴다*/
+        return done(null, user);
     });
 }));
 
 /*로그인이 정상적으로 성공하면 serialize메소드가 실행되고 그 결과 done 메소드는 deserialize로 넘어간다*/
-passport.serializeUser(function(user, done){
+passport.serializeUser(function (user, done) {
     console.log('serialize');
-    done(null, user.id);
+    done(null, user);
 });
 
 /*deserialize는 session이 있을경우 매 url 요청마다 실행이 되고 파라미터는 serialize의 done 메소드다)*/
-passport.deserializeUser(function(id,done){
-  console.log('deserialize');
-   /* 처음 연결시에는 User정보를 다 가져오는 것보다 인증만 하고 필요한 User 정보는
-   deserialize호출시 가져오는 편이 효율적이다*/
-    userDao.FindOne(id,function(result){
-       done(null, result);
+passport.deserializeUser(function (user, done) {
+    /* 처음 연결시에는 User정보를 다 가져오는 것보다 인증만 하고 필요한 User 정보는
+     deserialize호출시 가져오는 편이 효율적이다*/
+    userDao.FindOne(user.id,user.category_id, function (result) {
+        //result 에는 유저정보가 저장되어있다. 이 정보는 어떤 url 에서도 req.user 로 접근할수 있다. 그래서 필요없는 정보는 없애고 보내준다.
+        result.password = "";
+        done(null, result);
     });
 });
 

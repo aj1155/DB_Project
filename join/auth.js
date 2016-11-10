@@ -26,11 +26,9 @@ var EXPIRES = 60; // 1 hour
 var validateJwt = require('express-jwt')({secret: SECRET});
 
 /*해당 비밀 번호의 User 정보를 가져오는 부분*/
-function UserAuth(login_id,callback){
+function UserAuth(login_id,category_id,callback){
   pool.getConnection(function(err,connection){
-    connection.query("select id,login_id,password from user where login_id=?",login_id,function(err, row){
-
-
+    connection.query("SELECT id,login_id,password,category_id FROM user where login_id=? && category_id=?",[login_id,category_id],function(err, row){
       callback(row[0]);
       connection.release();
 
