@@ -10,6 +10,7 @@ router.use('/', auth.isAuthenticated(), function (req, res, next) {
 router.get('/', function(req, res, next) {
   //console.log(req.session.user);
 //  console.log(req.isAuthenticated);
+
   res.render('main/main');
 });
 

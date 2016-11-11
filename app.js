@@ -12,7 +12,7 @@ var home = require('./routes/home/home');
 var guide = require('./routes/guide/guide');
 var main = require('./routes/main/main');
 var admin =require('./routes/admin/admin');
-
+var flash = require('connect-flash');
 var app = express();
 
 // view engine setup
@@ -37,7 +37,7 @@ app.use(session({
     }}));
 app.use(passport.initialize()); // Express 연결
 app.use(passport.session()); // 로그인 세션 유지
-
+app.use(flash());//로그인 실패시 에러메시지를 session의 flash에 저장
 
 app.use('/',routes);
 app.use('/home', home);

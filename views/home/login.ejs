@@ -58,6 +58,12 @@
 
   <!-- How it works -->
   <div class="row head">
+
+      <!-- 로그인 에러시 메시지 출력-->
+      <% if (message && message != "") { %>
+        <div class="alert alert-danger"><%= message %></div>
+      <% } %>
+
       <div class="col-sm-12 how-it-works section-description wow fadeIn">
           <h2><strong>로그인</strong></h2>
           <div class="divider-1 wow fadeInUp"><span></span></div>
@@ -84,11 +90,6 @@
     <a href="#"></a>
   </section>
 </section>
-
-
-
-
-
 
 
 </body>
