@@ -4,6 +4,7 @@ logs
 
 #Connection
 connection.js
+sequelize.js
 
 # Runtime data
 pids
