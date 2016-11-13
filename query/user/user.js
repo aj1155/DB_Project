@@ -41,10 +41,10 @@ user.firstLogin = function(id,callback){
             connection.release();
             //현재 비밀번호가 생일과 같을 경우 즉, 비밀번호를 변경하지 않은 경우
             if(row[0].password == row[0].birth){
-                callback("false");
+                callback(false);
             }else {
                 //비밀번호를 변경 한 경우
-                callback("true");
+                callback(true);
             }
         });
     });
@@ -60,9 +60,42 @@ user.passwordUpdate = function(id,password,callback){
                 callback(err);
             } else{
                 //패스워드 업데이트 성공
-                callback("true")
+                callback(true);
             }
         });
     });
-}
+};
+
+//로그인 아이디와 카테고리 아이디를 통해 유저 정보를 가져온다.
+user.GetUser = function (login_id,category_id,callback) {
+    pool.getConnection(function(err,connection){
+        connection.query("select email from user where login_id=? && category_id = ? ",[login_id,category_id],function(err, row){
+            connection.release();
+            //에러가 난 경우
+            if(err){
+                callback(false);
+            } else{
+                //에러가 아닌 경우 유저정보 리턴
+                callback(row[0]);
+            }
+        });
+    });
+};
+
+//패스워드를 자신의 생년월일로 초기화
+user.ResetPassword = function(login_id,category_id,callback){
+    // update user set password = (select * from (SELECT birth from user where login_id="01021248619" && category_id=1) as a)where login_id="01021248619" && category_id=1;
+    pool.getConnection(function(err,connection){
+        connection.query('update user set password = (select * from (SELECT birth from user where login_id=? && category_id=?) as a)where login_id=? && category_id=?;',[login_id,category_id,login_id,category_id],function(err, row){
+            connection.release();
+            //에러가 난 경우
+            if(err){
+                callback(false);
+            } else{
+                //에러가 아닌 경우
+                callback(true);
+            }
+        });
+    });
+};
 module.exports = user;

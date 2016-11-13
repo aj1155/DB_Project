@@ -45,3 +45,9 @@ Thumbs.db
 dist
 public/__build__/**
 .webpack.json
+
+#email 계정
+email.js
+
+#암호화 파일
+encode.js
