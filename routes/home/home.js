@@ -2,6 +2,11 @@ var express = require('express');
 var router = express.Router();
 var passport = require('../../join/passport');
 var userDao = require('../../query/user/user');
+//이메일 관련 파일 require
+var mail = require('../../support/email');
+//암호화 관련 파일 require
+var encode = require("../../support/encode");
+
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -35,12 +40,12 @@ router.post('/login/:category', function (req, res, next) {
             userDao.firstLogin(user.id, function (result) {
 
                 //첫번째 로그인이 아닌경우 main 화면으로 간다.
-                if (result == "true") {
+                if (result) {
                     return res.redirect('/main');
                 } else {
                     //첫번째 로그인인경우 비밀번호 변경 페이지로 간다.
                     var id = user.id;
-                    return res.redirect('/home/login_first/' + id+"/"+req.params.category);
+                    return res.redirect('/home/login_first/' + id + "/" + req.params.category);
                 }
             });
         });
@@ -71,28 +76,114 @@ router.post('/login_first/:id/:category', function (req, res, next) {
     //비밀번호와 비밀번호 체크가 다른경우
     if (req.body.password != req.body.password_confirm) {
         req.flash('error', "비밀번호와 비밀번호 확인이 다릅니다");
-        return res.redirect('/home/login_first/' + req.params.id);
-    }else if(req.body.password.length < 8){
+        return res.redirect('/home/login_first/' + req.params.id+"/"+req.params.category);
+    } else if (req.body.password.length < 8) {
         req.flash('error', "비밀번호를 8자 이상으로 설정해주세요.");
-        return res.redirect('/home/login_first/' + req.params.id);
+        return res.redirect('/home/login_first/' + req.params.id+"/"+req.params.category);
     }
 
     //패스워드 업데이트
-    userDao.passwordUpdate(req.params.id,req.body.password,function(result){
+    userDao.passwordUpdate(req.params.id, req.body.password, function (result) {
         //패스워드 변경 성공
-        if(result == "true"){
+        if (result) {
             req.flash('error', "비밀번호 변경에 성공하였습니다. 다시 로그인 해주세요. ");
-            return res.redirect('/home/login/'+req.params.category);
-        }else{
+            return res.redirect('/home/login/' + req.params.category);
+        } else {
             //패스워드 변경 실패
             req.flash('error', "다시 시도해주세요.");
-            return res.redirect('/home/login_first/' + req.params.id);
+            return res.redirect('/home/login_first/' + req.params.id+"/"+req.params.category);
         }
     });
 });
 
+//아이디 패스워드 찾기 : GET
 router.get('/ipfind', function (req, res, next) {
-    res.render('home/IPfind');
+    //에러가 있으면 message 로  에러를 보내준다.
+    res.render('home/IPfind', {message: req.flash('error')});
+});
+
+//아이디 패스워드 찾기 : POST
+router.post('/ipfind', function (req, res, next) {
+    var login_id = req.body.login_id;
+    var email = req.body.email;
+    var category_id = req.body.category;
+    userDao.GetUser(login_id, category_id, function (result) {
+
+        //아이디가 없는경우
+        if (result == null) {
+            req.flash('error', "아이디가 없습니다.");
+            return res.redirect('/home/ipfind');
+        }
+        //에러 발생시
+        if (!result) {
+            req.flash('error', "다시 확인해주세요.");
+            return res.redirect('/home/ipfind');
+        }
+
+        //성공한 경우
+        if (result.email == email) {
+            encode.MakeURL(login_id, category_id, function (result) {
+                var os = require( 'os' );
+                var networkInterfaces = os.networkInterfaces( );
+                //서버 ip주소 얻기
+                var ipAddress = networkInterfaces.en0[1].address;
+                //TODO: 주소 변경하기
+                var sendURL = "http://"+ipAddress+":3000/home/initpass/" + result;
+                mail.send("성공회대학교 비밀번호 초기화 이메일 입니다.", email, "클릭하여 비밀번호를 초기화 해주세요 \n" + '<html><a href=' + '"' + sendURL + '"' + 'target="_blank">비밀번호 초기화 페이지</a></html>');
+                req.flash('error', "이메일을 확인하여 비밀번호를 초기화 하고 로그인해주세요.");
+                return res.redirect('/home/ipfind');
+            });
+        } else {
+            //이메일이 다른 경우
+            req.flash('error', "이메일을 확인해주세요.");
+            return res.redirect('/home/ipfind');
+        }
+    });
+});
+
+
+//비밀번호 초기화 : GET
+router.get('/initpass/:url', function (req, res, next) {
+    //에러가 있으면 message 로  에러를 보내준다.
+    res.render('home/init_password', {message: req.flash('error')});
+});
+
+//비밀번호 초기화 : POST
+router.post('/initpass/:url', function (req, res, next) {
+
+    var url = req.params.url;
+    var login_id = req.body.login_id;
+    var category_id = req.body.category;
+
+    encode.searchURL(url, login_id, category_id, function (result) {
+
+        //잘못된 url로 접근한경우 홈으로 redirect
+        if (result == "error") {
+            return res.redirect("/home");
+        }
+
+        //성공한 경우
+        if (result) {
+            //비밀번호 생년월일로 초기화
+            userDao.ResetPassword(login_id, category_id, function (result) {
+                //TODO: hashmap 삭제
+                //초기화 성공
+                if (result) {
+                    encode.removeURL(url);
+                    req.flash('error', "초기화된 비밀번호로 로그인해주세요.");
+                    return res.redirect('/home/login/' + category_id);
+                }else{
+                    //초기화 실패
+                    req.flash('error', "아이디를 확인해주세요.");
+                    return res.redirect('/home/initpass/' + url);
+                }
+            });
+        } else {
+            //실패한 경우
+            req.flash('error', "아이디와 구분을 확인해주세요.");
+            return res.redirect('/home/initpass/' + url);
+        }
+    });
 });
 
 
