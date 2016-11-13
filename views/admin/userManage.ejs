@@ -10,6 +10,7 @@
         <% include ../common/css.ejs %>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
     </head>
 
     <body class="nav-md">
@@ -68,7 +69,7 @@
                                   <div role="tabpanel" class="tab-pane fade active in" id="user_create" aria-labelledby="home-tab">
                                     </br>
                                     <div class="col-md-5">
-                                      <form class="form-horizontal form-label-left">
+                                      <form class="form-horizontal form-label-left" method="post" action="/admin/user">
 
 
                                         <!-- <div class="form-group" style="display:inline-block"> -->
@@ -77,35 +78,35 @@
                                         <div class="form-group">
                                           <label class="control-label col-md-3 col-sm-3 col-xs-12">아이디(ID) </label>
                                           <div class="col-md-7 col-sm-9 col-xs-12">
-                                            <input type="text" class="form-control" >
+                                            <input type="text" name="login_id" class="form-control" >
                                           </div>
                                         </div>
 
                                         <div class="form-group">
                                           <label class="control-label col-md-3 col-sm-3 col-xs-12">이름 </label>
                                           <div class="col-md-7 col-sm-9 col-xs-12">
-                                            <input type="text" class="form-control">
+                                            <input type="text" name="name" class="form-control">
                                           </div>
                                         </div>
 
                                         <div class="form-group">
                                           <label class="control-label col-md-3 col-sm-3 col-xs-12">기수 </label>
                                           <div class="col-md-7 col-sm-9 col-xs-12">
-                                            <input type="text" class="form-control">
+                                            <input type="text" name="grade" class="form-control">
                                           </div>
                                         </div>
 
                                         <div class="form-group">
                                           <label class="control-label col-md-3 col-sm-3 col-xs-12">생일 </label>
                                           <div class="col-md-7 col-sm-9 col-xs-12">
-                                            <input type="text" class="form-control">
+                                            <input type="text" name="birth" class="form-control">
                                           </div>
                                         </div>
 
                                         <div class="form-group">
                                           <label class="control-label col-md-3 col-sm-3 col-xs-12">비밀번호</label>
                                           <div class="col-md-7 col-sm-9 col-xs-12">
-                                            <input type="password" class="form-control" value="">
+                                            <input type="password" name="password" class="form-control" value="">
                                           </div>
                                         </div>
                                         <div class="form-group">
@@ -118,21 +119,21 @@
                                         <div class="form-group">
                                           <label class="control-label col-md-3 col-sm-3 col-xs-12">소속지위</label>
                                           <div class="col-md-7 col-sm-9 col-xs-12">
-                                            <input type="text" class="form-control" value="">
+                                            <input type="text" name="social_status" class="form-control" value="">
                                           </div>
                                         </div>
 
                                         <div class="form-group">
                                           <label class="control-label col-md-3 col-sm-3 col-xs-12">휴대전화</label>
                                           <div class="col-md-7 col-sm-9 col-xs-12">
-                                            <input type="text" class="form-control">
+                                            <input type="text" name="phone_number" class="form-control">
                                           </div>
                                         </div>
 
                                         <div class="form-group">
                                           <label class="control-label col-md-3 col-sm-3 col-xs-12">직장전화</label>
                                           <div class="col-md-7 col-sm-9 col-xs-12">
-                                            <input type="text" class="form-control" value="">
+                                            <input type="text" name="company_number" class="form-control" value="">
                                           </div>
                                         </div>
 
@@ -140,14 +141,14 @@
                                         <div class="form-group">
                                           <label class="control-label col-md-3 col-sm-3 col-xs-12">e-mail</label>
                                           <div class="col-md-7 col-sm-9 col-xs-12">
-                                            <input type="text" class="form-control">
+                                            <input type="text" name="email" class="form-control">
                                           </div>
                                         </div>
                                         <!-- <div class="ln_solid"></div> -->
                                       </br>
                                         <div class="form-group">
                                           <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-                                            <button type="submit" class="btn btn-success">추가</button>
+                                            <button id="add" type="submit" class="btn btn-success">추가</button>
                                             <button type="submit" class="btn btn-fail">취소</button>
                                           </div>
                                         </div>
@@ -158,7 +159,8 @@
                                       </form>
 
                                       <!--엑셀로 추가하기위한 버튼폼 시작-->
-                                      <form class="form-horizontal form-label-left">
+                                      <form enctype   =  "multipart/form-data" class="form-horizontal form-label-left" method="post" action="/admin/userExcel">
+                                        <input type="file" name="file"/>
                                         <button type="submit" class="btn btn-warning" style = "display : inline">엑셀추가</button>
                                         <div style = "display : inline">엑셀로 회원을 추가하시려면 엑셀추가버튼을 클릭해주세요.</div>
                                       </form>
@@ -168,7 +170,7 @@
                                       </br>
                                       </br>
 
-                                      <button type="submit" class="btn btn-primary" style = "display : inline">추가적용</button>
+                                      <button type="button" class="add btn btn-primary" style = "display : inline">추가적용</button>
                                       <div style = "display : inline">오른편 추가된 데이터를 실제로 적용하시려면 클릭해주세요.</div>
 
 
@@ -194,110 +196,16 @@
                                           </thead>
                                           <tbody>
                                             <tr>
-                                              <td><input type="checkbox" class="flat" name="table_records"></td>
-                                              <td>원일준</td>
-                                              <td>7기</td>
-                                              <td>01093481037</td>
-                                              <td>sumusb@naver.com</td>
+                                            <% if(list!=null && list!=""){%>
+                                              <% for(var i = 0; i<list.length; i++) {%>
+                                                 <td><input type="checkbox" class="flat" name="table_records"></td>
+                                                 <td><%=list[i].name%></td>
+                                                 <td><%=list[i].grade%></td>
+                                                 <td><%=list[i].phone_number%></td>
+                                                 <td><%=list[i].email%></td>
                                             </tr>
-                                            <tr>
-                                              <td><input type="checkbox" class="flat" name="table_records"></td>
-                                              <td>이승기</td>
-                                              <td>7기</td>
-                                              <td>01000000000</td>
-                                              <td>asdf@naver.com</td>
-                                            </tr>
-                                            <tr>
-                                              <td><input type="checkbox" class="flat" name="table_records"></td>
-                                              <td>강철진</td>
-                                              <td>6기</td>
-                                              <td>01000000000</td>
-                                              <td>asdf@naver.com</td>
-                                            </tr>
-                                            <tr>
-                                              <td><input type="checkbox" class="flat" name="table_records"></td>
-                                              <td>김만기</td>
-                                              <td>7기</td>
-                                              <td>01000000000</td>
-                                              <td>asdf@naver.com</td>
-                                            </tr>
-                                            <tr>
-                                              <td><input type="checkbox" class="flat" name="table_records"></td>
-                                              <td>강준구</td>
-                                              <td>7기</td>
-                                              <td>01000000000</td>
-                                              <td>asdf@naver.com</td>
-                                            </tr>
-                                            <tr>
-                                              <td><input type="checkbox" class="flat" name="table_records"></td>
-                                              <td>최진실</td>
-                                              <td>7기</td>
-                                              <td>01000000000</td>
-                                              <td>asdf@naver.com</td>
-                                            </tr>
-                                            <tr>
-                                              <td><input type="checkbox" class="flat" name="table_records"></td>
-                                              <td>이준우</td>
-                                              <td>7기</td>
-                                              <td>01000000000</td>
-                                              <td>asdf@naver.com</td>
-                                            </tr>
-                                            <tr>
-                                              <td><input type="checkbox" class="flat" name="table_records"></td>
-                                              <td>신성철</td>
-                                              <td>7기</td>
-                                              <td>01000000000</td>
-                                              <td>asdf@naver.com</td>
-                                            </tr>
-                                            <tr>
-                                              <td><input type="checkbox" class="flat" name="table_records"></td>
-                                              <td>노욱진</td>
-                                              <td>8기</td>
-                                              <td>01000000000</td>
-                                              <td>asdf@naver.com</td>
-                                            </tr>
-                                            <tr>
-                                              <td><input type="checkbox" class="flat" name="table_records"></td>
-                                              <td>홍태규</td>
-                                              <td>7기</td>
-                                              <td>01000000000</td>
-                                              <td>asdf@naver.com</td>
-                                            </tr>
-                                            <tr>
-                                              <td><input type="checkbox" class="flat" name="table_records"></td>
-                                              <td>홍태규</td>
-                                              <td>7기</td>
-                                              <td>01000000000</td>
-                                              <td>asdf@naver.com</td>
-                                            </tr>
-                                            <tr>
-                                              <td><input type="checkbox" class="flat" name="table_records"></td>
-                                              <td>홍태규</td>
-                                              <td>7기</td>
-                                              <td>01000000000</td>
-                                              <td>asdf@naver.com</td>
-                                            </tr>
-                                            <tr>
-                                              <td><input type="checkbox" class="flat" name="table_records"></td>
-                                              <td>홍태규</td>
-                                              <td>7기</td>
-                                              <td>01000000000</td>
-                                              <td>asdf@naver.com</td>
-                                            </tr>
-                                            <tr>
-                                              <td><input type="checkbox" class="flat" name="table_records"></td>
-                                              <td>홍태규</td>
-                                              <td>7기</td>
-                                              <td>01000000000</td>
-                                              <td>asdf@naver.com</td>
-                                            </tr>
-                                            <tr>
-                                              <td><input type="checkbox" class="flat" name="table_records"></td>
-                                              <td>홍태규</td>
-                                              <td>7기</td>
-                                              <td>01000000000</td>
-                                              <td>asdf@naver.com</td>
-                                            </tr>
+                                              <% } %>
+                                          <% } %>
                                           </tbody>
                                         </table>
                                       </div>
@@ -339,5 +247,6 @@
     </div>
 
     <% include ../common/script.ejs %>
+    <script src="/res/assets/js/admin/userManage.js"></script>
 </body>
 </html>
