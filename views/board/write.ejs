@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <!-- Meta, title, CSS, favicons, etc. -->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>성공회대학교</title>
+
+        <% include ../common/css.ejs %>
+        <!-- jQuery -->
+        <script src="/res/vendors/jquery/dist/jquery.min.js"></script>
+        <script src="/res/assets/js/jquery-1.11.1.min.js"></script>
+        <script src="/res/assets/bootstrap/js/bootstrap.min.js"></script>
+        <script src="/res/assets/js/jquery.backstretch.min.js"></script>
+        <script src="/res/assets/js/wow.min.js"></script>
+        <script src="/res/assets/js/retina-1.1.0.min.js"></script>
+        <script src="/res/assets/js/waypoints.min.js"></script>
+        <script src="/res/assets/js/scripts.js"></script>
+    </head>
+
+    <body class="nav-md">
+        <div class="container body">
+            <div class="main_container">
+                <% include ../common/nav.ejs %>
+
+            <!-- page content -->
+            <div class="right_col" role="main">
+              <div class="row">
+              <div class="col-md-12 col-sm-12 col-xs-12 col-sm-offset-1 col-lg-10">
+
+              <div class="x_panel">
+                <div class="x_title">
+                  <h2>공지사항</h2>
+                  <br/>
+                  <div class="clearfix"></div>
+                  <br/>
+                </div>
+                <form method="Post">
+              <div class="x_content">
+                <input name="title" class="form-control" type="text" placeholder="제목을 입력하세요">
+                  <div id="alerts"></div>
+                  <br/>
+                  <br/>
+
+                  <textarea name="content" class="editor-wrapper" style="height:100%; width:100%;"></textarea>
+
+                  <br />
+
+                  <div class="ln_solid"></div>
+
+                  <div class="form-group" style="float:right;">
+                    <button class="btn btn-primary" tpye="submit">저장</button>
+                    <button class="btn btn-defualt">목록으로</button>
+                  </div>
+                </div>
+              </form>
+              </div>
+              </div>
+            </div>
+            </div>
+
+        <!-- /page content -->
+
+        <!-- footer content -->
+        <footer>
+            <div class="pull-right">
+                성공회대학교 동문회 관리 시스템
+            </div>
+            <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+</div>
+
+</div>
+    <% include ../common/script.ejs %>
+</body>
+</html>
