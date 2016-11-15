@@ -23,7 +23,7 @@ var insert = function(result,category_id,callback){
 
     });
   });
-  callback("success")
+  callback("success");
 };
 
 exports.insert = insert;

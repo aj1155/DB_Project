@@ -21,7 +21,16 @@ router.get('/guide', function(req, res, next) {
 //작성자 : 강철진 11/11 내용 :user 추가 편집 삭제 라우트설정
 router.get('/userManage', function(req, res ,next) {
   sequelize.authenticate().then(function(err){
-    res.render('admin/userManage',{list:""});
+    User.findAll({
+      where : {
+        category_id : req.user.category_id
+      },
+      limit: 10
+    })
+    .then(function(rows){
+      res.render('admin/userManage',{userList:rows});
+    });
+
   })
   .catch(function(err){
     res.send(err);
@@ -45,7 +54,15 @@ router.post('/user',function(req,res,next){
   })
   .then(function(result){
     console.log(result); /* 방금 삽입된 User를 가져옴 id가 AutoIncrement이기 때문에 여기서 채워진 id를 get한다*/
-    res.render('admin/userMange',{list : ""});
+    User.findAll({
+      where : {
+        category_id : req.user.category_id
+      },
+      limit: 10
+    })
+    .then(function(rows){
+      res.render('admin/userManage',{userList:rows});
+    });
   });
 });
 
@@ -70,7 +87,16 @@ router.post('/userExcel',function(req,res){
         else{
           addRows.insert(result,req.user.id,function(msg){
               if(msg == "success"){
-                res.render('admin/userManage');
+                User.findAll({
+                  where : {
+                    category_id : req.user.category_id
+                  },
+                  limit: 10
+                })
+                .then(function(rows){
+                  res.render('admin/userManage',{userList:rows});
+                });
+
               }
           });
           //res.render('admin/userManage',{list : result});
@@ -83,15 +109,20 @@ router.post('/userExcel',function(req,res){
 
 /*사용자 삭제*/
 router.delete('/user',function(req,res,next){
-  User.destory({
-      where: {
-        id: req.body.id
-      }
-  })
-  .then(function(result){
-    console.log(result);
-    res.json(result);
-  });
+
+
+    var list = req.body.list.replace(/[^0-9.,]/g, "");
+    var id = list.split(',');
+      User.destroy({
+              where:{
+                id : id
+              }
+      })
+      .then(function(result){
+        console.log(result);
+        res.json('success');
+      });
+
 });
 
 /*사용자 편집*/
