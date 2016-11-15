@@ -171,14 +171,15 @@
         <ul class="nav navbar-nav navbar-right">
             <li class="">
                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="/res/production/images/img.jpg" alt="">김만기
+                    <img src="/res/production/images/img.jpg" alt=""><%= user_id %>
                     <span class=" fa fa-angle-down"></span>
                 </a>
                 <ul class="dropdown-menu dropdown-usermenu pull-right">
-                    <li>
-                        <a href="login.html">
+                    <li data-url="main/logout">
+                        <a>
                             <i class="fa fa-sign-out pull-right"></i>
-                            로그아웃</a>
+                            로그아웃
+                        </a>
                     </li>
                 </ul>
             </li>
