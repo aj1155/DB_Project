@@ -14,7 +14,7 @@ var main = require('./routes/main/main');
 var admin =require('./routes/admin/admin');
 var flash = require('connect-flash');
 var app = express();
-
+var board = require('./routes/board/board');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -45,6 +45,7 @@ app.use('/users', users);
 app.use('/guide',guide);
 app.use('/main',main);
 app.use('/admin',admin);
+app.use('/board',board);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
