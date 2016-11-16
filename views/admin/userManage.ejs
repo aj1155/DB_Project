@@ -43,6 +43,8 @@
 
 
 
+
+
                         <div class="col-md-12 col-sm-6 col-xs-12">
                           <div class="x_panel">
                             <div class="x_title">
@@ -184,32 +186,72 @@
                                             <h2>현재 추가시킬 인원의 정보</h2>
                                             <h2>(실제로 적용하시려면 옆에 추가적용버튼을 눌러주세요.)</h2>
                                         </div>
+                                      </div>
+                                    </div>
+                                    <!-- 회원추가에 리스트 끝 -->
+                                  </div>
+                                  <!-- 추가 탭 내용 끝 -->
+
+
+                                  <div role="tabpanel" class="tab-pane fade" id="user_edit" aria-labelledby="home-tab">
+                                    <div class="col-md-12 col-sm-6 col-xs-6 ">
+                                      <div class="x_panel" id="list">
+                                        <div class="col-md-12 col-sm-8 col-xs-12 form-group pull-left top_search">
+                                            <h2>회원전체리스트입니다.</h2>
+                                            <h2>수정하실 회원을 클릭하시면 회원수정페이지로 넘어갑니다.</h2>
+                                        </div>
+                                        <div class="col-md-8 col-sm-8 col-xs-12 form-group pull-right top_search">
+                                            <div class="form-group"  style="background: #fff; margin-top: 10px;">
+                                                <div class="col-md-4 col-sm-4 col-xs-4">
+                                                    <select class="form-control">
+                                                        <option>검색 조건</option>
+                                                        <option>이름 검색</option>
+                                                        <option>전화번호 검색</option>
+                                                        <option>기수 검색</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" placeholder="검색">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-default" type="button">찾기</button>
+                                                </span>
+                                            </div>
+                                        </div>
                                         <table id="datatable-checkbox" class="table table-striped table-bordered bulk_action">
                                           <thead>
                                             <tr>
-                                              <th><input type="checkbox" id="check-all" class="flat"></th>
                                               <th>이름</th>
                                               <th>소속</th>
                                               <th>전화번호</th>
                                               <th>이메일주소</th>
+                                              <th>생년월일</th>
+                                              <th>회사전화번호</th>
+                                              <th>지위</th>
+                                              <th>관리자여부</th>
                                             </tr>
                                           </thead>
                                           <tbody>
+                                          <% if(userList!=null && userList!=""){%>
+                                              <% userList.forEach(function(user,idx){ %>
                                             <tr>
-                                            <% if(list!=null && list!=""){%>
-                                              <% for(var i = 0; i<list.length; i++) {%>
-                                                 <td><input type="checkbox" class="flat" name="table_records"></td>
-                                                 <td><%=list[i].name%></td>
-                                                 <td><%=list[i].grade%></td>
-                                                 <td><%=list[i].phone_number%></td>
-                                                 <td><%=list[i].email%></td>
+                                                 <td><input type="checkbox" class="flat" name="table_records" value="<%=user.id%>"></td>
+                                                 <td><%=user.name%></td>
+                                                 <td><%=user.grade%></td>
+                                                 <td><%=user.phone_number%></td>
+                                                 <td><%=user.email%></td>
+                                                 <td><%=user.birth%></td>
+                                                 <td><%=user.company_number%></td>
+                                                 <td><%=user.social_status%></td>
+                                                 <td><%=user.is_admin%></td>
                                             </tr>
-                                              <% } %>
+                                              <% }) %>
                                           <% } %>
                                           </tbody>
                                         </table>
                                       </div>
                                     </div>
+<<<<<<< HEAD
                                     <!-- 회원추가에 리스트 끝 -->
                                   </div>
                                   <!-- 추가 탭 내용 끝 -->
@@ -408,6 +450,8 @@
                                         </table>
                                       </div>
                                     </div>
+=======
+>>>>>>> d19f5502c20a7678d425135a769f43ce0eb73555
                                     <button id="add" type="button" class="btn btn-default" style="float:right;">더보기...</button>
                                   </div>
                                   <div role="tabpanel" class="tab-pane fade" id="user_delete" aria-labelledby="profile-tab">
@@ -450,6 +494,7 @@
                                             </tr>
                                           </thead>
                                           <tbody>
+<<<<<<< HEAD
                                             <tr>
                                               <td><input type="checkbox" class="flat" name="table_records"></td>
                                               <td>원일준</td>
@@ -615,11 +660,32 @@
                                               <td>학생</td>
                                               <td>No</td>
                                             </tr>
+=======
+                                          <% if(userList!=null && userList!=""){%>
+                                              <% userList.forEach(function(user,idx){ %>
+                                            <tr>
+                                                 <td><input type="checkbox" class="flat" name="table_records" value="<%=user.id%>"></td>
+                                                 <td><%=user.name%></td>
+                                                 <td><%=user.grade%></td>
+                                                 <td><%=user.phone_number%></td>
+                                                 <td><%=user.email%></td>
+                                                 <td><%=user.birth%></td>
+                                                 <td><%=user.company_number%></td>
+                                                 <td><%=user.social_status%></td>
+                                                 <td><%=user.is_admin%></td>
+                                            </tr>
+                                              <% }) %>
+                                          <% } %>
+>>>>>>> d19f5502c20a7678d425135a769f43ce0eb73555
                                           </tbody>
                                         </table>
                                         <div class="form-group">
                                           <div class="col-md-12 col-sm-9 col-xs-12 col-md-offset-5">
+<<<<<<< HEAD
                                             <button type="submit" class="btn btn-success">삭제</button>
+=======
+                                            <button type="submit" class="del btn btn-success">삭제</button>
+>>>>>>> d19f5502c20a7678d425135a769f43ce0eb73555
                                             <button type="submit" class="btn btn-fail">취소</button>
                                           </div>
                                         </div>
@@ -666,6 +732,7 @@
                                             </tr>
                                           </thead>
                                           <tbody>
+<<<<<<< HEAD
                                             <tr>
                                               <td>원일준</td>
                                               <td>7기</td>
@@ -816,6 +883,23 @@
                                               <td>학생</td>
                                               <td>No</td>
                                             </tr>
+=======
+                                          <% if(userList!=null && userList!=""){%>
+                                              <% userList.forEach(function(user,idx){ %>
+                                            <tr>
+                                                 <td><input type="checkbox" class="flat" name="table_records" value="<%=user.id%>"></td>
+                                                 <td><%=user.name%></td>
+                                                 <td><%=user.grade%></td>
+                                                 <td><%=user.phone_number%></td>
+                                                 <td><%=user.email%></td>
+                                                 <td><%=user.birth%></td>
+                                                 <td><%=user.company_number%></td>
+                                                 <td><%=user.social_status%></td>
+                                                 <td><%=user.is_admin%></td>
+                                            </tr>
+                                              <% }) %>
+                                          <% } %>
+>>>>>>> d19f5502c20a7678d425135a769f43ce0eb73555
                                           </tbody>
                                         </table>
                                       </div>
