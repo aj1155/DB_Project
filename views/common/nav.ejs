@@ -16,7 +16,7 @@
                 <img src="/res/production/images/img.jpg" alt="..." class="img-circle profile_img">
             </div>
             <div class="profile_info">
-                <span>김만기</span>
+                <span><%= user.name %></span>
             </div>
         </div>
         <!-- /menu profile quick info -->
@@ -26,7 +26,7 @@
         <!-- sidebar menu -->
         <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
             <div class="menu_section">
-                <h3>7기</h3>
+                <h3><%= user.grade %>기</h3>
                 <ul class="nav side-menu">
                     <li>
                         <a>
@@ -48,10 +48,11 @@
                         </a>
                         <ul class="nav child_menu">
                             <li>
-                                <a>기수별 동문명단<span class="fa fa-chevron-down"></span>
+                                <a id=grade1>기수별 동문명단<span class="fa fa-chevron-down"></span>
                                 </a>
-                                <ul class="nav child_menu">
-                                    <li class="sub_menu" data-url="/users/contacts">
+                                <ul id=grade_list1 class="nav child_menu">
+
+                                    <!-- <li class="sub_menu" data-url="/users/contacts">
                                         <a>1기</a>
                                     </li>
                                     <li  data-url="/users/contacts">
@@ -65,7 +66,7 @@
                                     </li>
                                     <li  data-url="/users/contacts">
                                         <a>5기</a>
-                                    </li>
+                                    </li> -->
                                 </ul>
                             <li>
                                 <a>동문회 임원명단<span class="fa fa-chevron-down"></span>
@@ -77,8 +78,8 @@
                                     <li>
                                         <a>기수별 임원명단<span class="fa fa-chevron-down"></span>
                                         </a>
-                                        <ul class="nav child_menu">
-                                            <li class="sub_menu" data-url="/users/contacts">
+                                        <ul id=grade_list2 class="nav child_menu">
+                                            <!-- <li class="sub_menu" data-url="/users/contacts">
                                                 <a>1기</a>
                                             </li>
                                             <li>
@@ -92,7 +93,7 @@
                                             </li>
                                             <li>
                                                 <a>5기</a>
-                                            </li>
+                                            </li> -->
                                         </ul>
                                     </li>
                                 </ul>
@@ -171,7 +172,7 @@
         <ul class="nav navbar-nav navbar-right">
             <li class="">
                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="/res/production/images/img.jpg" alt=""><%= user_id %>
+                    <img src="/res/production/images/img.jpg" alt=""><%= user.name %>
                     <span class=" fa fa-angle-down"></span>
                 </a>
                 <ul class="dropdown-menu dropdown-usermenu pull-right">

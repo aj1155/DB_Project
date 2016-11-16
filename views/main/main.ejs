@@ -218,5 +218,17 @@
     </div>
 
 <% include ../common/script.ejs %>
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script>
+<%
+for(var i=0; i<grade.length; i++){ %>
+  $('#grade_list1').append("<li><a><%= grade[i].grade %>기</a></li>");
+  $('#grade_list2').append("<li><a><%= grade[i].grade %>기</a></li>");
+<%
+}
+%>
+
+
+</script>
 </body>
 </html>

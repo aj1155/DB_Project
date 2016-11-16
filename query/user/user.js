@@ -21,6 +21,18 @@ var pool=require('../../join/connection');
 
 var user={};
 
+//메뉴에서 있는 기수만 목록에 띄어주기위한 쿼리문
+user.FindGrade = function(id,category_id,callback){
+  pool.getConnection(function(err,connection){
+    connection.query("select distinct grade from user where category_id=? order by grade asc", [category_id], function(err, row) {
+        callback(row);
+        connection.release();
+    });
+  });
+
+};
+
+
 user.FindOne = function(id,category_id,callback){
  pool.getConnection(function(err,connection){
    connection.query("select * from user where id=?",[id],function(err, row){

@@ -6,22 +6,35 @@ var multer = require('multer'); /*mutipart/form-data 처리를 위한 미들웨�
 var exUd = require('../../services/excelUpload');
 var exTJ = require('../../services/excelToJson');
 var addRows = require('../../services/addRows');
+var userDao = require('../../query/user/user');
 
 /* GET home page. */
 router.get('/request', function(req, res, next) {
-  res.render('admin/request');
+  userDao.FindGrade(req.user.id, req.user.category_id, function(result){
+    res.render('admin/request', {user : req.user, grade : result});
+  });
+  // res.render('admin/request');
 });
 router.get('/send', function(req, res, next) {
-  res.render('admin/send');
+  userDao.FindGrade(req.user.id, req.user.category_id, function(result){
+    res.render('admin/send', {user : req.user, grade : result});
+  });
+  // res.render('admin/send');
 });
 router.get('/guide', function(req, res, next) {
-  res.render('admin/guide');
+  userDao.FindGrade(req.user.id, req.user.category_id, function(result){
+    res.render('admin/guide', {user : req.user, grade : result});
+  });
+  // res.render('admin/guide');
 });
 
 //작성자 : 강철진 11/11 내용 :user 추가 편집 삭제 라우트설정
 router.get('/userManage', function(req, res ,next) {
   sequelize.authenticate().then(function(err){
-    res.render('admin/userManage',{list:""});
+    userDao.FindGrade(req.user.id, req.user.category_id, function(result){
+      res.render('admin/userManage', {user : req.user, grade : result, list:""});
+    });
+    // res.render('admin/userManage',{list:""});
   })
   .catch(function(err){
     res.send(err);
