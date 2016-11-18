@@ -36,7 +36,9 @@
                 <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
                   <div class="x_panel">
                     <div class="x_title">
+
                       <h2>공지사항</h2>
+
                       <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
@@ -46,24 +48,21 @@
 
                         <div class="col-sm-3 col-xs-6">
                           <div class="input-group">
+
                             <div class="input-group-btn">
-                              <input type="text" class="form-control" aria-label="Text input with dropdown button" style="width:350px;">
-                              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="max-width:100%;">
-                                Action
+                              <input type="text" name="srchText" class="form-control" aria-label="Text input with dropdown button" style="width:350px;">
+                              <select class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="max-width:100%; margin:0;">
+                                <option value="0">검색조건</option>
+                                <option value="1">제목</option>
+                                <option value="2">작성자</option>
                                 <span class="caret"></span>
-                              </button>
-                              <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                                <li><a href="#">Action</a>
-                                </li>
-                                <li><a href="#">Another action</a>
-                                </li>
-                                <li><a href="#">Something else here</a>
-                                </li>
-                              </ul>
-                              <button class="btn btn-primary">검색</button>
+                              </select>
+                              <button class="btn btn-primary" type ="submit">검색</button>
+                              <form>
                             </div>
                             <!-- /btn-group -->
                           </div>
+
                         </div>
                         </div>
                       <div class="row">
@@ -78,12 +77,11 @@
                         </thead>
                         <tbody>
                           <%
-                            for(var i=0; i<15; i++)
-                            {
-                              var table=row[i];
+                              for(var i=0; i<row.length; i++){
+                                var table=row[i];
                           %>
                           <tr>
-                            <td><a href="/board/read/<%=table.SEQ%>"><%=table.SEQ%></a></td>
+                            <td><a href="/board/read/<%=table.title%>"><%=table.title%></a></td>
                             <td><%=table.title%></td>
                             <td><%=table.user_name%></td>
                             <td><%=table.create_time%></td>
@@ -96,9 +94,11 @@
                     </div>
                   </div>
                   </div>
+                  <form>
                   <div class="pull-right">
-                    <button id="plus">더보기</button>
+                    <button id="plus" value="2">더보기</button>
                   </div>
+                </form>
                 </div>
                 </div>
               </div>
@@ -106,17 +106,17 @@
           <script>
           $(function(){
             $("#plus").click(function(){
-              $("#datatable").append("<tr><td>11</td><td>Regional Director</td><td>London</td><td>2010/03/17</td></tr>");
-              $("#datatable").append("<tr><td>11</td><td>Regional Director</td><td>London</td><td>2010/03/17</td></tr>");
-              $("#datatable").append("<tr><td>11</td><td>Regional Director</td><td>London</td><td>2010/03/17</td></tr>");
-              $("#datatable").append("<tr><td>11</td><td>Regional Director</td><td>London</td><td>2010/03/17</td></tr>");
-              $("#datatable").append("<tr><td>11</td><td>Regional Director</td><td>London</td><td>2010/03/17</td></tr>");
-              $("#datatable").append("<tr><td>11</td><td>Regional Director</td><td>London</td><td>2010/03/17</td></tr>");
-              $("#datatable").append("<tr><td>11</td><td>Regional Director</td><td>London</td><td>2010/03/17</td></tr>");
-              $("#datatable").append("<tr><td>11</td><td>Regional Director</td><td>London</td><td>2010/03/17</td></tr>");
-              $("#datatable").append("<tr><td>11</td><td>Regional Director</td><td>London</td><td>2010/03/17</td></tr>");
-              $("#datatable").append("<tr><td>11</td><td>Regional Director</td><td>London</td><td>2010/03/17</td></tr>");
-            })
+              var link = document.location.href;
+              var first_link = link.substring(0,link.length-1);
+              var last_link = link.substring(link.length-1,link.length);
+
+              last_link =Number(last_link);
+              last_link+=1;
+              last_link = String(last_link);
+
+              var sts = first_link+last_link
+
+            });
           });
           </script>
         <!-- /page content -->
