@@ -1,13 +1,24 @@
 $(function(){
-      $(".add").click(function() {
+      $(".del").click(function() {
         event.stopPropagation();
         var list =[];
         $(".flat:checked").each(function(idx, row) {
-         var record = $(row).parents("tr");
-         list.push(record[0].innerText);
-        })
+         var record = $(this).val();
+         list.push(record);
+       });
         if(list.length>0){
-          console.log(list);
+          $.ajax({
+              url:'/admin/user',
+              type:'delete',
+              data:{
+                list: JSON.stringify(list)
+              },
+              success:function(msg){
+                  if(msg=="success"){
+                    location.href = '/admin/userManage';
+                  }
+              }
+          });
         };
     });
 });

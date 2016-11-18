@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <!-- Meta, title, CSS, favicons, etc. -->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>성공회대학교</title>
+        <% include ../common/css.ejs %>
+        <!-- jQuery -->
+        <script src="/res/vendors/jquery/dist/jquery.min.js"></script>
+        <script src="/res/assets/js/jquery-1.11.1.min.js"></script>
+        <script src="/res/assets/bootstrap/js/bootstrap.min.js"></script>
+        <script src="/res/assets/js/jquery.backstretch.min.js"></script>
+        <script src="/res/assets/js/wow.min.js"></script>
+        <script src="/res/assets/js/retina-1.1.0.min.js"></script>
+        <script src="/res/assets/js/waypoints.min.js"></script>
+        <script src="/res/assets/js/scripts.js"></script>
+    </head>
+    <style>
+      table{
+        font-size:20px;
+
+      }
+    </style>
+    <body class="nav-md">
+        <div class="container body">
+            <div class="main_container">
+              <% include ../common/nav.ejs %>
+
+            <!-- page content -->
+            <div class="right_col" role="main">
+              <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
+                  <div class="x_panel">
+                    <div class="x_title">
+
+                      <h2>공지사항</h2>
+
+                      <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                      <div class="row">
+                        <div class="col-sm-7 col-xs-1">
+                        </div>
+
+                        <div class="col-sm-3 col-xs-6">
+                          <div class="input-group">
+
+                            <div class="input-group-btn">
+                              <input type="text" name="srchText" class="form-control" aria-label="Text input with dropdown button" style="width:350px;">
+                              <select class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="max-width:100%; margin:0;">
+                                <option value="0">검색조건</option>
+                                <option value="1">제목</option>
+                                <option value="2">작성자</option>
+                                <span class="caret"></span>
+                              </select>
+                              <button class="btn btn-primary" type ="submit">검색</button>
+                              <form>
+                            </div>
+                            <!-- /btn-group -->
+                          </div>
+
+                        </div>
+                        </div>
+                      <div class="row">
+                      <table id="datatable" class="table table-striped table-bordered">
+                        <thead>
+                          <tr>
+                            <th>번호</th>
+                            <th>제목</th>
+                            <th>작성자</th>
+                            <th>작성 날짜</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <%
+                              for(var i=0; i<row.length; i++){
+                                var table=row[i];
+                          %>
+                          <tr>
+                            <td><a href="/board/read/<%=table.title%>"><%=table.title%></a></td>
+                            <td><%=table.title%></td>
+                            <td><%=table.user_name%></td>
+                            <td><%=table.create_time%></td>
+                          </tr>
+                          <%
+                            }
+                          %>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  </div>
+                  <form>
+                  <div class="pull-right">
+                    <button id="plus" value="2">더보기</button>
+                  </div>
+                </form>
+                </div>
+                </div>
+              </div>
+          <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+          <script>
+          $(function(){
+            $("#plus").click(function(){
+              var link = document.location.href;
+              var first_link = link.substring(0,link.length-1);
+              var last_link = link.substring(link.length-1,link.length);
+
+              last_link =Number(last_link);
+              last_link+=1;
+              last_link = String(last_link);
+
+              var sts = first_link+last_link
+
+            });
+          });
+          </script>
+        <!-- /page content -->
+
+        <!-- footer content -->
+        <footer>
+            <div class="pull-right">
+                성공회대학교 동문회 관리 시스템
+            </div>
+            <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+
+    </div>
+  </div>
+    <% include ../common/script.ejs %>
+
+</body>
+</html>
