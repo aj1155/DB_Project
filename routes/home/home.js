@@ -41,6 +41,8 @@ router.post('/login/:category', function (req, res, next) {
 
                 //첫번째 로그인이 아닌경우 main 화면으로 간다.
                 if (result) {
+                    //쿠키에 있는 유저 정보 중 패스워트 null로 변경
+                    req.user.password = null;
                     return res.redirect('/main');
                 } else {
                     //첫번째 로그인인경우 비밀번호 변경 페이지로 간다.
@@ -170,7 +172,7 @@ router.post('/initpass/:url', function (req, res, next) {
                 //초기화 성공
                 if (result) {
                     encode.removeURL(url);
-                    req.flash('error', "초기화된 비밀번호로 로그인해주세요.");
+                    req.flash('error', "초기화된 비밀번호(생년월일)로 로그인해주세요.");
                     return res.redirect('/home/login/' + category_id);
                 }else{
                     //초기화 실패
