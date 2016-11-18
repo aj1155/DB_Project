@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../../model/User');
+var Introduce = require('../../model/Introduce');
 var sequelize = require('../../join/sequelize'); /* node.js orm sequelize 설정을 불러옴 */
 var multer = require('multer'); /*mutipart/form-data 처리를 위한 미들웨어*/
 var exUd = require('../../services/excelUpload');
@@ -16,6 +17,29 @@ router.get('/send', function(req, res, next) {
 });
 router.get('/guide', function(req, res, next) {
   res.render('admin/guide');
+});
+router.post('/guide',function(req,res,next){
+  var body = req.body;
+  var updateObj = {
+    text : body.editor1
+  };
+  var whereObj = {
+    where : {
+      id : req.user.category_id
+    }
+  };
+  Introduce.update(updateObj,whereObj)
+  .then(function(result){
+    console.log(result);
+    if(result == 1){
+      res.render("admin/guide",{msg:'success'});
+    }else{
+      res.render("admin/guide",{msg:'fail'});
+    }
+  });
+
+
+
 });
 
 //작성자 : 강철진 11/11 내용 :user 추가 편집 삭제 라우트설정
