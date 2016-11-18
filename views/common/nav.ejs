@@ -13,7 +13,7 @@
         <!-- menu profile quick info -->
         <div class="profile">
             <div class="profile_pic">
-                <img src="/res/production/images/img.jpg" alt="..." class="img-circle profile_img">
+                <img src="/res/production/images/user.png" alt="..." class="img-circle profile_img">
             </div>
             <div class="profile_info">
                 <span><%= user.name %></span>
@@ -51,22 +51,8 @@
                                 <a id=grade1>기수별 동문명단<span class="fa fa-chevron-down"></span>
                                 </a>
                                 <ul id=grade_list1 class="nav child_menu">
+                                  <!-- 각 모임별로 있는 기수들만 태그가 붙음-->
 
-                                    <!-- <li class="sub_menu" data-url="/users/contacts">
-                                        <a>1기</a>
-                                    </li>
-                                    <li  data-url="/users/contacts">
-                                        <a>2기</a>
-                                    </li >
-                                    <li  data-url="/users/contacts">
-                                        <a>3기</a>
-                                    </li>
-                                    <li  data-url="/users/contacts">
-                                        <a>4기</a>
-                                    </li>
-                                    <li  data-url="/users/contacts">
-                                        <a>5기</a>
-                                    </li> -->
                                 </ul>
                             <li>
                                 <a>동문회 임원명단<span class="fa fa-chevron-down"></span>
@@ -79,21 +65,7 @@
                                         <a>기수별 임원명단<span class="fa fa-chevron-down"></span>
                                         </a>
                                         <ul id=grade_list2 class="nav child_menu">
-                                            <!-- <li class="sub_menu" data-url="/users/contacts">
-                                                <a>1기</a>
-                                            </li>
-                                            <li>
-                                                <a>2기</a>
-                                            </li>
-                                            <li>
-                                                <a>3기</a>
-                                            </li>
-                                            <li>
-                                                <a>4기</a>
-                                            </li>
-                                            <li>
-                                                <a>5기</a>
-                                            </li> -->
+                                            <!-- 각 모임별로 있는 기수들만 태그가 붙음-->
                                         </ul>
                                     </li>
                                 </ul>
@@ -123,8 +95,8 @@
                         <li>
                             <a href="tables.html">공지사항</a>
                         </li>
-                        <li>
-                            <a href="tables_dynamic.html">자유게시판</a>
+                        <li data-url="/board/list">
+                            <a>자유게시판</a>
                         </li>
                     </ul>
                 </li>
@@ -172,7 +144,7 @@
         <ul class="nav navbar-nav navbar-right">
             <li class="">
                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="/res/production/images/img.jpg" alt=""><%= user.name %>
+                    <img src="/res/production/images/user.png" alt=""><%= user.name %>
                     <span class=" fa fa-angle-down"></span>
                 </a>
                 <ul class="dropdown-menu dropdown-usermenu pull-right">
@@ -188,4 +160,14 @@
     </nav>
 </div>
 </div>
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script>
+<%
+for(var i=0; i<grade.length; i++){ %>
+  $('#grade_list1').append("<li><a><%= grade[i].grade %>기</a></li>");
+  $('#grade_list2').append("<li><a><%= grade[i].grade %>기</a></li>");
+<%
+}
+%>
+</script>
 <!-- /top navigation -->

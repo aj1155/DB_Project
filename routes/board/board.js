@@ -2,12 +2,14 @@ var express = require('express');
 var router = express.Router();
 var boardDAO = require('../../query/board/board');
 var pool = require('../../join/connection');
+var userDao = require('../../query/user/user');
 
 router.get('/list',function(req,res,next){
   boardDAO.selectAll(function(rows){
     res.render('board/list',{
       row:rows
     })
+
   });
 });
 
