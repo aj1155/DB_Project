@@ -27,11 +27,11 @@ user.FindProfileImage = function (id, callback) {
 
     pool.getConnection(function (err, connection) {
         connection.query("select data from image where id=?;", [id], function (err, row) {
+            connection.release();
             if(err){
                 callback(false);
             }
             callback(row[0]);
-            connection.release();
         });
     });
 };
@@ -40,8 +40,8 @@ user.FindProfileImage = function (id, callback) {
 user.FindGrade = function (id, category_id, callback) {
     pool.getConnection(function (err, connection) {
         connection.query("select distinct grade from user where category_id=? order by grade asc", [category_id], function (err, row) {
-            callback(row);
             connection.release();
+            callback(row);
         });
     });
 
@@ -125,4 +125,21 @@ user.ResetPassword = function (login_id, category_id, callback) {
         });
     });
 };
+
+//제일 큰 기수를 가져온다
+user.GetMaxGrade = function(category_id,callback){
+    pool.getConnection(function (err, connection) {
+        connection.query('select max(grade) as maxGrade from user where category_id = ?;', [category_id], function (err, row) {
+            connection.release();
+            //에러가 난 경우
+            if (err) {
+                callback(false);
+            } else {
+                //에러가 아닌 경우
+                callback(row[0]);
+            }
+        });
+    });
+};
+
 module.exports = user;
