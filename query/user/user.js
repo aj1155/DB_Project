@@ -98,4 +98,36 @@ user.ResetPassword = function(login_id,category_id,callback){
         });
     });
 };
+
+//회원정보 가져오기
+user.SelectUserInfo = function(id,callback){
+  pool.getConnection(function(err,connection){
+    connection.query("SELECT * FROM user WHERE id=?",[id],function(err,row){
+      if(err){
+        console.log("err")
+        console.err(err);
+      }else{
+        callback(row[0]);
+        connection.release();
+      }
+    });
+  });
+};
+
+//회원정보 수정
+user.UpdateUserInfo = function(param,callback){
+  pool.getConnection(function(err,connection){
+    var query = "UPDATE user SET password=?,social_status=?,is_social_status=?,phone_number=?,is_phone_number=?,company_number=?,is_company_number=?,email=?,is_email=? WHERE id=?";
+    // [password,social_status,is_social_status,phone_number,is_phone_number,company_number,is_company_number,email,is_email,id];
+    connection.query(query,param,function(err,row){
+      connection.release();
+      if(err){
+        callback(err);
+      }else{
+        callback(true);
+      }
+    });
+  });
+};
+
 module.exports = user;
