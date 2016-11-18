@@ -105,7 +105,7 @@
                           <!-- </div> -->
 
                       <div class="col-md-6">
-                        <form class="form-horizontal form-label-left">
+                        <form class="form-horizontal form-label-left" method="post">
 
 
                           <!-- <div class="form-group" style="display:inline-block"> -->
@@ -114,41 +114,41 @@
                           <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">아이디(ID) </label>
                             <div class="col-md-4 col-sm-9 col-xs-12">
-                              <input type="text" class="form-control" disabled="disabled" placeholder="01063743982">
+                              <input type="text" class="form-control" disabled="disabled" placeholder="<%= user.login_id %>">
                             </div>
                           </div>
 
                           <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">이름 </label>
                             <div class="col-md-4 col-sm-9 col-xs-12">
-                              <input type="text" class="form-control" disabled="disabled" placeholder="강철진">
+                              <input type="text" class="form-control" disabled="disabled" placeholder="<%= user.name %>">
                             </div>
                           </div>
 
                           <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">기수 </label>
                             <div class="col-md-4 col-sm-9 col-xs-12">
-                              <input type="text" class="form-control" disabled="disabled" placeholder="8기">
+                              <input type="text" class="form-control" disabled="disabled" placeholder="<%= user.grade %>기">
                             </div>
                           </div>
 
                           <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">비밀번호</label>
                             <div class="col-md-4 col-sm-9 col-xs-12">
-                              <input type="password" class="form-control" value="">
+                              <input type="password" name="passwd" class="form-control" value="">
                             </div>
                           </div>
                           <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">비밀번호 확인</label>
                             <div class="col-md-4 col-sm-9 col-xs-12">
-                              <input type="password" class="form-control" value="">
+                              <input type="password" name="passwdCheck" class="form-control" value="">
                             </div>
                           </div>
 
                           <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">소속지위</label>
                             <div class="col-md-4 col-sm-9 col-xs-12">
-                              <input type="text" class="form-control" value="">
+                              <input type="text" name="social_status" class="form-control" value="<%= user.social_status %>">
                             </div>
                           </div>
 
@@ -159,8 +159,8 @@
                             <div class="col-md-9 col-sm-9 col-xs-12">
                               <div class="radio">
                                 <label>
-                                  <input type="radio" class="flat" checked name="iCheck1"> 동의
-                                  <input type="radio" class="flat" name="iCheck1"> 비동의
+                                  <input type="radio" class="flat" name="iCheck1" value=1 <% if(user.is_social_status==1){ %> checked="checked" <% } %>> 동의
+                                  <input type="radio" class="flat" name="iCheck1" value=0 <% if(user.is_social_status==0){ %> checked="checked" <% } %>> 비동의
                                 </label>
                               </div>
                             </div>
@@ -169,7 +169,7 @@
                           <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">휴대전화</label>
                             <div class="col-md-4 col-sm-9 col-xs-12">
-                              <input type="text" class="form-control" value="01063743982">
+                              <input type="text" name="phone_number" class="form-control" value="<%= user.phone_number %>">
                             </div>
                           </div>
 
@@ -180,8 +180,8 @@
                             <div class="col-md-9 col-sm-9 col-xs-12">
                               <div class="radio">
                                 <label>
-                                  <input type="radio" class="flat" checked name="iCheck2"> 동의
-                                  <input type="radio" class="flat" name="iCheck2"> 비동의
+                                  <input type="radio" class="flat" name="iCheck2" value=1 <% if(user.is_phone_number==1){ %> checked="checked" <% } %>> 동의
+                                  <input type="radio" class="flat" name="iCheck2" value=0 <% if(user.is_phone_number==0){ %> checked="checked" <% } %>> 비동의
                                 </label>
                               </div>
                             </div>
@@ -190,7 +190,7 @@
                           <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">직장전화</label>
                             <div class="col-md-4 col-sm-9 col-xs-12">
-                              <input type="text" class="form-control" value="">
+                              <input type="text" name="company_number" class="form-control" value="<%= user.company_number %>">
                             </div>
                           </div>
 
@@ -201,8 +201,8 @@
                             <div class="col-md-4 col-sm-9 col-xs-12">
                               <div class="radio">
                                 <label>
-                                  <input type="radio" class="flat" checked name="iCheck3"> 동의
-                                  <input type="radio" class="flat" name="iCheck3"> 비동의
+                                  <input type="radio" class="flat" name="iCheck3" value=1 <% if(user.is_company_number==1){ %> checked="checked" <% } %>> 동의
+                                  <input type="radio" class="flat" name="iCheck3" value=0 <% if(user.is_company_number==0){ %> checked="checked" <% } %>> 비동의
                                 </label>
                               </div>
                             </div>
@@ -211,7 +211,7 @@
                           <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">e-mail</label>
                             <div class="col-md-4 col-sm-9 col-xs-12">
-                              <input type="text" class="form-control" value="kcj091857@gmail.com">
+                              <input type="text" name="email" class="form-control" value="<%= user.email %>">
                             </div>
                           </div>
 
@@ -222,8 +222,8 @@
                             <div class="col-md-9 col-sm-9 col-xs-12">
                               <div class="radio">
                                 <label>
-                                  <input type="radio" class="flat" checked name="iCheck4"> 동의
-                                  <input type="radio" class="flat" name="iCheck4"> 비동의
+                                  <input type="radio" class="flat" name="iCheck4" value=1 <% if(user.is_email==1){ %> checked="checked" <% } %>> 동의
+                                  <input type="radio" class="flat" name="iCheck4" value=0 <% if(user.is_email==0){ %> checked="checked" <% } %>> 비동의
                                 </label>
                               </div>
                             </div>
@@ -233,6 +233,10 @@
                         </br>
                           <div class="form-group">
                             <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                              <!-- 변경 후 메시지 출력-->
+                              <% if (message && message != "") { %>
+                              <div class="alert alert-danger"><%= message %></div>
+                              <% } %>
                               <button type="submit" class="btn btn-success">수정</button>
                               <button type="submit" class="btn btn-primary">취소</button>
                             </div>

@@ -18,12 +18,14 @@
         <script src="/res/assets/js/retina-1.1.0.min.js"></script>
         <script src="/res/assets/js/waypoints.min.js"></script>
         <script src="/res/assets/js/scripts.js"></script>
+        <script src="/res/editor/ckeditor/ckeditor.js"></script>
 
 
 
     </head>
 
     <body class="nav-md">
+      <form method="post">
         <div class="container body">
             <div class="main_container">
                 <% include ../common/nav.ejs %>
@@ -31,11 +33,11 @@
 
                     <!-- page content -->
               <div class="right_col" role="main">
-                <form>
+
                 <div class="header">
                   <img src="/res/production/images/guide/intro.png" alt="..." class="img-responsive" style="max-width:100%;height:auto;">
                 </div>
-                <button type="button" class="btn btn-labeled btn-success pull-right" style="margin-top:10px;">
+                <button type="submit" class="btn btn-labeled btn-success pull-right" style="margin-top:10px;">
               <span class="btn-label"><i class="glyphicon glyphicon-ok"></i></span>페이지 수정</button>
                 <div class="navbar-collapse">
                   <ul class="nav navbar-nav" data-0="margin-top:20px;" data-300="margin-top:5px;">
@@ -92,7 +94,7 @@
 
                     </div>
                     </section>
-
+                    <textarea name="editor1" id="editor1" rows="10" cols="80">
                     <!-- spacer section:testimonial -->
                     <section id="section-about" class="section" data-stellar-background-ratio="0.5">
                     <div class="container">
@@ -127,7 +129,7 @@
                                 <figure class="member-photo"><img src="/res/production/images/guide/sin.jpg" alt="" /></figure>
                                 <div class="team-detail">
                                   <h4>신영복</h4>
-                                  <textarea class="sinText" style="width:500px;">인간적 삶을 경작해 가고자 하는 인문학습원의 모든 동학들에게 이 디지털공간은 그 먼 길의 어는 중도막에서 만나는 샘터의 찬물이 되리라 기대합니다. </textarea>
+                                  <span class="sinText">인간적 삶을 경작해 가고자 하는 인문학습원의 모든 동학들에게 이 디지털공간은 그 먼 길의 어는 중도막에서 만나는 샘터의 찬물이 되리라 기대합니다. </span>
                                 </div>
                               </div>
                             </div>
@@ -136,7 +138,7 @@
                                 <figure class="member-photo"><img src="/res/production/images/guide/kim.jpg" alt="" /></figure>
                                 <div class="team-detail">
                                   <h4>김창남</h4>
-                                  <textarea class="kimText" style="width:500px;">우리 인문학습원이 바로 그런 변화의 출발점이 되면 좋겠습니다. 이 아름다운 동행의 길을 함께 할 도반(道伴)이 되어주신 여러분을 환영합니다. 그리고 깊은 감사를 드립니다.</textarea>
+                                  <span class="kimText">우리 인문학습원이 바로 그런 변화의 출발점이 되면 좋겠습니다. 이 아름다운 동행의 길을 함께 할 도반(道伴)이 되어주신 여러분을 환영합니다. 그리고 깊은 감사를 드립니다.</span>
                                 </div>
                               </div>
                             </div>
@@ -150,43 +152,126 @@
                     <br/>
                     <br/>
                     <!-- spacer section:stats -->
-                      <textarea style="width:900px; height:500px;">
-                                     ▸ 사업안내
+                    <section id="section-works" class="section pad-top40 pad-bot40" data-stellar-background-ratio="0.5">
+                      <div class="container">
+                            <div class="align-center pad-top40 pad-bot40">
+                                <blockquote class="bigquote color-white"><h3>인문학습원 사업안내</h3></blockquote>
+                        <p class="color-white"></p>
+                            </div>
+                      </div>
+                    </section>
 
-                                      1. 인문공부 연 2회(3월, 9월) 실시
-                                      1) CEO와 함께하는 ’인문 공부’ 입문과정(기업인, 전문직 종사자 대상)
-                                      2) CEO와 함께하는 ’인문 공부’ 심화과정(입문과정 졸업생 대상)
-
-                                      2. 인문학 특강
-                                      - 사회와의 소통과 성찰을 목표로 월 1회 인문공부 동문을 중심으로 진행
-                                      - 졸업생 대상 하계, 동계 특강
-
-                                      3. 기업체 인문학 컨설팅 운영
+                    <!-- section works -->
+                    <section id="section-works2" class="section appear clearfix">
+                      <div class="container">
 
 
-                                      ▸ 조직안내
 
-                                      <사무국>
-                                      - 원  장 : 김창남 02-2610-4339
-                                      - 부원장 : 임정아 02-2610-4810 / vision@skhu.ac.kr
-                                      - 직  원 : 유수정 02-2610-4317 / human4317@daum.net
+                                        <div class="row">
+                                          <div class="col-md-4">
+            <ul id="tree1">
+                <li><a href="#">사업안내</a>
 
-                                      <담임교수>
-                                      - 박경태 성공회대학교 사회과학부 교수
+                    <ul>
+                        <li>인문공부 연 2회(3월,9월) 실시
+                        <ul>
+                            <li>CEO와 함께하는 ’인문 공부’ 입문과정(기업인, 전문직 종사자 대상) </li>
+                            <li>CEO와 함께하는 ’인문 공부’ 심화과정(입문과정 졸업생 대상)</li>
 
-                                      <기획위원>
-                                      - 정윤수 한신대학교 정조교양대학 교수
-                      </textarea>
+                        </ul>
+                        </li>
+                        <li>인문학 특강
+                            <ul>
+                                <li>Reports
+                                  <li>사회와의 소통과 성찰을 목표로 월 1회 인문공부 동문을 중심으로 진행</li>
+                                  <li>졸업생 대상 하계, 동계 특강</li>
 
+                                </li>
+
+                            </ul>
+                        </li>
+                        <li>기업체 인문학 컨설팅 운영</li>
+                    </ul>
+                </li>
+
+        </div>
+                              </div>
+
+
+
+
+                      </div>
+                    </section>
+
+                    <section id="section-compony" class="section parallax" data-stellar-background-ratio="0.5">
+                            <div class="align-center pad-top40 pad-bot40">
+                                <blockquote class="bigquote color-white"><h3>조직안내</h3></blockquote>
+                            </div>
+                    </section>
+                    <!-- section company -->
+                    <section id="section-company" class="section appear clearfix">
+                      <div class="container">
+
+
+
+                                        <div class="row">
+                                          <div class="col-md-4">
+            <ul id="tree1">
+                <li><a href="#">조직안내</a>
+
+                    <ul>
+                        <li><사무국>
+                        <ul>
+                            <li>원  장 : 김창남 02-2610-4339<li>
+                            <li>부원장 : 임정아 02-2610-4810 / vision@skhu.ac.kr</li>
+                            <li>직  원 : 유수정 02-2610-4317 / human4317@daum.net<li>
+                        </ul>
+                        </li>
+                        <li><담임교수>
+                            <ul>
+                                <li>박경태 성공회대학교 사회과학부 교수
+
+
+                                </li>
+
+                            </ul>
+                        </li>
+                        <li><기획위원>
+
+                          <ul>
+                              <li>정윤수 한신대학교 정조교양대학 교수
+
+
+                              </li>
+
+                          </ul></li>
+                    </ul>
+                </li>
+
+        </div>
+                              </div>
+
+
+
+
+                      </div>
+                    </section>
+                  </textarea>
+                  <script>
+                  CKEDITOR.replace(
+                    'editor1',
+                    {
+                      toolbar : 'Basic',
+                      filebrowserImageUploadUrl : '/admin/guide',// fileupload Url
+                      width : '100%',
+                      height : '500'
+                    }
+                  );
+                </script>
                     <section id="parallax2" class="section parallax" data-stellar-background-ratio="0.5">
                             <div class="align-center pad-top40 pad-bot40">
                                 <blockquote class="bigquote color-white"><h3>오시는길</h3></blockquote>
                             </div>
-                            <span class="upload">
-                                	이미지 변경
-                      			<input type="file" id="input-file" name="file" onchange="readURL(this);"/>
-                      		  </span>
-
                     </section>
 
                     <!-- contact -->
@@ -207,7 +292,6 @@
                     </section>
 
                   </div>
-                  </form>
           </div>
           <!-- /page content -->
         </div>
@@ -220,7 +304,7 @@
         </footer>
         <!-- /footer content -->
     </div>
-
+  </form>
     <% include ../common/script.ejs %>
 </body>
 </html>

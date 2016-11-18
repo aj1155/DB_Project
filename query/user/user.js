@@ -28,7 +28,7 @@ user.FindProfileImage = function (id, callback) {
     pool.getConnection(function (err, connection) {
         connection.query("select data from image where id=?;", [id], function (err, row) {
             connection.release();
-            if(err){
+            if (err) {
                 callback(false);
             }
             callback(row[0]);
@@ -127,7 +127,7 @@ user.ResetPassword = function (login_id, category_id, callback) {
 };
 
 //제일 큰 기수를 가져온다
-user.GetMaxGrade = function(category_id,callback){
+user.GetMaxGrade = function (category_id, callback) {
     pool.getConnection(function (err, connection) {
         connection.query('select max(grade) as maxGrade from user where category_id = ?;', [category_id], function (err, row) {
             connection.release();
@@ -137,6 +137,37 @@ user.GetMaxGrade = function(category_id,callback){
             } else {
                 //에러가 아닌 경우
                 callback(row[0]);
+            }
+        });
+    });
+};
+
+//회원정보 가져오기
+user.SelectUserInfo = function (id, callback) {
+    pool.getConnection(function (err, connection) {
+        connection.query("SELECT * FROM user WHERE id=?", [id], function (err, row) {
+            if (err) {
+                console.log("err")
+                console.err(err);
+            } else {
+                callback(row[0]);
+                connection.release();
+            }
+        });
+    });
+};
+
+//회원정보 수정
+user.UpdateUserInfo = function (param, callback) {
+    pool.getConnection(function (err, connection) {
+        var query = "UPDATE user SET password=?,social_status=?,is_social_status=?,phone_number=?,is_phone_number=?,company_number=?,is_company_number=?,email=?,is_email=? WHERE id=?";
+        // [password,social_status,is_social_status,phone_number,is_phone_number,company_number,is_company_number,email,is_email,id];
+        connection.query(query, param, function (err, row) {
+            connection.release();
+            if (err) {
+                callback(err);
+            } else {
+                callback(true);
             }
         });
     });

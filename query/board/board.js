@@ -28,17 +28,12 @@ board.selectById=function(id,callback){
     });
   });
 };
-/*
+
 board.board_insert=function(title,content,callback){
   pool.getConnection(function(err,connection){
-    var board_id=1;
-    var create_time='20161114';
-    var user_name='일준';
-    var user_id='01093481037';
-    connection.query("insert board_post(board_id,title,content,create_time,user_name,user_id,parent_id) values(?,?,?,?,?,?,?)",[board_id,title,content,create_time,user_name,user_id,board_id],function(err,row){
-      if(err){
+    connection.query("insert into board_post(board_id,title,content,create_time,user_name,user_id) values(?,?,?,?,?,?)",[1,title,content,bp[1],bp[2],bp[3]],function(err,row){
+      if(err){/*insert set-->json객체를 넣고 객체를 매개변수로*/
         console.log(err);
-        connection.release();
       }else{
         callback(true);
         connection.release();
@@ -46,5 +41,5 @@ board.board_insert=function(title,content,callback){
     });
   });
 };
-*/
+
 module.exports = board;
