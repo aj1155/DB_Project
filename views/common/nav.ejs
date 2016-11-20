@@ -13,10 +13,11 @@
         <!-- menu profile quick info -->
         <div class="profile">
             <div class="profile_pic">
-                <img src="/res/production/images/img.jpg" alt="..." class="img-circle profile_img">
+                <!--이미지 태그에 데이터 넣는거 하기 -->
+                <img id="profile" src ="/res/production/images/user.png" alt="..." class="img-circle profile_img">
             </div>
             <div class="profile_info">
-                <span>김만기</span>
+                <span id="name" >사용자</span>
             </div>
         </div>
         <!-- /menu profile quick info -->
@@ -26,7 +27,7 @@
         <!-- sidebar menu -->
         <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
             <div class="menu_section">
-                <h3>7기</h3>
+                <h3 id="grade">기수</h3>
                 <ul class="nav side-menu">
                     <li>
                         <a>
@@ -48,24 +49,11 @@
                         </a>
                         <ul class="nav child_menu">
                             <li>
-                                <a>기수별 동문명단<span class="fa fa-chevron-down"></span>
+                                <a id=grade1>기수별 동문명단<span class="fa fa-chevron-down"></span>
                                 </a>
-                                <ul class="nav child_menu">
-                                    <li class="sub_menu" data-url="/users/contacts">
-                                        <a>1기</a>
-                                    </li>
-                                    <li  data-url="/users/contacts">
-                                        <a>2기</a>
-                                    </li >
-                                    <li  data-url="/users/contacts">
-                                        <a>3기</a>
-                                    </li>
-                                    <li  data-url="/users/contacts">
-                                        <a>4기</a>
-                                    </li>
-                                    <li  data-url="/users/contacts">
-                                        <a>5기</a>
-                                    </li>
+                                <ul id=grade_list1 class="nav child_menu">
+                                    <!-- 각 모임별로 있는 기수들만 태그가 붙음-->
+
                                 </ul>
                             <li>
                                 <a>동문회 임원명단<span class="fa fa-chevron-down"></span>
@@ -77,113 +65,131 @@
                                     <li>
                                         <a>기수별 임원명단<span class="fa fa-chevron-down"></span>
                                         </a>
-                                        <ul class="nav child_menu">
-                                            <li class="sub_menu" data-url="/users/contacts">
-                                                <a>1기</a>
-                                            </li>
-                                            <li>
-                                                <a>2기</a>
-                                            </li>
-                                            <li>
-                                                <a>3기</a>
-                                            </li>
-                                            <li>
-                                                <a>4기</a>
-                                            </li>
-                                            <li>
-                                                <a>5기</a>
-                                            </li>
+                                        <ul id=grade_list2 class="nav child_menu">
+                                            <!-- 각 모임별로 있는 기수들만 태그가 붙음-->
                                         </ul>
                                     </li>
                                 </ul>
                             </li>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a>
-                        <i class="fa fa-desktop"></i>
-                        안내
-                        <span class="fa fa-chevron-down"></span>
-                    </a>
-                    <ul class="nav child_menu">
-                        <li data-url="/guide/introduce">
-                            <a>인문학습원소개</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a>
-                        <i class="fa fa-edit"></i>
-                        커뮤니티
-                        <span class="fa fa-chevron-down"></span>
-                    </a>
-                    <ul class="nav child_menu">
-                        <li>
-                            <a href="tables.html">공지사항</a>
-                        </li>
-                        <li>
-                            <a href="tables_dynamic.html">자유게시판</a>
-                        </li>
-                    </ul>
-                </li>
-                <!--관리자 메뉴바-->
-                  <li>
-                      <a>
-                          <i class="fa fa-user-secret"></i>
-                           관리자 페이지
-                          <span class="fa fa-chevron-down"></span>
-                       </a>
-                      <ul class="nav child_menu">
-                          <!-- 하단 리스트 바-->
-                          <li data-url="/admin/request">
-                              <a>요청 관리</a>
-                          </li>
-                          <li data-url="/admin/send">
-                              <a>문자/메일 작성</a>
-                          </li>
-                          <li data-url="/admin/guide">
-                              <a>안내페이지 수정</a>
-                          </li>
-                          <li data-url="/admin/userManage">
-                            <a>회원 관리</a>
-                          </li>
-                      </ul>
-                   </li>
-            </ul>
-        </div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a>
+                            <i class="fa fa-desktop"></i>
+                            안내
+                            <span class="fa fa-chevron-down"></span>
+                        </a>
+                        <ul class="nav child_menu">
+                            <li data-url="/guide/introduce">
+                                <a>인문학습원소개</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a>
+                            <i class="fa fa-edit"></i>
+                            커뮤니티
+                            <span class="fa fa-chevron-down"></span>
+                        </a>
+                        <ul class="nav child_menu">
+                            <li>
+                                <a href="tables.html">공지사항</a>
+                            </li>
+                            <li data-url="/board/list">
+                                <a>자유게시판</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!--관리자 메뉴바-->
+                    <li>
+                        <a>
+                            <i class="fa fa-user-secret"></i>
+                            관리자 페이지
+                            <span class="fa fa-chevron-down"></span>
+                        </a>
+                        <ul class="nav child_menu">
+                            <!-- 하단 리스트 바-->
+                            <li data-url="/admin/request">
+                                <a>요청 관리</a>
+                            </li>
+                            <li data-url="/admin/send">
+                                <a>문자/메일 작성</a>
+                            </li>
+                            <li data-url="/admin/guide">
+                                <a>안내페이지 수정</a>
+                            </li>
+                            <li data-url="/admin/userManage">
+                                <a>회원 관리</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
 
+        </div>
+        <!-- /sidebar menu -->
     </div>
-    <!-- /sidebar menu -->
-</div>
 </div>
 
 <!-- top navigation -->
 <div class="top_nav">
-<div class="nav_menu">
-    <nav>
-        <div class="nav toggle">
-            <a id="menu_toggle">
-                <i class="fa fa-bars"></i>
-            </a>
-        </div>
-
-        <ul class="nav navbar-nav navbar-right">
-            <li class="">
-                <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="/res/production/images/img.jpg" alt="">김만기
-                    <span class=" fa fa-angle-down"></span>
+    <div class="nav_menu">
+        <nav>
+            <div class="nav toggle">
+                <a id="menu_toggle">
+                    <i class="fa fa-bars"></i>
                 </a>
-                <ul class="dropdown-menu dropdown-usermenu pull-right">
-                    <li>
-                        <a href="login.html">
-                            <i class="fa fa-sign-out pull-right"></i>
-                            로그아웃</a>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-    </nav>
+            </div>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li class="">
+                    <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown"
+                       aria-expanded="false">
+                        <img id="headProfile" src ="/res/production/images/user.png" alt="">
+                        <span id="headName">사용자</span>
+                        <span class=" fa fa-angle-down"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-usermenu pull-right">
+                        <li data-url="main/logout">
+                            <a>
+                                <i class="fa fa-sign-out pull-right"></i>
+                                로그아웃
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </div>
 </div>
-</div>
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script>
+    $(function () {
+        $.ajax({
+            //데이터를 전송할 URL. TODO : Node.js 는 기본적으로 다른 도메인끼리의 ajax를 허용하지 않으므로 localhost가 아닌 external ip를 사용하면 데이터가 넘어오지 않는다. 그래서 모듈을 사용해줘야한다.
+            url: 'http://localhost:3000/main/navSet',
+            //서버가 리턴하는 데이터 타입( xml, json, script, html)
+            dataType: 'json',
+            //서버로 전송할 데이터 타입(POST,GET)
+            type: 'POST',
+            // ajax 통신에 성공했을 때 호출될 이벤트 핸들러
+            success: function (result) {
+                if (result['result'] == true) {
+                    //img src에 데이터 넣기
+                    $('#profile').attr("src",result['profile']);
+                    $('#headProfile').attr("src",result['profile']);
+                    $('#headName').text(result['name']);
+                    $('#name').text(result['name']);
+                    $('#grade').text(result['grade']+"기");
+                    //max 기수만큼 리스트 만듬
+                    for(var i = 0; i < result['maxGrade']; i++) {
+                        $('#grade_list1').append('<li><a>'+(i+1)+'기</a></li>');
+                        $('#grade_list2').append('<li><a>'+(i+1)+'기</a></li>');
+                    }
+                }
+            }
+        });
+    });
+</script>
 <!-- /top navigation -->
