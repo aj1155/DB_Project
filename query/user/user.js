@@ -34,6 +34,21 @@ user.FindOne = function(id,category_id,callback){
 
 };
 
+user.updateOne = function(params, callback) {
+  console.log('1111111111111111'+params);
+  pool.getConnection(function(err,connection){
+    connection.query("update user set login_id=?, name=?, grade=?, password=?, social_status=?, phone_number=?, company_number=?, email=?, birth=? where id = ?",params,function(err,result){
+      connection.release();
+      if(err) {
+        callback(err);
+      }
+      else {
+        callback(true);
+      }
+    });
+  });
+};
+
 //첫번째 로그인인지 아닌지 알아내는 함수 (생년월일과 현재 비밀번호 비교)
 user.firstLogin = function(id,callback){
     pool.getConnection(function(err,connection){

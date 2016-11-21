@@ -54,6 +54,10 @@ app.use(function(req, res, next) {
 });
 
 // error handlers
+/*favicon 404에러때문에 추가*/
+app.get('/favicon.ico', function(req, res) {
+    res.send(200);
+});
 
 // development error handler
 // will print stacktrace
