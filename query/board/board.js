@@ -42,4 +42,17 @@ board.board_insert=function(title,content,callback){
   });
 };
 
+board.selectByCategory_id=function(category_id,callback){
+  var query = "select bp.* from board_post bp JOIN board b ON b.id=bp.board_id && b.category_id=? && b.id=?";
+  pool.getConnection(function(err,connection){
+    connection.query(query,[category_id,2],function(err,result){
+      if(err){
+        console.log(err);
+      }else{
+        callback(result);
+        connection.release();
+      }
+    });
+  })
+};
 module.exports = board;

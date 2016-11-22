@@ -31,7 +31,7 @@
                                   </h2>
                                   <ul class="nav navbar-right panel_toolbox">
                                       <li>
-                                          <a>
+                                          <a href="/board/list/1">
                                               <i>더보기</i>
                                           </a>
                                       </li>
@@ -42,66 +42,26 @@
                                   <div class="dashboard-widget-content">
 
                                       <ul class="list-unstyled timeline widget">
+                                        <%
+                                          for (var i =0 ; i<row.length; i++){
+                                            var table = row[i];
+                                        %>
                                           <li>
                                               <div class="block">
                                                   <div class="block_content">
                                                       <h2 class="title">
-                                                          <a>이번 주 일요일 ...</a>
+                                                          <a href="/board/read/<%=table.id%>"><%=table.title%></a>
                                                       </h2>
                                                       <div class="byline">
-                                                          <span>2016.09.17</span>
-                                                          <a>관리자</a>
+                                                          <span><%=table.create_time%></span>
+                                                          <a><%=table.user_name%></a>
                                                       </div>
-                                                      <p class="excerpt">공지사항 내용
+                                                      <p class="excerpt"><%=table.content%>
                                                       </p>
                                                   </div>
                                               </div>
                                           </li>
-                                          <li>
-                                              <div class="block">
-                                                  <div class="block_content">
-                                                      <h2 class="title">
-                                                          <a>이번 주 일요일 ...</a>
-                                                      </h2>
-                                                      <div class="byline">
-                                                          <span>2016.09.17</span>
-                                                          <a>관리자</a>
-                                                      </div>
-                                                      <p class="excerpt">공지사항 내용
-                                                      </p>
-                                                  </div>
-                                              </div>
-                                          </li>
-                                          <li>
-                                              <div class="block">
-                                                  <div class="block_content">
-                                                      <h2 class="title">
-                                                          <a>이번 주 일요일 ...</a>
-                                                      </h2>
-                                                      <div class="byline">
-                                                          <span>2016.09.17</span>
-                                                          <a>관리자</a>
-                                                      </div>
-                                                      <p class="excerpt">공지사항 내용
-                                                      </p>
-                                                  </div>
-                                              </div>
-                                          </li>
-                                          <li>
-                                              <div class="block">
-                                                  <div class="block_content">
-                                                      <h2 class="title">
-                                                          <a>이번 주 일요일 ...</a>
-                                                      </h2>
-                                                      <div class="byline">
-                                                          <span>2016.09.17</span>
-                                                          <a>관리자</a>
-                                                      </div>
-                                                      <p class="excerpt">공지사항 내용
-                                                      </p>
-                                                  </div>
-                                              </div>
-                                          </li>
+                                          <%}%>
                                       </ul>
                                   </div>
                               </div>
@@ -115,7 +75,7 @@
                                   </h2>
                                   <ul class="nav navbar-right panel_toolbox">
                                       <li>
-                                          <a>
+                                          <a href="/board/list/2">
                                               <i>더보기</i>
                                           </a>
                                       </li>
@@ -134,66 +94,19 @@
                                           </tr>
                                       </thead>
                                       <tbody>
+                                        <%
+                                            for(var i=0; i<10; i++){
+                                              var listv = list[i];
+
+                                        %>
                                           <tr>
-                                              <th scope="row">10</th>
-                                              <td>2016.09.16</td>
-                                              <td>사용자1</td>
-                                              <td>안녕하세요 </td>
+                                              <th scope="row"><a href="/board/read/<%=listv.id%>"><%=i+1%></a></th>
+                                              <td><%=listv.create_time%></td>
+                                              <td><%=listv.user_name%></td>
+                                              <td><%=listv.title%></td>
                                           </tr>
-                                          <tr>
-                                              <th scope="row">9</th>
-                                              <td>2016.09.16</td>
-                                              <td>사용자1</td>
-                                              <td>안녕하세요 </td>
-                                          </tr>
-                                          <tr>
-                                              <th scope="row">8</th>
-                                              <td>2016.09.16</td>
-                                              <td>사용자1</td>
-                                              <td>안녕하세요 </td>
-                                          </tr>
-                                          <tr>
-                                              <th scope="row">7</th>
-                                              <td>2016.09.16</td>
-                                              <td>사용자1</td>
-                                              <td>안녕하세요 </td>
-                                          </tr>
-                                          <tr>
-                                              <th scope="row">6</th>
-                                              <td>2016.09.16</td>
-                                              <td>사용자1</td>
-                                              <td>안녕하세요 </td>
-                                          </tr>
-                                          <tr>
-                                              <th scope="row">5</th>
-                                              <td>2016.09.16</td>
-                                              <td>사용자1</td>
-                                              <td>안녕하세요 </td>
-                                          </tr>
-                                          <tr>
-                                              <th scope="row">4</th>
-                                              <td>2016.09.16</td>
-                                              <td>사용자1</td>
-                                              <td>안녕하세요 </td>
-                                          </tr>
-                                          <tr>
-                                              <th scope="row">3</th>
-                                              <td>2016.09.16</td>
-                                              <td>사용자1</td>
-                                              <td>안녕하세요 </td>
-                                          </tr>
-                                          <tr>
-                                              <th scope="row">2</th>
-                                              <td>2016.09.16</td>
-                                              <td>사용자1</td>
-                                              <td>안녕하세요 </td>
-                                          </tr>
-                                          <tr>
-                                              <th scope="row">1</th>
-                                              <td>2016.09.16</td>
-                                              <td>사용자1</td>
-                                              <td>안녕하세요 </td>
-                                          </tr>
+                                          <%}%>
+
                                       </tbody>
                                   </table>
 

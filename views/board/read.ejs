@@ -60,7 +60,22 @@
 
 
                   <div class="ln_solid"></div>
-
+                  <div class="row">
+                    <label for="message">댓글</label>
+                          <textarea id="message" name="message" class="form-control" name="message"></textarea>
+                            <button id="commentCreate">댓글달기</button>
+                  </div>
+                  <%
+                    for(var i=0; i<list.length; i++){
+                        var comment=list[i];
+                    %>
+                    <div id="commnet">
+                    <label style="font-size:15px;"><%=comment.user_name%><p><%=comment.write_time%></p></label>
+                    <span style="font-size:12px;"><%=comment.content%></label>
+                      <br/>
+                    </div>
+                  <%}%>
+                  <br/>
                   <div class="form-group" style="float:right;">
                     <button class="btn btn-defualt"><a href="/board/edit/<%=rows.id%>">수정</a></button>
                     <button class="btn btn-primary">저장</button>
@@ -89,6 +104,6 @@
 
 
   <% include ../common/script.ejs %>
-
+<script src="/res/assets/js/Comment/Comment.js"></script>
 </body>
 </html>
