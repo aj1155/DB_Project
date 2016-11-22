@@ -41,7 +41,7 @@ router.post('/navSet', function (req, res, next) {
 });
 
 router.get('/', function (req, res, next) {
-    return res.render('main/main');
+    return res.render('main/main', {user : req.user});
 });
 
 

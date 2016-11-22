@@ -20,7 +20,15 @@ var mysql = require('mysql');
 var pool = require('../../join/connection');
 
 var user = {};
-
+/**/
+user.SelectUserGrade = function(category_id, grade, callback) {
+  pool.getConnection(function(err, connection) {
+    connection.query("select * from user where category_id=? and grade=?",[category_id, grade],function(err, rows) {
+      connection.release();
+      callback(rows);
+    });
+  });
+};
 
 /*profile사진이 있는지 검색하는 쿼리문*/
 user.FindProfileImage = function (id, callback) {
