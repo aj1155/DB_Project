@@ -29,9 +29,7 @@ router.get('/userGradeList/:category_id/:grade', function(req, res, next) {
   var grade = req.params.grade;
   var category_id = req.params.category_id;
   userDao.FindGrade(req.user.id, req.user.category_id, function(result){
-    console.log('result : '+result);
     userDao.SelectUserGrade(category_id, grade, function(result2){
-      console.log('result2 : ' + result2);
       res.render('user/userGradeList', {user : req.user, grade : result, userList : result2});
     });
   });
