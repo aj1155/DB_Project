@@ -14,6 +14,14 @@ var sequelize = require('../../join/sequelize');
  });
  */
 
+ /*session user정보를 local에 저장하여 ejs파일로
+ 명시적으로 넘겨주지않아도 자동적으로 넘어감 세션값 사용시 user로 꺼내쓰면됨*/
+router.use(function(req, res, next) {
+   if(req.user) res.locals.user = req.user;
+   else res.locals.user = undefined;
+   next();
+});
+
 router.get('/list/:currentPage',function(req,res,next){
     sequelize.authenticate().then(function(err){
         var currnetPage = req.params.currentPage;
@@ -36,7 +44,7 @@ router.get('/list/:srchType/:srchText/:currentPage',function(req,res,next){
     var srchType = req.params.srchType;
     var srchText = req.params.srchText;
     var currentPage = req.params.currentPage;
-    if(srchType==1){
+    if(srchType==1) {
         sequelize.authenticate().then(function(err){
             Board_post.findAll({
                 where:{

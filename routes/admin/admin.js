@@ -9,15 +9,23 @@ var exUd = require('../../services/excelUpload');
 var exTJ = require('../../services/excelToJson');
 var addRows = require('../../services/addRows');
 
+/*session user정보를 local에 저장하여 ejs파일로
+명시적으로 넘겨주지않아도 자동적으로 넘어감 세션값 사용시 user로 꺼내쓰면됨*/
+router.use(function(req, res, next) {
+  if(req.user) res.locals.user = req.user;
+  else res.locals.user = undefined;
+  next();
+});
+
 /* GET home page. */
 router.get('/request', function(req, res, next) {
-  res.render('admin/request', {user : req.user});
+  res.render('admin/request');
 });
 router.get('/send', function(req, res, next) {
-  res.render('admin/send', {user : req.user});
+  res.render('admin/send');
 });
 router.get('/guide', function(req, res, next) {
-  res.render('admin/guide', {user :req.user});
+  res.render('admin/guide');
 });
 router.post('/guide',function(req,res,next){
   var body = req.body;
@@ -53,7 +61,7 @@ router.get('/userManage', function(req, res ,next) {
       limit: 10
     })
     .then(function(rows){
-      res.render('admin/userManage',{userList:rows ,user : req.user});
+      res.render('admin/userManage',{userList:rows});
     });
 
   })

@@ -3,6 +3,14 @@ var router = express.Router();
 var pool = require('../../join/connection');
 var userDao = require('../../query/user/user');
 
+/*session user정보를 local에 저장하여 ejs파일로
+명시적으로 넘겨주지않아도 자동적으로 넘어감 세션값 사용시 user로 꺼내쓰면됨*/
+router.use(function(req, res, next) {
+  if(req.user) res.locals.user = req.user;
+  else res.locals.user = undefined;
+  next();
+});
+
 /* GET users listing. */
 router.get('/contacts', function(req, res, next) {
   userDao.FindGrade(req.user.id, req.user.category_id, function(result){

@@ -18,6 +18,14 @@ router.use('/', function (req, res, next) {
     }
 });
 
+/*session user정보를 local에 저장하여 명시적으로 넘겨주지않아도
+ejs파일로 render할 시에 자동적으로 넘어감 세션값 사용시 user로 꺼내쓰면됨*/
+router.use(function(req, res, next) {
+  if(req.user) res.locals.user = req.user;
+  else res.locals.user = undefined;
+  next();
+});
+
 //nav에서 ajax로 호출해서 유저 데이터 및 사진 등 nav를 초기화 하는 데이터를 가져온다.
 router.post('/navSet', function (req, res, next) {
     userDao.GetMaxGrade(req.user.category_id,function(grade){
@@ -41,7 +49,7 @@ router.post('/navSet', function (req, res, next) {
 });
 
 router.get('/', function (req, res, next) {
-    return res.render('main/main', {user : req.user});
+    return res.render('main/main');
 });
 
 
