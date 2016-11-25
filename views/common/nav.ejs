@@ -184,7 +184,7 @@
                     $('#grade').text(result['grade']+"기");
                     //max 기수만큼 리스트 만듬
                     for(var i = 0; i < result['maxGrade']; i++) {
-                        $('#grade_list1').append('<li><a>'+(i+1)+'기</a></li>');
+                        $('#grade_list1').append('<li class="sub_menu" name="' + (i+1) + '" ' + '><a href="/users/userGradeList/<%= user.category_id %>/'+(i+1)+'">'+(i+1)+'기</a></li>');
                         $('#grade_list2').append('<li><a>'+(i+1)+'기</a></li>');
                     }
                 }

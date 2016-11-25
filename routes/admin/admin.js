@@ -1,32 +1,31 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../../model/User');
+var userDao = require('../../query/user/user');
 var Introduce = require('../../model/Introduce');
 var sequelize = require('../../join/sequelize'); /* node.js orm sequelize 설정을 불러옴 */
 var multer = require('multer'); /*mutipart/form-data 처리를 위한 미들웨어*/
 var exUd = require('../../services/excelUpload');
 var exTJ = require('../../services/excelToJson');
 var addRows = require('../../services/addRows');
-var userDao = require('../../query/user/user');
+
+/*session user정보를 local에 저장하여 ejs파일로
+명시적으로 넘겨주지않아도 자동적으로 넘어감 세션값 사용시 user로 꺼내쓰면됨*/
+router.use(function(req, res, next) {
+  if(req.user) res.locals.user = req.user;
+  else res.locals.user = undefined;
+  next();
+});
 
 /* GET home page. */
 router.get('/request', function(req, res, next) {
-  userDao.FindGrade(req.user.id, req.user.category_id, function(result){
-    res.render('admin/request', {user : req.user, grade : result});
-  });
-  /* res.render('admin/request');*/
+  res.render('admin/request');
 });
 router.get('/send', function(req, res, next) {
-  userDao.FindGrade(req.user.id, req.user.category_id, function(result){
-    res.render('admin/send', {user : req.user, grade : result});
-  });
-  /* res.render('admin/send');*/
+  res.render('admin/send');
 });
 router.get('/guide', function(req, res, next) {
-  userDao.FindGrade(req.user.id, req.user.category_id, function(result){
-    res.render('admin/guide', {user : req.user, grade : result});
-  });
-  /* res.render('admin/guide');*/
+  res.render('admin/guide');
 });
 router.post('/guide',function(req,res,next){
   var body = req.body;
@@ -55,10 +54,6 @@ router.post('/guide',function(req,res,next){
 //작성자 : 강철진 11/11 내용 :user 추가 편집 삭제 라우트설정
 router.get('/userManage', function(req, res ,next) {
   sequelize.authenticate().then(function(err){
-    userDao.FindGrade(req.user.id, req.user.category_id, function(result){
-      res.render('admin/userManage', {user : req.user, grade : result, list:""});
-    });
-    /* res.render('admin/userManage',{list:""});*/
     User.findAll({
       where : {
         category_id : req.user.category_id
@@ -68,9 +63,40 @@ router.get('/userManage', function(req, res ,next) {
     .then(function(rows){
       res.render('admin/userManage',{userList:rows});
     });
+
   })
   .catch(function(err){
     res.send(err);
+  });
+});
+
+router.get('/userEdit/:id', function(req, res, next) {
+  var id = req.params.id;
+  userDao.FindOne(id, req.user.category_id, function(rows){
+    console.log(rows);
+    res.render('admin/userEdit', {edit : rows, message : req.flash('error')});
+  });
+});
+
+router.post('/userEdit/:id', function(req, res, next) {
+  var id = req.params.id;
+  if (req.body.passwd != req.body.passwd2) {
+      req.flash('error', "비밀번호와 비밀번호확인이 일치하지 않습니다.");
+      return res.redirect('/admin/userEdit/'+id);
+  } else if (req.body.passwd.length < 8) {
+      req.flash('error', "비밀번호를 8자 이상으로 설정해주세요.");
+      return res.redirect('/admin/userEdit/'+id);
+  }
+  var params = [req.body.login_id, req.body.name, req.body.grade, req.body.passwd, req.body.social_status, req.body.phone_number, req.body.company_number, req.body.email, req.body.birth, id];
+  console.log(params);
+  userDao.updateOne(params,function(result){
+    if(result){
+      req.flash('error',"개인정보가 변경되었습니다.");
+      return res.redirect('/admin/userEdit/'+id);
+    }else{
+      req.flash('error',"변경 실패, 다시 시도해주세요.");
+      return res.redirect('/admin/userEdit/'+id);
+    }
   });
 });
 

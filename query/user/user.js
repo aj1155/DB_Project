@@ -20,7 +20,15 @@ var mysql = require('mysql');
 var pool = require('../../join/connection');
 
 var user = {};
-
+/**/
+user.SelectUserGrade = function(category_id, grade, callback) {
+  pool.getConnection(function(err, connection) {
+    connection.query("select * from user where category_id=? and grade=?",[category_id, grade],function(err, rows) {
+      connection.release();
+      callback(rows);
+    });
+  });
+};
 
 /*profile사진이 있는지 검색하는 쿼리문*/
 user.FindProfileImage = function (id, callback) {
@@ -59,6 +67,21 @@ user.FindOne = function (id, category_id, callback) {
         });
     });
 
+};
+
+user.updateOne = function(params, callback) {
+  console.log('1111111111111111'+params);
+  pool.getConnection(function(err,connection){
+    connection.query("update user set login_id=?, name=?, grade=?, password=?, social_status=?, phone_number=?, company_number=?, email=?, birth=? where id = ?",params,function(err,result){
+      connection.release();
+      if(err) {
+        callback(err);
+      }
+      else {
+        callback(true);
+      }
+    });
+  });
 };
 
 //첫번째 로그인인지 아닌지 알아내는 함수 (생년월일과 현재 비밀번호 비교)
