@@ -3,7 +3,6 @@ var router = express.Router();
 var userDao = require('../../query/user/user');
 
 /*
- TODO : nav.ejs를 미들웨어로 설치하기, nav.ejs에서 이미지 태그에 데이터 넣기
  req.user 정보 :
  {"id":2,"login_id":"01021248619","name":"강준구","password":"","phone_number":"1021248619","company_number":"0","email":"jungu942@naver.com","category_id":1,"grade":3,"social_status":"학생","is_admin":0,"is_phone_number":0,"is_social_status":0,"is_company_number":0,"is_email":0,"is_image":0,"birth":"931104"}
  */
@@ -42,8 +41,7 @@ router.post('/navSet', function (req, res, next) {
                 img = "data:image/gif;base64," + new Buffer(data.data).toString('base64');
             }
 
-            console.error("grade.maxGrade "+grade.maxGrade)
-            return res.send({result: true, name: req.user.name, grade: req.user.grade, profile: img,maxGrade:grade.maxGrade});
+            return res.send({result: true, name: req.user.name, grade: req.user.grade, profile: img,maxGrade:grade.maxGrade,is_admin:req.user.is_admin});
         });
     });
 });
