@@ -20,6 +20,18 @@ router.use(function(req, res, next) {
   next();
 });
 
+//관리자인 경우만 이 페이지를 들어올수 있게함
+router.use('/', function (req, res, next) {
+    if (req.isAuthenticated()) {
+        if(req.user.is_admin == 0){
+            return res.redirect('/main');
+        }
+        return next();
+    } else {
+        return res.redirect('/main');
+    }
+});
+
 /* GET home page. */
 router.get('/request', function(req, res, next) {
   res.render('admin/request');
