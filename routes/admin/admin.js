@@ -61,7 +61,30 @@ router.get('/userManage', function(req, res ,next) {
       limit: 10
     })
     .then(function(rows){
-      res.render('admin/userManage',{userList:rows});
+      res.render('admin/userManage',{userList:rows,msg:""});
+    });
+
+  })
+  .catch(function(err){
+    res.send(err);
+  });
+});
+router.get('/userManage/:msg', function(req, res ,next) {
+  var msg="";
+  console.log(req.params.msg);
+  if(req.params.msg=='delfine'){
+    msg = "회원을 정상적으로 탈퇴 처리 했습니다."
+  }
+
+  sequelize.authenticate().then(function(err){
+    User.findAll({
+      where : {
+        category_id : req.user.category_id
+      },
+      limit: 10
+    })
+    .then(function(rows){
+      res.render('admin/userManage',{userList:rows,msg:msg});
     });
 
   })
@@ -124,7 +147,7 @@ router.post('/user',function(req,res,next){
       limit: 10
     })
     .then(function(rows){
-      res.render('admin/userManage',{userList:rows});
+      res.render('admin/userManage',{userList:rows, msg:""});
     });
   });
 });
@@ -134,30 +157,30 @@ router.post('/userExcel',function(req,res){
   var exceltojson;
   exUd.upload(req,res,function(err){
     if(err){
-           res.json({error_code:1,err_desc:err});
+             res.render('admin/userManage',{userList:"", msg:req.flash('error')});
            return;
       }
       /** Multer gives us file info in req.file object */
       if(!req.file){
-          res.json({error_code:1,err_desc:"업로드 파일이 없습니다."});
+          req.flash('error', "실패 : 업로드 파일이 없습니다!");
+          res.render('admin/userManage',{userList:"", msg:req.flash('error')});
           return;
       }
 
       exTJ.exToJson(req,function(result){
         if(result == 'fail'){
-          res.redirect('/user',{msg : 'error'});
+          res.render('admin/userManage',{userList:"", msg:req.flash('error')});
         }
         else{
-          addRows.insert(result,req.user.id,function(msg){
+          addRows.insert(result,req.user.category_id,function(msg){
               if(msg == "success"){
                 User.findAll({
                   where : {
                     category_id : req.user.category_id
-                  },
-                  limit: 10
+                  }
                 })
                 .then(function(rows){
-                  res.render('admin/userManage',{userList:rows});
+                  res.render('admin/userManage',{userList:rows, msg:"사용자 엑셀 추가 성공했습니다."});
                 });
 
               }
