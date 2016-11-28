@@ -15,6 +15,7 @@ var admin =require('./routes/admin/admin');
 var flash = require('connect-flash');
 var app = express();
 var board = require('./routes/board/board');
+var cors = require('cors');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -26,6 +27,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser('secret'));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors());
 /* session을 유지 하기위해 express-session 설정 */
 app.use(session({
     secret: 'keyborad cat',
