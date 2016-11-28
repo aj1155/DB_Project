@@ -15,7 +15,6 @@
  * @version 1.0, 2016.11.06 주석 추가
  * @see    None
  */
-
 var mysql = require('mysql');
 var pool = require('../../join/connection');
 
@@ -70,7 +69,6 @@ user.FindOne = function (id, category_id, callback) {
 };
 
 user.updateOne = function(params, callback) {
-  console.log('1111111111111111'+params);
   pool.getConnection(function(err,connection){
     connection.query("update user set login_id=?, name=?, grade=?, password=?, social_status=?, phone_number=?, company_number=?, email=?, birth=? where id = ?",params,function(err,result){
       connection.release();

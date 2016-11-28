@@ -8,6 +8,9 @@ var multer = require('multer'); /*mutipart/form-data 처리를 위한 미들웨�
 var exUd = require('../../services/excelUpload');
 var exTJ = require('../../services/excelToJson');
 var addRows = require('../../services/addRows');
+var crypto = require('crypto');
+
+
 
 /*session user정보를 local에 저장하여 ejs파일로
 명시적으로 넘겨주지않아도 자동적으로 넘어감 세션값 사용시 user로 꺼내쓰면됨*/
@@ -103,10 +106,14 @@ router.post('/userEdit/:id', function(req, res, next) {
 
 /*User삽입*/
 router.post('/user',function(req,res,next){
+  var key='user insert crypto';/*암호화에 필요한 암호*/
+  var myPass=req.body.password;/*암호화 전에 패스워드*/
+  var hashPass=crypto.createHash('sha1').update(myPass).digest('hex');/*암호화 후에 패스워드*/
+  console.log(hashPass);
   User.create({
     login_id : req.body.login_id,
     name : req.body.name,
-    password : req.body.password,
+    password : hashPass,
     phone_number : req.body.phone_number,
     birth : req.body.birth,
     company_number : req.body.company_number,

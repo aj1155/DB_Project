@@ -1,4 +1,5 @@
 var express = require('express');
+var crypto = require('crypto');
 var router = express.Router();
 var passport = require('../../join/passport');
 var userDao = require('../../query/user/user');
