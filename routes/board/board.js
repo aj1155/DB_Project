@@ -4,17 +4,52 @@ var boardDAO = require('../../query/board/board');
 var pool = require('../../join/connection');
 var Board_post = require('../../model/Board_post');
 var sequelize = require('../../join/sequelize');
+var commentDAO = require('../../query/comment/comment');
 var Comment = require('../../model/Comment');
-/*
-router.get('/list',function(req,res,next){
-  boardDAO.selectAll(function(rows){
-    res.render('board/list',{
-      row:rows
-    })
+
+router.get('/list/:board_id',function(req,res,next){
+  var board_id=req.params.board_id;
+  if(req.params.srchType!=null){
+    var srchType=req.params.srchType;
+  }else{
+    var srchType=0;
+  }
+  var srchText=req.params.srchText;
+  if(req.params.currentPage!=null){
+    var currentPage=req.params.currentPage;
+  }else{
+    var currentPage=1;
+  }
+  var category_id=req.user.category_id;
+  var params=[currentPage,srchType,srchText,category_id,board_id];
+  console.log("get:"+params);
+  boardDAO.selectList(params,function(rows){
+    res.render('board/list',{board_id:board_id,row:rows,currentPage:currentPage,srchType:0,srchText:"",currentPage:currentPage});
   });
 });
-*/
+
+router.post('/list/:board_id',function(req,res,next){
+  var params=[1,req.body.srchType,req.body.srchText,req.user.category_id,req.params.board_id];
+  console.log("post:"+params);
+  boardDAO.selectList(params,function(rows){
+    res.render('board/list',{
+      row:rows,board_id:req.params.board_id,srchText:req.body.srchText,srchType:req.body.srchType,currentPage:1
+    });
+  });
+});
+router.get('/list/:currentPage/:srchType/:srchText/:board_id',function(req,res,next){
+  var srchText=0;
+  if(req.params.srchText!=""){
+    srchText=req.params.srchText;
+  }
+  var params=[req.params.currentPage,req.params.srchType,srchText,req.user.category_id,req.params.board_id];
+  console.log(params);
+  boardDAO.selectList(params,function(rows){
+    res.json(rows);
+  });
+});
 /*1은 공지사항 2는 자유게시판*/
+/*
 router.get('/list/:board_id',function(req,res,next){
   var currentPage = req.params.currentPage;
   var board_id = req.params.board_id;
@@ -261,23 +296,11 @@ router.post('/list/:board_id/:currentPage',function(req,res,next){
   }
 });
 
-
+*/
 router.get('/read/:id',function(req,res,next){
   boardDAO.selectById([req.params.id],function(rows){
-    sequelize.authenticate().then(function(err){
-      Comment.findAll({
-        where : {
-          board_id : req.params.id
-        }
-      })
-      .then(function(list){
-        res.render('board/read',{
-          rows:rows,list:list
-        });
-      });
-    })
-    .catch(function(err){
-      console.log(err);
+    commentDAO.selectByBoard_id([req.params.id],function(row){
+      res.render('board/read',{rows:rows,row:row});
     });
   });
 });
@@ -359,27 +382,78 @@ router.post('/edit/:id',function(req,res,next){
   });
 });
 
-router.get('/commentCreate/:id',function(err){
+router.get('/CommentCreate/:id/:message',function(req,res,next){
   var d = new Date();
   var date =(d.getFullYear()) + '-' +
     (d.getMonth() + 1) + '-' +
     (d.getDate()) + ' ';
   var name = req.user.name;
   var user_id = req.user.id;
-    sequelize.authenticate().then(function(err){
-      Comment.create({
-        board_id : id,
-        content : req.body.content,
-        user_name : name,
-        write_time : date,
-        user_id : user_id
-      })
-      .then(function(result){
-        res.json(result);
-      });
+  var board_id = req.params.id;
+  var content = req.params.message;
+  var group_id;
+  if(req.params.group_id!=null){
+     group_id = req.params.group_id;
+  }else {
+    group_id = 1;
+  }
+  console.log(group_id)
+  var parent_id = req.params.comment_id;
+  sequelize.authenticate().then(function(err){
+    Comment.create({
+      board_id : board_id,
+      content : content,
+      user_name : name,
+      write_time : date,
+      user_id : user_id
     })
-      .catch(function(err){
-        console.log(err);
+    .then(function(results){
+      var id = results.id;
+      commentDAO.defaultUpdate(board_id,results.id,function(result){
+        res.json(results);
       });
+    });
+  })
+  .catch(function(err){
+    console.log(err);
+  });
+  //commentDAO.parentCommentCreate(params,function(results){
+    //res.json("success");
+  //});
 });
+
+router.get('/CommentDelete/:board_id',function(req,res,next){
+  sequelize.authenticate().then(function(err){
+    Comment.destroy({
+      where : {
+        parent_id : req.params.board_id
+      }
+    })
+    .then(function(results){
+      res.json(results);
+    });
+  })
+  .catch(function(err){
+    console.log(err);
+  });
+});
+
+router.get('/CommentCreate2/:board_id/:message/:parent_id/:group_id',function(req,res,next){
+  var d = new Date();
+  var date =(d.getFullYear()) + '-' +
+    (d.getMonth() + 1) + '-' +
+    (d.getDate()) + ' ';
+  var name = req.user.name;
+  var user_id = req.user.id;
+  var parent_id = req.params.parent_id;
+  var board_id = req.params.board_id;
+  var content = req.params.message;
+  var group_id = req.params.group_id;
+  var params=[board_id,content,name,date,user_id,group_id,group_id,board_id,board_id,group_id,parent_id];
+  commentDAO.commentCreate(params,function(results){
+    results.user_name=name;
+    res.json(results);
+  });
+});
+
 module.exports = router;

@@ -19,6 +19,7 @@
         <script src="/res/assets/js/retina-1.1.0.min.js"></script>
         <script src="/res/assets/js/waypoints.min.js"></script>
         <script src="/res/assets/js/scripts.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     </head>
     <style>
       label{
@@ -60,22 +61,42 @@
 
 
                   <div class="ln_solid"></div>
-                  <div class="row">
-                    <label for="message">댓글</label>
-                          <textarea id="message" name="message" class="form-control" name="message"></textarea>
-                            <button id="commentCreate">댓글달기</button>
-                  </div>
-                  <%
-                    for(var i=0; i<list.length; i++){
-                        var comment=list[i];
-                    %>
-                    <div id="commnet">
-                    <label style="font-size:15px;"><%=comment.user_name%><p><%=comment.write_time%></p></label>
-                    <span style="font-size:12px;"><%=comment.content%></label>
-                      <br/>
+
+                  <table id="commentTable">
+                    <div class="row">
+
+                        <label for="message">댓글</label>
+                            <input type="hidden" name="board_id" value="<%=rows.id%>"/>
+                            <input type="hidden" name="group_id" value="1"/>
+                            <textarea id="message" name="message" class="form-control"></textarea>
+                            <span id="commentParentSubmit">댓글달기</span>
+
                     </div>
+                    <tr id ="r1" name="commentParentCode">
+                    </tr>
+                  <%
+                    for(var i=0; i<row.length; i++){
+                        var comment=row[i];
+                    %>
+                      <tr id ="r1" name="commentParentCode">
+                        <input type="hidden" name="comment_id" value="<%=comment.id%>"/>
+                        <input type="hidden" name="group_id" value="<%=comment.group_id%>"/>
+                        <td colspan=2>
+                          <strong><%=comment.user_name%></strong><%=comment.write_time%>
+                          <a style="curosr:pointer;" id="pAdd" name="pAdd">답글</a> | <a style="curosr:pointer;" id="pDel" name="pDel">삭제</a>
+
+                          <% if(comment.level!=0){%>
+                            <p>RE:<%=comment.content%></p>
+                          <%}else{%>
+                            <p><%=comment.content%></p>
+                          <%}%>
+
+                        </td>
+                      </tr>
+
                   <%}%>
-                  <br/>
+                  </table>
+
                   <div class="form-group" style="float:right;">
                     <button class="btn btn-defualt"><a href="/board/edit/<%=rows.id%>">수정</a></button>
                     <button class="btn btn-primary">저장</button>

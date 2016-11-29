@@ -23,7 +23,6 @@
     <style>
       table{
         font-size:20px;
-
       }
     </style>
     <body class="nav-md">
@@ -46,18 +45,18 @@
                     </div>
                     <div class="x_content">
                       <div class="row">
-                        <div class="col-sm-7 col-xs-1">
+                        <div class="col-sm-12 col-md-12 col-lg-7">
                         </div>
 
-                        <div class="col-sm-3 col-xs-6">
+                        <div class="col-sm-12 col-lg-1">
                           <div class="input-group">
-                            <form method="post">
+                            <form method="post" id="list">
                             <div class="input-group-btn">
-                              <input type="text" name="srchText" class="form-control" aria-label="Text input with dropdown button" style="width:350px;" value="<%=srchText%>">
+                              <input type="text" name="srchText" class="form-control" aria-label="Text input with dropdown button" style="width:310px;" value="<%=srchText%>">
                               <select name="srchType" class="btn btn-default dropdown-toggle" style="max-width:100%; margin:-5; padding-top:8px; padding-bottom:8px;">
-                                <option value="x" <%="x"==srchType ? "selected" : ""%>>검색조건</option>
-                                <option value="title" <%="title"==srchType ? "selected" : ""%>>제목</option>
-                                <option value="user_name" <%="user_name"==srchType ? "selected" : ""%>>작성자</option>
+                                <option value="0" <%="0"==srchType ? "selected" : ""%>>검색조건</option>
+                                <option value="1" <%="1"==srchType ? "selected" : ""%>>제목</option>
+                                <option value="2" <%="2"==srchType ? "selected" : ""%>>작성자</option>
                                 <span class="caret"></span>
                               </select>
                               <button class="btn btn-primary" type ="submit">검색</button>
@@ -78,21 +77,17 @@
                             <th>작성자</th>
                             <th>작성 날짜</th>
                           </tr>
+
                         </thead>
                         <tbody>
-                          <%
-                              for(var i=0; i<row.length; i++){
-                                var table=row[i];
-                          %>
+                          <% for(var i=0; i<row.length; i++){%>
                           <tr>
-                            <td><a data-url="/board/read/<%=table.id%>"><%=table.title%></a></td>
-                            <td><%=table.title%></td>
-                            <td><%=table.user_name%></td>
-                            <td><%=table.create_time%></td>
+                            <td><a data-url="/board/read/<%=row[i].id%>"><%=row[i].ROWNUM%></a></td>
+                            <td><%=row[i].title%></td>
+                            <td><%=row[i].user_name%></td>
+                            <td><%=row[i].create_time%></td>
                           </tr>
-                          <%
-                            }
-                          %>
+                          <%}%>
                         </tbody>
                       </table>
                     </div>
@@ -100,14 +95,9 @@
                   </div>
                   <div class="pull-right">
                     <a class="btn btn-primary" href="/board/write/<%=board_id%>">글쓰기</a>
-                    <%if(srchType=="x"){%>
-                      <button><a href="/board/list/<%=board_id%>/<%=currentPage%>">더보기</a></button>
-                    <%}else if(srchType!="" || srchText!=""){%>
-                      <button><a href="/board/list/<%=board_id%>/<%=srchType%>/<%=srchText%>/<%=currentPage%>">더보기</a></button>
-                    <%}else{ %>
-                      <button><a href="/board/list/<%=board_id%>/<%=currentPage%>">더보기</a></button>
-                    <%}%>
-                    <input type="hidden" name="currentPage" value="<%=currentPage%>"/>
+                    <span id="listSubmit"><a>더보기</a></button>
+                    <input type="hidden" name="currentPage" value="<%=currentPage+1%>"/>
+                    <input type="hidden" name="board_id" value="<%=board_id%>"/>
                   </div>
                 </div>
                 </div>
@@ -127,5 +117,6 @@
     </div>
   </div>
     <% include ../common/script.ejs %>
+  <script src="/res/assets/js/board/board.js"></script>
 </body>
 </html>

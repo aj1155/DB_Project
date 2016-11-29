@@ -22,7 +22,16 @@ var Comment = sequelize.define('comment', {
        user_id : {
          type : Sequelize.INTEGER
        },
-       parent_id : {
+       group_id :{
+         type : Sequelize.INTEGER
+       },
+       seq : {
+         type : Sequelize.INTEGER
+       },
+       level : {
+         type : Sequelize.INTEGER
+       },
+       parent_id :{
          type : Sequelize.INTEGER
        }
  }, {
