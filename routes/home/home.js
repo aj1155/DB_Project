@@ -84,9 +84,14 @@ router.post('/login_first/:id/:category', function (req, res, next) {
         req.flash('error', "비밀번호를 8자 이상으로 설정해주세요.");
         return res.redirect('/home/login_first/' + req.params.id+"/"+req.params.category);
     }
+    var key = 'secret password crypto';
+    /*입력받은 비밀번호를 암호화해서 비교하기위해 암호화*/
+    var cipherPass = crypto.createCipher('aes192', key);
+    cipherPass.update(req.body.password, 'utf-8', 'base64');
+    cipherPass = cipherPass.final('base64');
 
     //패스워드 업데이트
-    userDao.passwordUpdate(req.params.id, req.body.password, function (result) {
+    userDao.passwordUpdate(req.params.id, cipherPass, function (result) {
         //패스워드 변경 성공
         if (result) {
             req.flash('error', "비밀번호 변경에 성공하였습니다. 다시 로그인 해주세요. ");
@@ -167,20 +172,29 @@ router.post('/initpass/:url', function (req, res, next) {
 
         //성공한 경우
         if (result) {
-            //비밀번호 생년월일로 초기화
-            userDao.ResetPassword(login_id, category_id, function (result) {
-                //TODO: hashmap 삭제
-                //초기화 성공
-                if (result) {
-                    encode.removeURL(url);
-                    req.flash('error', "초기화된 비밀번호(생년월일)로 로그인해주세요.");
-                    return res.redirect('/home/login/' + category_id);
-                }else{
-                    //초기화 실패
-                    req.flash('error', "아이디를 확인해주세요.");
-                    return res.redirect('/home/initpass/' + url);
-                }
+            userDao.GetBirth(login_id, category_id, function(result){
+                /*생년월일의 결과값을 암호화하여 그 값을 비밀번호로 변경*/
+                var key = 'secret password crypto';
+                var chipherBirth = row[0].birth;
+                chipherBirth = chipherBirth.createCipher('aes192', key);
+                chipherBirth.update(row[0].birth, 'utf-8', 'base64');
+                chipherBirth = chipherBirth.final('base64');
+                //비밀번호 생년월일로 초기화
+                userDao.ResetPasswordToBirth(login_id, category_id, chipherBirth,function (result) {
+                    //TODO: hashmap 삭제
+                    //초기화 성공
+                    if (result) {
+                        encode.removeURL(url);
+                        req.flash('error', "초기화된 비밀번호(생년월일)로 로그인해주세요.");
+                        return res.redirect('/home/login/' + category_id);
+                    }else{
+                        //초기화 실패
+                        req.flash('error', "아이디를 확인해주세요.");
+                        return res.redirect('/home/initpass/' + url);
+                    }
+                });
             });
+
         } else {
             //실패한 경우
             req.flash('error', "아이디와 구분을 확인해주세요.");

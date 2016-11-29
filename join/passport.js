@@ -19,6 +19,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var auth = require('./auth');
 var userDao = require('../query/user/user');
+var crypto = require('crypto');
 /*LocalStrategy는 session 정보를 넘겨주는 역활을 한다*/
 passport.use(new LocalStrategy({
     usernameField: 'login_id', // 이 부분은 login form에 input tag name과 동일 해야 하며 그 value를 담는 부분이다*/
@@ -27,11 +28,22 @@ passport.use(new LocalStrategy({
 }, function (req, login_id, password, done) {
     /*해당 data를 form으로 부터 정상적으로 받았다면  db에서 User를 조회한다*/
     auth.UserAuth(login_id,req.params.category, function (user) {
+        var key = 'secret password crypto';
+        /*입력받은 비밀번호를 암호화해서 비교하기위해 암호화*/
+        var cipherPass = crypto.createCipher('aes192', key);
+        cipherPass.update(password, 'utf-8', 'base64');
+        cipherPass = cipherPass.final('base64');
+
+        /*암호화된 비밀번호를 원래대로 돌리기 위한 코드*/
+        // var dataPass = crypto.createDecipher('aes192', key);
+        // dataPass.update(user.password, 'base64', 'utf-8');
+        // dataPass = dataPass.final('utf-8');
+
         if (!user) {
             return done(null, false, req.flash('error', 'ID가 존재하지 않습니다.'));
         }
-        if (user.password !== password) {
-            /*done메소드의 두번째 parameter가 false이면 로그인 실패를 의미하고 세번째 파라미터는 session 에 에러 메시지를 저장한다.*/
+        if (user.password !== cipherPass) {
+            // /*done메소드의 두번째 parameter가 false이면 로그인 실패를 의미하고 세번째 파라미터는 session 에 에러 메시지를 저장한다.*/
             return done(null, false, req.flash('error', '패스워드 틀렸습니다.'));
         }
 

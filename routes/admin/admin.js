@@ -88,7 +88,6 @@ router.get('/userManage', function(req, res ,next) {
 router.get('/userEdit/:id', function(req, res, next) {
   var id = req.params.id;
   userDao.FindOne(id, req.user.category_id, function(rows){
-    console.log(rows);
     res.render('admin/userEdit', {edit : rows, message : req.flash('error')});
   });
 });
@@ -103,7 +102,6 @@ router.post('/userEdit/:id', function(req, res, next) {
       return res.redirect('/admin/userEdit/'+id);
   }
   var params = [req.body.login_id, req.body.name, req.body.grade, req.body.passwd, req.body.social_status, req.body.phone_number, req.body.company_number, req.body.email, req.body.birth, id];
-  console.log(params);
   userDao.updateOne(params,function(result){
     if(result){
       req.flash('error',"개인정보가 변경되었습니다.");
@@ -118,14 +116,16 @@ router.post('/userEdit/:id', function(req, res, next) {
 
 /*User삽입*/
 router.post('/user',function(req,res,next){
-  var key='user insert crypto';/*암호화에 필요한 암호*/
-  var myPass=req.body.password;/*암호화 전에 패스워드*/
-  var hashPass=crypto.createHash('sha1').update(myPass).digest('hex');/*암호화 후에 패스워드*/
-  console.log(hashPass);
+  var key = 'secret password crypto';
+  var myPass = req.body.password;/*암호화 전에 패스워드*/
+
+  var cipherPass = crypto.createCipher('aes192', key);
+  cipherPass.update(myPass, 'utf8', 'base64');
+  cipherPass = cipherPass.final('base64'); /*암호화 후에 패스워드*/
   User.create({
     login_id : req.body.login_id,
     name : req.body.name,
-    password : hashPass,
+    password : cipherPass,
     phone_number : req.body.phone_number,
     birth : req.body.birth,
     company_number : req.body.company_number,
