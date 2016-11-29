@@ -23,7 +23,7 @@ var user = {};
 /**/
 user.SelectUserGrade = function(category_id, grade, callback) {
   pool.getConnection(function(err, connection) {
-    connection.query("select * from user where category_id=? and grade=?",[category_id, grade],function(err, rows) {
+    connection.query("select * from user where category_id=? and grade=? limit 4",[category_id, grade],function(err, rows) {
       connection.release();
       callback(rows);
     });
@@ -230,5 +230,14 @@ user.UpdateUserInfo = function (param, callback) {
         });
     });
 };
-
+/*user search Procedure*/
+user.selectOptions = function(param,callback){
+  pool.getConnection(function(err,connection){
+    var query = "CALL user_search(?,?,?,?,?,?)";
+    connection.query(query,param,function(err,row){
+        connection.release();
+        callback(row);
+    });
+  });
+};
 module.exports = user;

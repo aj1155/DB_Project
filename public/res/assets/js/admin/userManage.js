@@ -15,7 +15,7 @@ $(function(){
               },
               success:function(msg){
                   if(msg=="success"){
-                    location.href = '/admin/userManage';
+                    location.href = '/admin/userManage/'+"delfine";
                   }
               }
           });

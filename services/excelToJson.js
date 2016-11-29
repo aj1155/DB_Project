@@ -16,9 +16,10 @@ var exToJson = function(req,callback){
       }, function(err,result){
           if(err) {
               //return res.json({error_code:1,err_desc:err, data: null});
+              req.flash('error', "엑셀에 유저 정보 입력을 확인 해주세요!");
               callback(fail);
           }
-        
+
           //res.json({error_code:0,err_desc:null, data: result});
           callback(result);
       });

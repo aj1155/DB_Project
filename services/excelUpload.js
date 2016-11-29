@@ -19,6 +19,7 @@ var storage = multer.diskStorage({ //multers disk storage settings
                    storage: storage,
                    fileFilter : function(req, file, callback) { //file filter
                        if (['xls', 'xlsx'].indexOf(file.originalname.split('.')[file.originalname.split('.').length-1]) === -1) {
+                           req.flash('error', "해당파일이 엑셀 파일이 아닙니다!");
                            return callback(new Error('Wrong extension type'));
                        }
                        callback(null, true);
