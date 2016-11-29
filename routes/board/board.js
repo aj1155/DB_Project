@@ -7,6 +7,12 @@ var sequelize = require('../../join/sequelize');
 var commentDAO = require('../../query/comment/comment');
 var Comment = require('../../model/Comment');
 
+router.use(function(req, res, next) {
+   if(req.user) res.locals.user = req.user;
+   else res.locals.user = undefined;
+   next();
+});
+
 router.get('/list/:board_id',function(req,res,next){
   var board_id=req.params.board_id;
   if(req.params.srchType!=null){
