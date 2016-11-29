@@ -7,6 +7,8 @@ var sequelize = require('../../join/sequelize');
 var commentDAO = require('../../query/comment/comment');
 var Comment = require('../../model/Comment');
 
+/*session user정보를 local에 저장하여 ejs파일로
+명시적으로 넘겨주지않아도 자동적으로 넘어감 세션값 사용시 user로 꺼내쓰면됨*/
 router.use(function(req, res, next) {
    if(req.user) res.locals.user = req.user;
    else res.locals.user = undefined;
@@ -43,6 +45,7 @@ router.post('/list/:board_id',function(req,res,next){
     });
   });
 });
+
 router.get('/list/:currentPage/:srchType/:srchText/:board_id',function(req,res,next){
   var srchText=0;
   if(req.params.srchText!=""){
@@ -54,7 +57,6 @@ router.get('/list/:currentPage/:srchType/:srchText/:board_id',function(req,res,n
     res.json(rows);
   });
 });
-/*1은 공지사항 2는 자유게시판*/
 
 router.get('/read/:id',function(req,res,next){
   boardDAO.selectById([req.params.id],function(rows){
@@ -176,9 +178,6 @@ router.get('/CommentCreate/:id/:message',function(req,res,next){
   .catch(function(err){
     console.log(err);
   });
-  //commentDAO.parentCommentCreate(params,function(results){
-    //res.json("success");
-  //});
 });
 
 router.get('/CommentDelete/:board_id',function(req,res,next){
