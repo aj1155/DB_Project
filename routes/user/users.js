@@ -28,13 +28,26 @@ router.get('/profile',function(req,res,next){
 router.get('/userGradeList/:category_id/:grade', function(req, res, next) {
   var grade = req.params.grade;
   var category_id = req.params.category_id;
-  userDao.FindGrade(req.user.id, req.user.category_id, function(result){
-    userDao.SelectUserGrade(category_id, grade, function(result2){
-      res.render('user/userGradeList', {user : req.user, grade : grade, userList : result2});
-    });
+  /*
+  var srchType = req.params.searchType;
+  var srchText = req.params.searchText;
+  var count = 4;
+  var current = 0;
+  */
+  var param=[
+    0,'김',1,1,1,15
+  ];
+  userDao.selectOptions(param,function(result){
+    console.log(result[0]);
   });
+    userDao.SelectUserGrade(category_id, grade, function(result){
+      res.render('user/userGradeList', {user : req.user, grade : grade, userList : result});
+    });
 });
-
+/*user 검색 목록 더보기 */
+router.get('/userGradeListMore',function(req,res,next){
+  console.log(req.params);
+});
 //마이페이지 회원정보수정
 router.get('/edit',function(req,res,next){
   userDao.FindGrade(req.user.id, req.user.category_id, function(result){
