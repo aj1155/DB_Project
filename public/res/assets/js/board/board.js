@@ -3,7 +3,6 @@ $(document).ready(function(){
     var board_id = $("input[name=board_id]").val();
     var currentPage=$("input[name=currentPage]").val();
     var srchText=0;
-    console.log("srchText1:"+srchText);
     if($("input[name=srchText]").val()!=""){
       srchText=$("input[name=srchText]").val();
     }
@@ -14,7 +13,7 @@ $(document).ready(function(){
     $("input[name=currentPage]").val(cp);
     $.ajax({
       type :'get',
-      url : '/board/list/'+currentPage+'/'+srchType+'/'+srchText+'/'+board_id,
+      url : '/board/list/'+cp+'/'+srchType+'/'+srchText+'/'+board_id,
       success : function(result){
         console.log(result);
         for(var i=result.length-1; i>-1; i--){

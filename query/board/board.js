@@ -3,34 +3,9 @@ var pool = require('../../join/connection');
 
 var board={};
 
-board.selectAll=function(callback){
-  var srchType=0;
-  var currentPage=1;
-  var param1='SET @p1='+1;
-  var param2='SET @p2='+srchType;
-  var param3='SET @p3='+0;
-  var param4='SET @p4='+currentPage;
-  var param5='SET @p5='+1;
-  var query=param1+";"+param2+";"+param3+";"+param4+";"+param5+";"+"call selectList(@p1,@p2,@p3,@p4,@p5);"
-  pool.getConnection(function(err,connection){
-    connection.query(query,function(err,row){
-      if(err){
-        console.log(err);
-      }else{
-        for(var i=0; i<row.length; i++){
-          console.log(row[i]);
-        }
-        callback(row[0]);
-        connection.release();
-      }
-    });
-  });
-};
-
 board.selectList=function(params,callback){
   pool.getConnection(function(err,connection){
-    var query="call selectList(?,?,?,?,?)"
-    connection.query(query,params,function(err,row){
+    connection.query('CALL select_List(1,0,"",15,1,1)',[params],function(err,row){
       if(err){
         console.log(err);
       }else{

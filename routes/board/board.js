@@ -22,23 +22,22 @@ router.get('/list/:board_id',function(req,res,next){
   }else{
     var srchType=0;
   }
-  var srchText=req.params.srchText;
-  if(req.params.currentPage!=null){
-    var currentPage=req.params.currentPage;
-  }else{
-    var currentPage=1;
+  if(req.params.srchText!=null){
+    var srchText=req.params.srchText;
+  }else {
+    var srchText= "";
   }
   var category_id=req.user.category_id;
-  var params=[currentPage,srchType,srchText,category_id,board_id];
-  console.log("get:"+params);
+  var currentPage=1;
+  var pageSize = 15;
+  var params=[currentPage,srchType,srchText,pageSize,board_id,category_id];
   boardDAO.selectList(params,function(rows){
-    res.render('board/list',{board_id:board_id,row:rows,currentPage:currentPage,srchType:0,srchText:"",currentPage:currentPage});
+    res.render('board/list',{board_id:board_id,row:rows,currentPage:currentPage,srchType:srchType,srchText:"",currentPage:currentPage});
   });
 });
 
 router.post('/list/:board_id',function(req,res,next){
-  var params=[1,req.body.srchType,req.body.srchText,req.user.category_id,req.params.board_id];
-  console.log("post:"+params);
+  var params=[1,req.body.srchType,req.body.srchText,15,req.params.board_id,req.user.category_id];
   boardDAO.selectList(params,function(rows){
     res.render('board/list',{
       row:rows,board_id:req.params.board_id,srchText:req.body.srchText,srchType:req.body.srchType,currentPage:1
@@ -51,13 +50,13 @@ router.get('/list/:currentPage/:srchType/:srchText/:board_id',function(req,res,n
   if(req.params.srchText!=""){
     srchText=req.params.srchText;
   }
-  var params=[req.params.currentPage,req.params.srchType,srchText,req.user.category_id,req.params.board_id];
-  console.log(params);
+  var pageSize=15;
+  var params=[req.params.currentPage,req.params.srchType,srchText,pageSize,req.params.board_id,req.user.category_id];
   boardDAO.selectList(params,function(rows){
     res.json(rows);
   });
 });
-
+-/*1은 공지사항 2는 자유게시판*/
 router.get('/read/:id',function(req,res,next){
   boardDAO.selectById([req.params.id],function(rows){
     commentDAO.selectByBoard_id([req.params.id],function(row){
@@ -178,6 +177,9 @@ router.get('/CommentCreate/:id/:message',function(req,res,next){
   .catch(function(err){
     console.log(err);
   });
+    //commentDAO.parentCommentCreate(params,function(results){
+     //res.json("success");
+   //});
 });
 
 router.get('/CommentDelete/:board_id',function(req,res,next){
