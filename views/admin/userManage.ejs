@@ -7,6 +7,10 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>성공회대학교</title>
+        <style>
+
+
+        </style>
         <% include ../common/css.ejs %>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -150,7 +154,7 @@
                                       </br>
                                         <div class="form-group">
                                           <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-                                            <button id="add" type="submit" class="btn btn-success">추가</button>
+                                            <button id="add" type="submit" class="btn btn-success">단일추가</button>
                                             <button type="submit" class="btn btn-fail">취소</button>
                                           </div>
                                         </div>
@@ -168,26 +172,20 @@
                                       </form>
                                       <!--엑셀로 추가하기위한 버튼폼 끝 -->
 
-                                      </br>
-                                      </br>
-                                      </br>
-
-                                      <button type="button" class="add btn btn-primary" style = "display : inline">추가적용</button>
-                                      <div style = "display : inline">오른편 추가된 데이터를 실제로 적용하시려면 클릭해주세요.</div>
 
 
 
                                     </div>
 
                                     <!-- 회원추가에 리스트 시작 -->
-                                    <div class="col-md-7 col-sm-6 col-xs-6 ">
+                                    <!-- <div class="col-md-7 col-sm-6 col-xs-6 ">
                                       <div class="x_panel" id="list">
                                         <div class="col-md-12 col-sm-8 col-xs-12 form-group pull-left top_search">
                                             <h2>현재 추가시킬 인원의 정보</h2>
                                             <h2>(실제로 적용하시려면 옆에 추가적용버튼을 눌러주세요.)</h2>
                                         </div>
                                       </div>
-                                    </div>
+                                    </div> -->
                                     <!-- 회원추가에 리스트 끝 -->
                                   </div>
                                   <!-- 추가 탭 내용 끝 -->
@@ -234,8 +232,8 @@
                                           <tbody>
                                           <% if(userList!=null && userList!=""){%>
                                               <% userList.forEach(function(user,idx){ %>
-                                            <tr>
-                                                 <td><input type="checkbox" class="flat" name="table_records" value="<%=user.id%>"></td>
+                                            <tr onClick="location.href='/admin/userEdit/<%=user.id%>'" style="cursor:pointer;">
+                                                 <!-- <td><input type="checkbox" class="flat" name="table_records" value="<%=user.id%>"></td> -->
                                                  <td><%=user.name%></td>
                                                  <td><%=user.grade%></td>
                                                  <td><%=user.phone_number%></td>
@@ -253,6 +251,7 @@
                                     </div>
                                     <button id="add" type="button" class="btn btn-default" style="float:right;">더보기...</button>
                                   </div>
+
                                   <div role="tabpanel" class="tab-pane fade" id="user_delete" aria-labelledby="profile-tab">
                                     <<div class="col-md-12 col-sm-6 col-xs-6 ">
                                       <div class="x_panel" id="list">
@@ -362,7 +361,6 @@
                                           <% if(userList!=null && userList!=""){%>
                                               <% userList.forEach(function(user,idx){ %>
                                             <tr>
-                                                 <td><input type="checkbox" class="flat" name="table_records" value="<%=user.id%>"></td>
                                                  <td><%=user.name%></td>
                                                  <td><%=user.grade%></td>
                                                  <td><%=user.phone_number%></td>

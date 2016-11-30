@@ -43,6 +43,7 @@ router.post('/list/:board_id',function(req,res,next){
       row:rows,board_id:req.params.board_id,srchText:req.body.srchText,srchType:req.body.srchType,currentPage:1
     });
   });
+
 });
 
 router.get('/list/:currentPage/:srchType/:srchText/:board_id',function(req,res,next){
@@ -56,7 +57,7 @@ router.get('/list/:currentPage/:srchType/:srchText/:board_id',function(req,res,n
     res.json(rows);
   });
 });
--/*1은 공지사항 2는 자유게시판*/
+/*1은 공지사항 2는 자유게시판*/
 router.get('/read/:id',function(req,res,next){
   boardDAO.selectById([req.params.id],function(rows){
     commentDAO.selectByBoard_id([req.params.id],function(row){
@@ -97,49 +98,49 @@ router.post('/write/:board_id',function(req,res,next){
 });
 
 router.get('/edit/:id',function(req,res,next){
-  sequelize.authenticate().then(function(err){
-    Board_post.findOne({
-      where:{
-        id:req.params.id
-      }
+    sequelize.authenticate().then(function(err){
+        Board_post.findOne({
+            where:{
+                id:req.params.id
+            }
+        })
+            .then(function(result){
+                res.render('board/edit',{result:result});
+            });
     })
-    .then(function(result){
-      res.render('board/edit',{result:result});
-    });
-    })
-    .catch(function(err){
-      res.send(err);
-    });
+        .catch(function(err){
+            res.send(err);
+        });
 });
 
 router.post('/edit/:id',function(req,res,next){
-  var d = new Date();
-  var date =(d.getFullYear()) + '-' +
-    (d.getMonth() + 1) + '-' +
-    (d.getDate()) + ' ';
-  var updateObj ={
-    title :req.body.title,
-    content : req.body.content,
-    create_time: date
-  }
-  var whereObj = {
-    where : {
-    id: req.params.id
+    var d = new Date();
+    var date =(d.getFullYear()) + '-' +
+        (d.getMonth() + 1) + '-' +
+        (d.getDate()) + ' ';
+    var updateObj ={
+        title :req.body.title,
+        content : req.body.content,
+        create_time: date
     }
-  }
-  sequelize.authenticate().then(function(err){
-    Board_post.update(updateObj,whereObj)
-    .then(function(result){
-      if(result==1){
-        res.redirect('/board/read/'+req.params.id);
-      }else{
-        res.json("fail");
-      }
+    var whereObj = {
+        where : {
+            id: req.params.id
+        }
+    }
+    sequelize.authenticate().then(function(err){
+        Board_post.update(updateObj,whereObj)
+            .then(function(result){
+                if(result==1){
+                    res.redirect('/board/read/'+req.params.id);
+                }else{
+                    res.json("fail");
+                }
+            })
     })
-  })
-  .catch(function(err){
-    res.send(err);
-  });
+        .catch(function(err){
+            res.send(err);
+        });
 });
 
 router.get('/CommentCreate/:id/:message',function(req,res,next){

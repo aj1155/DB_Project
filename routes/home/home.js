@@ -41,6 +41,8 @@ router.post('/login/:category', function (req, res, next) {
 
                 //첫번째 로그인이 아닌경우 main 화면으로 간다.
                 if (result) {
+                    //쿠키에 있는 유저 정보 중 패스워트 null로 변경
+                    req.user.password = null;
                     return res.redirect('/main');
                 } else {
                     //첫번째 로그인인경우 비밀번호 변경 페이지로 간다.
@@ -107,6 +109,7 @@ router.post('/ipfind', function (req, res, next) {
     var login_id = req.body.login_id;
     var email = req.body.email;
     var category_id = req.body.category;
+
     userDao.GetUser(login_id, category_id, function (result) {
 
         //아이디가 없는경우
@@ -123,12 +126,8 @@ router.post('/ipfind', function (req, res, next) {
         //성공한 경우
         if (result.email == email) {
             encode.MakeURL(login_id, category_id, function (result) {
-                var os = require( 'os' );
-                var networkInterfaces = os.networkInterfaces( );
-                //서버 ip주소 얻기
-                var ipAddress = networkInterfaces.en0[1].address;
                 //TODO: 주소 변경하기
-                var sendURL = "http://"+ipAddress+":3000/home/initpass/" + result;
+                var sendURL = "http://localhost:3000/home/initpass/" + result;
                 mail.send("성공회대학교 비밀번호 초기화 이메일 입니다.", email, "클릭하여 비밀번호를 초기화 해주세요 \n" + '<html><a href=' + '"' + sendURL + '"' + 'target="_blank">비밀번호 초기화 페이지</a></html>');
                 req.flash('error', "이메일을 확인하여 비밀번호를 초기화 하고 로그인해주세요.");
                 return res.redirect('/home/ipfind');
@@ -151,6 +150,7 @@ router.get('/initpass/:url', function (req, res, next) {
 //비밀번호 초기화 : POST
 router.post('/initpass/:url', function (req, res, next) {
 
+
     var url = req.params.url;
     var login_id = req.body.login_id;
     var category_id = req.body.category;
@@ -170,7 +170,7 @@ router.post('/initpass/:url', function (req, res, next) {
                 //초기화 성공
                 if (result) {
                     encode.removeURL(url);
-                    req.flash('error', "초기화된 비밀번호로 로그인해주세요.");
+                    req.flash('error', "초기화된 비밀번호(생년월일)로 로그인해주세요.");
                     return res.redirect('/home/login/' + category_id);
                 }else{
                     //초기화 실패
