@@ -49,22 +49,18 @@
                         </a>
                         <ul class="nav child_menu">
                             <li>
-<<<<<<< HEAD
-                                <a id=grade1>동문명단<span class="fa fa-chevron-down"></span>
-=======
                                 <a id=grade1>기수별 동문명단<span class="fa fa-chevron-down"></span>
->>>>>>> origin/kjg
                                 </a>
                                 <ul id=grade_list1 class="nav child_menu">
                                     <!-- 각 모임별로 있는 기수들만 태그가 붙음-->
 
                                 </ul>
                             <li>
-                                <a> 임원명단<span class="fa fa-chevron-down"></span>
+                                <a>동문회 임원명단<span class="fa fa-chevron-down"></span>
                                 </a>
                                 <ul class="nav child_menu">
                                     <li class="sub_menu" data-url="/users/contacts">
-                                        <a>최고경영 임원명단</a>
+                                        <a>총동문회 임원명단</a>
                                     </li>
                                     <li>
                                         <a>기수별 임원명단<span class="fa fa-chevron-down"></span>
@@ -97,17 +93,10 @@
                             <span class="fa fa-chevron-down"></span>
                         </a>
                         <ul class="nav child_menu">
-<<<<<<< HEAD
-                            <li data-url="/board/list/1">
-                                <a>공지사항</a>
-                            </li>
-                            <li data-url="/board/list/2">
-=======
                             <li>
                                 <a href="tables.html">공지사항</a>
                             </li>
                             <li data-url="/board/list">
->>>>>>> origin/kjg
                                 <a>자유게시판</a>
                             </li>
                         </ul>
@@ -198,12 +187,10 @@
                         $('#grade_list1').append('<li class="sub_menu" name="' + (i+1) + '" ' + '><a href="/users/userGradeList/<%= user.category_id %>/'+(i+1)+'">'+(i+1)+'기</a></li>');
                         $('#grade_list2').append('<li><a>'+(i+1)+'기</a></li>');
                     }
-
                     //관리자 페이지 보이기
                     if(result['is_admin'] == 1){
                         $("#admin_menu").css("display","inline");
                     }
-
                 }
             }
         });
