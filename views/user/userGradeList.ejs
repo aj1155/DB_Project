@@ -22,27 +22,30 @@
                     <div class="">
                         <div class="page-title">
                             <div class="title_left">
-                                <h3>기수별 동문명단</h3>
+                                <h3><%=grade%>기 동문명단</h3>
                             </div>
 
                             <div class="title_right">
                                 <div class="col-md-8 col-sm-8 col-xs-12 form-group pull-right top_search">
                                     <div class="form-group" style="background: #fff; margin-top: 10px;">
                                         <div class="col-md-4 col-sm-4 col-xs-6">
-                                            <select class="form-control">
-                                          <option>검색 조건</option>
-                                          <option>이름 검색</option>
-                                          <option>전화번호 검색</option>
-                                          <option>기수 검색</option>
+                                          <form>
+                                          <select class="form-control">
+                                          <option value="0">검색 조건</option>
+                                          <option value="1">이름 검색</option>
+                                          <option value="2">직위 검색</option>
+                                          <option value="3">전화번호 검색</option>
+                                          <option value="4">회사번호 검색</option>
                                         </select>
                                         </div>
                                     </div>
                                     <div class="input-group">
                                         <input type="text" class="form-control" placeholder="검색">
                                         <span class="input-group-btn">
-                                        <button class="btn btn-default" type="button">찾기</button>
+                                        <button class="btn btn-default" type="submit">찾기</button>
                                     </span>
                                     </div>
+                                  </form>
                                 </div>
                             </div>
                         </div>
@@ -58,15 +61,16 @@
 
                                         <!--돔 체이닝-->
                                         <div id="innerList" style="margin:0 auto;">
-
+                                        <% if(userList!=null && userList!=""){%>
+                                          <% userList.forEach(function(user,idx){ %>
                                             <div class="row col-md-6 col-sm-12 col-xs-12">
                                                 <div class="profile_details">
                                                     <div class="well profile_view">
                                                         <div class="col-md-12 col-xs-12 col-sm-12">
                                                             <div class="left col-md-7 col-xs-7 col-sm-7">
-                                                                <h2>이름 :강준구</h2>
+                                                                <h2>이름 :<%=user.name%></h2>
                                                                 <p>
-                                                                    기수 : 7기
+                                                                    기수 : <%=user.grade%>
                                                                 </p>
                                                                 <button type="button" class="btn btn-success btn-xs">
                                                                   <i class="fa fa-phone"></i>
@@ -84,7 +88,8 @@
                                             </div>
 
 
-
+                                          <%})%>
+                                        <%}%>
                                         </div>
                                     </div>
                                 </div>
