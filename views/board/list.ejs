@@ -19,10 +19,10 @@
         <script src="/res/assets/js/waypoints.min.js"></script>
         <script src="/res/assets/js/scripts.js"></script>
     </head>
+
     <style>
       table{
         font-size:20px;
-
       }
     </style>
     <body class="nav-md">
@@ -36,31 +36,34 @@
                 <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
                   <div class="x_panel">
                     <div class="x_title">
-
+                      <%if(board_id=="1"){%>
                       <h2>공지사항</h2>
-
+                      <%}else{%>
+                        <h2>자유게시판</h2>
+                      <%}%>
                       <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
                       <div class="row">
-                        <div class="col-sm-7 col-xs-1">
+                        <div class="col-sm-12 col-md-12 col-lg-7">
                         </div>
 
-                        <div class="col-sm-3 col-xs-6">
+                        <div class="col-sm-12 col-lg-1">
                           <div class="input-group">
-
+                            <form method="post" id="list">
                             <div class="input-group-btn">
-                              <input type="text" name="srchText" class="form-control" aria-label="Text input with dropdown button" style="width:350px;">
-                              <select class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="max-width:100%; margin:0;">
-                                <option value="0">검색조건</option>
-                                <option value="1">제목</option>
-                                <option value="2">작성자</option>
+                              <input type="text" name="srchText" class="form-control" aria-label="Text input with dropdown button" style="width:310px;" value="<%=srchText%>">
+                              <select name="srchType" class="btn btn-default dropdown-toggle" style="max-width:100%; margin:-5; padding-top:8px; padding-bottom:8px;">
+                                <option value="0" <%="0"==srchType ? "selected" : ""%>>검색조건</option>
+                                <option value="1" <%="1"==srchType ? "selected" : ""%>>제목</option>
+                                <option value="2" <%="2"==srchType ? "selected" : ""%>>작성자</option>
                                 <span class="caret"></span>
                               </select>
                               <button class="btn btn-primary" type ="submit">검색</button>
                               <form>
                             </div>
                             <!-- /btn-group -->
+                            <form>
                           </div>
 
                         </div>
@@ -74,50 +77,31 @@
                             <th>작성자</th>
                             <th>작성 날짜</th>
                           </tr>
+
                         </thead>
                         <tbody>
-                          <%
-                              for(var i=0; i<row.length; i++){
-                                var table=row[i];
-                          %>
+                          <% for(var i=0; i<row.length; i++){%>
                           <tr>
-                            <td><a href="/board/read/<%=table.title%>"><%=table.title%></a></td>
-                            <td><%=table.title%></td>
-                            <td><%=table.user_name%></td>
-                            <td><%=table.create_time%></td>
+                            <td><a data-url="/board/read/<%=row[i].id%>"><%=row[i].ROWNUM%></a></td>
+                            <td><%=row[i].title%></td>
+                            <td><%=row[i].user_name%></td>
+                            <td><%=row[i].create_time%></td>
                           </tr>
-                          <%
-                            }
-                          %>
+                          <%}%>
                         </tbody>
                       </table>
                     </div>
                   </div>
                   </div>
-                  <form>
                   <div class="pull-right">
-                    <button id="plus" value="2">더보기</button>
+                    <a class="btn btn-primary" href="/board/write/<%=board_id%>">글쓰기</a>
+                    <span id="listSubmit"><a>더보기</a></button>
+                    <input type="hidden" name="currentPage" value="<%=currentPage+1%>"/>
+                    <input type="hidden" name="board_id" value="<%=board_id%>"/>
                   </div>
-                </form>
                 </div>
                 </div>
               </div>
-          <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-          <script>
-          $(function(){
-            $("#plus").click(function(){
-              var link = document.location.href;
-              var first_link = link.substring(0,link.length-1);
-              var last_link = link.substring(link.length-1,link.length);
-
-              last_link =Number(last_link);
-              last_link+=1;
-              last_link = String(last_link);
-
-              var sts = first_link+last_link
-
-            });
-          });
           </script>
         <!-- /page content -->
 
@@ -133,6 +117,6 @@
     </div>
   </div>
     <% include ../common/script.ejs %>
-
+  <script src="/res/assets/js/board/board.js"></script>
 </body>
 </html>
