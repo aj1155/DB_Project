@@ -40,7 +40,7 @@
                                         </div>
                                     </div>
                                     <div class="input-group">
-                                        <input type="text" name="srchText" class="form-control" placeholder="검색">
+                                        <input type="text" name="srchText" class="form-control" value="<%= srchText %>"  placeholder="검색">
                                         <span class="input-group-btn">
                                         <button class="btn btn-default" type="submit">찾기</button>
                                     </span>
@@ -93,7 +93,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button id="add" type="button" class="btn btn-default" style="float:right;">더보기...</button>
+                                <button id="add" type="button" value="4" class="btn btn-default" style="float:right;">더보기...</button>
                             </div>
                         </div>
                         <!--/동문리스트 -->
@@ -113,8 +113,9 @@
     </div>
 
     <% include ../common/script.ejs %>
+    <script src="/res/assets/js/user/userGradeList.js"></script>
         <script>
-            $('#add').click(function() {
+            $('#add2').click(function() {
                 for (var i = 0; i < 10; i++) {
                     var div = $(
                         '<div class="row col-md-6 col-sm-12 col-xs-12"><div class="profile_details"><div class="well profile_view"><div class="col-md-12 col-xs-12 col-sm-12"><div class="left col-md-7 col-xs-7 col-sm-7"><h2>이름 :강준구</h2><p>기수 : 7기</p><button type="button" class="btn btn-success btn-xs"><i class="fa fa-phone"></i></button><button type="button" class="btn btn-primary btn-xs"><i class="fa fa-envelope"> </i> </button></div><div class="right col-md-5 col-xs-5 col-sm-5 text-center"><img src="/res/production/images/user.png" alt="" class="img-circle img-responsive"></div></div></div></div></div>'
