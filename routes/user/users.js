@@ -30,25 +30,37 @@ router.get('/profile',function(req,res,next){
 router.get('/userGradeList/:category_id/:grade', function(req, res, next) {
   var grade = req.params.grade;
   var category_id = req.params.category_id;
-  /*
-  var srchType = req.params.searchType;
-  var srchText = req.params.searchText;
+  var srchType = req.query.srchType;
+  var srchText = req.query.srchText;
+  if(req.query.srchType==null) srchType = 0;
   var count = 4;
-  var current = 0;
-  */
   var param=[
-    0,'김',1,1,1,15
+    srchType,srchText,category_id,grade,0,count
   ];
-  userDao.selectOptions(param,function(result){
-    console.log(result[0]);
-  });
-    userDao.SelectUserGrade(category_id, grade, function(result){
-      res.render('user/userGradeList', {user : req.user, grade : grade, userList : result});
+    userDao.selectOptions(param,function(result){
+      res.render('user/userGradeList', {user : req.user, grade : grade, userList : result[0],srchType:srchType,srchText:srchText});
     });
 });
 /*user 검색 목록 더보기 */
-router.get('/userGradeListMore',function(req,res,next){
-  console.log(req.params);
+router.get('/userGradeListMore/:category_id/:grade',function(req,res,next){
+  var grade = req.params.grade;
+  var category_id = req.params.category_id;
+  var srchType = req.query.srchType;
+  var srchText = req.query.srchText;
+  var current = Number(req.query.current)+1;
+  if(req.query.srchType==null) srchType = 0;
+  var count = 3;
+  var param=[
+    srchType,srchText,category_id,grade,current,count
+  ];
+  userDao.selectOptions(param,function(result){
+    var data ={
+      len : result[0].length,
+      list : result[0],
+      msg : "success"
+    };
+    res.json(data);
+  });
 });
 //마이페이지 회원정보수정
 router.get('/edit',function(req,res,next){
