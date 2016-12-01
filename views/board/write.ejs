@@ -53,7 +53,8 @@
 
                   <div class="form-group" style="float:right;">
                     <button class="btn btn-primary" tpye="submit">저장</button>
-                    <button class="btn btn-defualt">목록으로</button>
+                    <button class="btn btn-defualt" id="list_move">목록으로</button>
+                    <input type="hidden" name="board_id" value="<%=board_id%>"/>
                   </div>
                 </div>
               </form>
@@ -76,5 +77,12 @@
 
 </div>
     <% include ../common/script.ejs %>
+    <script>
+    $(function(){
+      $("#list_move").click(function(){
+        location.href="/board/list/<%=board_id%>/1";
+      });
+    });
+    </script>
 </body>
 </html>
