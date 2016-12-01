@@ -117,14 +117,16 @@ router.get('/userEdit/:id', function(req, res, next) {
 
 router.post('/userEdit/:id', function(req, res, next) {
   var id = req.params.id;
-  if (req.body.passwd != req.body.passwd2) {
-      req.flash('error', "비밀번호와 비밀번호확인이 일치하지 않습니다.");
+
+  var params = [req.body.login_id, req.body.name, req.body.grade, req.body.social_status, req.body.phone_number, req.body.company_number, req.body.email, req.body.birth, id];
+  console.log('params length : ' + params.length);
+  console.log(params[1]);
+  for(var i=0; i<params.length; i++) {
+    if(params[i] === null || params[i] === '') {
+      req.flash('error', "변경실패, 빈 값이 있습니다.");
       return res.redirect('/admin/userEdit/'+id);
-  } else if (req.body.passwd.length < 8) {
-      req.flash('error', "비밀번호를 8자 이상으로 설정해주세요.");
-      return res.redirect('/admin/userEdit/'+id);
+    }
   }
-  var params = [req.body.login_id, req.body.name, req.body.grade, req.body.passwd, req.body.social_status, req.body.phone_number, req.body.company_number, req.body.email, req.body.birth, id];
   userDao.updateOne(params,function(result){
     if(result){
       req.flash('error',"개인정보가 변경되었습니다.");
@@ -140,7 +142,7 @@ router.post('/userEdit/:id', function(req, res, next) {
 /*User삽입*/
 router.post('/user',function(req,res,next){
   var key = 'secret password crypto';
-  var myPass = req.body.password;/*암호화 전에 패스워드*/
+  var myPass = req.body.birth;/*암호화 전에 패스워드*/
 
   var cipherPass = crypto.createCipher('aes192', key);
   cipherPass.update(myPass, 'utf8', 'base64');
