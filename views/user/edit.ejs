@@ -20,6 +20,7 @@
               $target.html('<img src="' + e.target.result + '" border="0" alt="" />');
             }
             reader.readAsDataURL(html.files[0]);
+            $("img[id=profileImg]").hide();
           }
         }
     </script>
@@ -91,14 +92,16 @@
                               <!-- <img src="images/img.jpg" alt="..." class="img-circle profile_img"> -->
 
                               <div class="col-md-6">
-                                <form name="form" class="form-group" id="form" action="" method="post" enctype="multipart/form-data" autocomplete="off">
+                                <form name="form" class="form-group" id="form" action="../users/profile" method="post" enctype="multipart/form-data" autocomplete="off">
                                   <div class="filebox" style="margin-left : 0%;">
                                     <label for="cma_file" >프로필 사진 편집</label>
                                     <input type="file" name="cma_file" id="cma_file" accept="image/*" capture="camera" onchange="getThumbnailPrivew(this,$('#cma_image'))"/>
                                     <br /><br />
                                     <!-- <div id="cma_image" style="width:100%; max-width:100%; display:none;"></div> -->
                                     <div id="cma_image" style="width:70%; max-width:70%;"></div>
+                                    <img src="<%= profileImg %>" alt="..." class="img-circle profile_img" id="profileImg">
                                   </div>
+                                  <button type="submit" class="btn btn-success">프로필 사진 수정</button>
                                 </form>
                               </div>
                             </div>
