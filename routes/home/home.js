@@ -170,15 +170,16 @@ router.post('/initpass/:url', function (req, res, next) {
 
         //성공한 경우
         if (result) {
-            userDao.GetBirth(login_id, category_id, function(result){
+            userDao.GetBirth(login_id, category_id, function(row){
                 /*생년월일의 결과값을 암호화하여 그 값을 비밀번호로 변경*/
                 var key = 'secret password crypto';
-                var chipherBirth = row[0].birth;
-                chipherBirth = chipherBirth.createCipher('aes192', key);
-                chipherBirth.update(row[0].birth, 'utf-8', 'base64');
+                var chipherBirth = row.birth;
+
+                chipherBirth = crypto.createCipher('aes192', key);
+                chipherBirth.update(row.birth, 'utf-8', 'base64');
                 chipherBirth = chipherBirth.final('base64');
                 //비밀번호 생년월일로 초기화
-                userDao.ResetPasswordToBirth(login_id, category_id, chipherBirth,function (result) {
+                userDao.ResetPasswordToBirth(login_id, category_id, chipherBirth, function (result) {
                     //TODO: hashmap 삭제
                     //초기화 성공
                     if (result) {
