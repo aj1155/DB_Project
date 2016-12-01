@@ -28,20 +28,15 @@ router.get('/profile',function(req,res,next){
 router.get('/userGradeList/:category_id/:grade', function(req, res, next) {
   var grade = req.params.grade;
   var category_id = req.params.category_id;
-  /*
-  var srchType = req.params.searchType;
-  var srchText = req.params.searchText;
+  var srchType = req.query.srchType;
+  var srchText = req.query.srchText;
+  if(srchType==null) srchType = 0; srchText="";
   var count = 4;
-  var current = 0;
-  */
   var param=[
-    0,'김',1,1,1,15
+    srchType,srchText,category_id,grade,0,count
   ];
-  userDao.selectOptions(param,function(result){
-    console.log(result[0]);
-  });
-    userDao.SelectUserGrade(category_id, grade, function(result){
-      res.render('user/userGradeList', {user : req.user, grade : grade, userList : result});
+    userDao.selectOptions(param,function(result){
+      res.render('user/userGradeList', {user : req.user, grade : grade, userList : result[0],srchType:srchType,srchText:srchText});
     });
 });
 /*user 검색 목록 더보기 */
