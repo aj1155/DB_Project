@@ -110,7 +110,9 @@
                                   </li>
                                 </ul>
                                 <div id="myTabContent" class="tab-content">
-                                  <% if (msg && msg!="") { %>
+                                  <% if (msg && msg!="" && type=="error") { %>
+                                    <div class="alert alert-danger"><%= msg %></div>
+                                  <% }else if(msg && msg!="" && type=="success"){ %>
                                     <div class="alert alert-success"><%= msg %></div>
                                   <% } %>
 

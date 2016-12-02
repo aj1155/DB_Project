@@ -113,10 +113,10 @@ user.passwordUpdate = function (id, password, callback) {
             //패스워드 업데이트 실패
             if (err) {
                 callback(err);
-            } else {
+            } else{
                 //패스워드 업데이트 성공
                 callback(true);
-            }
+              }
         });
     });
 };
@@ -199,6 +199,36 @@ user.GetMaxGrade = function (category_id, callback) {
         });
     });
 };
+
+//프로필사진 저장
+user.SetProfileImg = function(id,size,data,callback){
+  pool.getConnection(function(err,connection){
+    connection.query("SELECT * FROM image WHERE id=?",[id],function(err,row){
+      if(err){
+        callback(false);
+      }else if(row[0]){
+        connection.query("UPDATE image SET size=?, data=? WHERE id=?",[size,data,id],function(err,row){
+          connection.release();
+          if(err){
+            callback(false);
+          }else {
+            callback(true);
+          }
+        });
+      }else{
+        connection.query("INSERT INTO image(id,size,data) VALUES(?,?,?)",[id,size,data],function(err,row){
+          connection.release();
+          if(err){
+            callback(false);
+          }else {
+            callback(true);
+          }
+        });
+      }
+    });
+  });
+};
+
 
 //회원정보 가져오기
 user.SelectUserInfo = function (id, callback) {
