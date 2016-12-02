@@ -3,19 +3,18 @@ var pool = require('../../join/connection');
 
 var board={};
 
-board.selectAll=function(callback){
+board.selectList=function(params,callback){
   pool.getConnection(function(err,connection){
-    connection.query("select *,@SEQ := @SEQ+1 AS SEQ from board_post bp join board b on bp.board_id=b.id,(SELECT @SEQ:=0)A",function(err,row){
+    connection.query('CALL select_List(1,0,"",15,1,1)',[params],function(err,row){
       if(err){
         console.log(err);
       }else{
-        callback(row);
+        callback(row[0]);
         connection.release();
       }
     });
   });
 };
-
 board.selectById=function(id,callback){
   pool.getConnection(function(err,connection){
     connection.query("select * from board_post where id=?",[id],function(err,row){
@@ -42,4 +41,17 @@ board.board_insert=function(title,content,callback){
   });
 };
 
+board.selectByCategory_id=function(category_id,callback){
+  var query = "select bp.* from board_post bp JOIN board b ON b.id=bp.board_id && b.category_id=? && b.id=?";
+  pool.getConnection(function(err,connection){
+    connection.query(query,[category_id,2],function(err,result){
+      if(err){
+        console.log(err);
+      }else{
+        callback(result);
+        connection.release();
+      }
+    });
+  })
+};
 module.exports = board;
