@@ -58,199 +58,38 @@
 
                                         <!--돔 체이닝-->
                                         <div id="innerList" style="margin:0 auto;">
+                                          <% if(userList!=null && userList!=""){%>
+                                            <% userList.forEach(function(user,idx){ %>
+                                              <div class="row col-md-6 col-sm-12 col-xs-12">
+                                                  <div class="profile_details">
+                                                      <div class="well profile_view">
+                                                          <div class="col-md-12 col-xs-12 col-sm-12">
+                                                              <div class="left col-md-7 col-xs-7 col-sm-7">
+                                                                  <h2>이름 :<%=user.user_name%></h2>
+                                                                  <p>
+                                                                      기수 : <%=user.grade%>
+                                                                  </p>
+                                                                  <p>
+                                                                      직책 : <%=user.position%>
+                                                                  </p>
+                                                                  <button type="button" class="btn btn-success btn-xs">
+                                                                    <i class="fa fa-phone"></i>
+                                                                  </button>
+                                                                  <button type="button" class="btn btn-primary btn-xs">
+                                                                    <i class="fa fa-envelope"> </i>
+                                                                  </button>
+                                                              </div>
+                                                              <div class="right col-md-5 col-xs-5 col-sm-5 text-center">
+                                                                  <img src="/res/production/images/user.png" alt="" class="img-circle img-responsive">
+                                                              </div>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              </div>
 
-                                            <div class="row col-md-6 col-sm-12 col-xs-12">
-                                                <div class="profile_details">
-                                                    <div class="well profile_view">
-                                                        <div class="col-md-12 col-xs-12 col-sm-12">
-                                                            <div class="left col-md-7 col-xs-7 col-sm-7">
-                                                                <h2>이름 :강준구</h2>
-                                                                <p>
-                                                                    기수 : 7기
-                                                                </p>
-                                                                <button type="button" class="btn btn-success btn-xs">
-                                                                  <i class="fa fa-phone"></i>
-                                                                </button>
-                                                                <button type="button" class="btn btn-primary btn-xs">
-                                                                  <i class="fa fa-envelope"> </i>
-                                                                </button>
-                                                            </div>
-                                                            <div class="right col-md-5 col-xs-5 col-sm-5 text-center">
-                                                                <img src="/res/production/images/user.png" alt="" class="img-circle img-responsive">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
 
-                                            <div class="row col-md-6 col-sm-12 col-xs-12">
-                                                <div class="profile_details">
-                                                    <div class="well profile_view">
-                                                        <div class="col-md-12 col-xs-12 col-sm-12">
-                                                            <div class="left col-md-7 col-xs-7 col-sm-7">
-                                                                <h2>이름 :강준구</h2>
-                                                                <p>
-                                                                    기수 : 7기
-                                                                </p>
-                                                                <button type="button" class="btn btn-success btn-xs">
-                                                                  <i class="fa fa-phone"></i>
-                                                                </button>
-                                                                <button type="button" class="btn btn-primary btn-xs">
-                                                                  <i class="fa fa-envelope"> </i>
-                                                                </button>
-                                                            </div>
-                                                            <div class="right col-md-5 col-xs-5 col-sm-5 text-center">
-                                                                <img src="/res/production/images/user.png" alt="" class="img-circle img-responsive">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="row col-md-6 col-sm-12 col-xs-12">
-                                                <div class="profile_details">
-                                                    <div class="well profile_view">
-                                                        <div class="col-md-12 col-xs-12 col-sm-12">
-                                                            <div class="left col-md-7 col-xs-7 col-sm-7">
-                                                                <h2>이름 :강준구</h2>
-                                                                <p>
-                                                                    기수 : 7기
-                                                                </p>
-                                                                <button type="button" class="btn btn-success btn-xs">
-                                                                  <i class="fa fa-phone"></i>
-                                                                </button>
-                                                                <button type="button" class="btn btn-primary btn-xs">
-                                                                  <i class="fa fa-envelope"> </i>
-                                                                </button>
-                                                            </div>
-                                                            <div class="right col-md-5 col-xs-5 col-sm-5 text-center">
-                                                                <img src="/res/production/images/user.png" alt="" class="img-circle img-responsive">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="row col-md-6 col-sm-12 col-xs-12">
-                                                <div class="profile_details">
-                                                    <div class="well profile_view">
-                                                        <div class="col-md-12 col-xs-12 col-sm-12">
-                                                            <div class="left col-md-7 col-xs-7 col-sm-7">
-                                                                <h2>이름 :강준구</h2>
-                                                                <p>
-                                                                    기수 : 7기
-                                                                </p>
-                                                                <button type="button" class="btn btn-success btn-xs">
-                                                                  <i class="fa fa-phone"></i>
-                                                                </button>
-                                                                <button type="button" class="btn btn-primary btn-xs">
-                                                                  <i class="fa fa-envelope"> </i>
-                                                                </button>
-                                                            </div>
-                                                            <div class="right col-md-5 col-xs-5 col-sm-5 text-center">
-                                                                <img src="/res/production/images/user.png" alt="" class="img-circle img-responsive">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="row col-md-6 col-sm-12 col-xs-12">
-                                                <div class="profile_details">
-                                                    <div class="well profile_view">
-                                                        <div class="col-md-12 col-xs-12 col-sm-12">
-                                                            <div class="left col-md-7 col-xs-7 col-sm-7">
-                                                                <h2>이름 :강준구</h2>
-                                                                <p>
-                                                                    기수 : 7기
-                                                                </p>
-                                                                <button type="button" class="btn btn-success btn-xs">
-                                                                  <i class="fa fa-phone"></i>
-                                                                </button>
-                                                                <button type="button" class="btn btn-primary btn-xs">
-                                                                  <i class="fa fa-envelope"> </i>
-                                                                </button>
-                                                            </div>
-                                                            <div class="right col-md-5 col-xs-5 col-sm-5 text-center">
-                                                                <img src="/res/production/images/user.png" alt="" class="img-circle img-responsive">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="row col-md-6 col-sm-12 col-xs-12">
-                                                <div class="profile_details">
-                                                    <div class="well profile_view">
-                                                        <div class="col-md-12 col-xs-12 col-sm-12">
-                                                            <div class="left col-md-7 col-xs-7 col-sm-7">
-                                                                <h2>이름 :강준구</h2>
-                                                                <p>
-                                                                    기수 : 7기
-                                                                </p>
-                                                                <button type="button" class="btn btn-success btn-xs">
-                                                                  <i class="fa fa-phone"></i>
-                                                                </button>
-                                                                <button type="button" class="btn btn-primary btn-xs">
-                                                                  <i class="fa fa-envelope"> </i>
-                                                                </button>
-                                                            </div>
-                                                            <div class="right col-md-5 col-xs-5 col-sm-5 text-center">
-                                                                <img src="/res/production/images/user.png" alt="" class="img-circle img-responsive">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="row col-md-6 col-sm-12 col-xs-12">
-                                                <div class="profile_details">
-                                                    <div class="well profile_view">
-                                                        <div class="col-md-12 col-xs-12 col-sm-12">
-                                                            <div class="left col-md-7 col-xs-7 col-sm-7">
-                                                                <h2>이름 :강준구</h2>
-                                                                <p>
-                                                                    기수 : 7기
-                                                                </p>
-                                                                <button type="button" class="btn btn-success btn-xs">
-                                                                  <i class="fa fa-phone"></i>
-                                                                </button>
-                                                                <button type="button" class="btn btn-primary btn-xs">
-                                                                  <i class="fa fa-envelope"> </i>
-                                                                </button>
-                                                            </div>
-                                                            <div class="right col-md-5 col-xs-5 col-sm-5 text-center">
-                                                                <img src="/res/production/images/user.png" alt="" class="img-circle img-responsive">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="row col-md-6 col-sm-12 col-xs-12">
-                                                <div class="profile_details">
-                                                    <div class="well profile_view">
-                                                        <div class="col-md-12 col-xs-12 col-sm-12">
-                                                            <div class="left col-md-7 col-xs-7 col-sm-7">
-                                                                <h2>이름 :강준구</h2>
-                                                                <p>
-                                                                    기수 : 7기
-                                                                </p>
-                                                                <button type="button" class="btn btn-success btn-xs">
-                                                                  <i class="fa fa-phone"></i>
-                                                                </button>
-                                                                <button type="button" class="btn btn-primary btn-xs">
-                                                                  <i class="fa fa-envelope"> </i>
-                                                                </button>
-                                                            </div>
-                                                            <div class="right col-md-5 col-xs-5 col-sm-5 text-center">
-                                                                <img src="/res/production/images/user.png" alt="" class="img-circle img-responsive">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
+                                            <%})%>
+                                          <%}%>
                                         </div>
                                     </div>
                                 </div>
@@ -274,16 +113,6 @@
     </div>
 
     <% include ../common/script.ejs %>
-        <script>
-            $('#add').click(function() {
-                for (var i = 0; i < 10; i++) {
-                    var div = $(
-                        '<div class="row col-md-6 col-sm-12 col-xs-12"><div class="profile_details"><div class="well profile_view"><div class="col-md-12 col-xs-12 col-sm-12"><div class="left col-md-7 col-xs-7 col-sm-7"><h2>이름 :강준구</h2><p>기수 : 7기</p><button type="button" class="btn btn-success btn-xs"><i class="fa fa-phone"></i></button><button type="button" class="btn btn-primary btn-xs"><i class="fa fa-envelope"> </i> </button></div><div class="right col-md-5 col-xs-5 col-sm-5 text-center"><img src="/res/production/images/user.png" alt="" class="img-circle img-responsive"></div></div></div></div></div>'
-                    );
-                    div.appendTo($('#innerList'));
-                }
-            });
-        </script>
 </body>
 
 </html>
