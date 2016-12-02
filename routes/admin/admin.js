@@ -74,7 +74,7 @@ router.get('/userManage', function (req, res, next) {
             limit: 10
         })
             .then(function (rows) {
-                res.render('admin/userManage', {userList: rows, msg: ""});
+                res.render('admin/userManage', {userList: rows, msg: "", type: ""});
             });
 
     })
@@ -97,7 +97,7 @@ router.get('/userManage/:msg', function (req, res, next) {
             limit: 10
         })
             .then(function (rows) {
-                res.render('admin/userManage', {userList: rows, msg: msg});
+                res.render('admin/userManage', {userList: rows, msg: msg, type: ""});
             });
 
     })
@@ -155,60 +155,63 @@ router.post('/user', function (req, res, next) {
         grade: req.body.grade,
         social_status: req.body.social_status
     })
-        .then(function (result) {
-            console.log(result);
-            /* 방금 삽입된 User를 가져옴 id가 AutoIncrement이기 때문에 여기서 채워진 id를 get한다*/
-            User.findAll({
-                where: {
-                    category_id: req.user.category_id
-                },
-                limit: 10
-            })
-                .then(function (rows) {
-                    res.render('admin/userManage', {userList: rows, msg: ""});
-                });
+
+        .then(function (rows) {
+            res.render('admin/userManage', {userList: rows, msg: "정상적으로 회원가입을 하였습니다.", type: "success"});
         });
 });
 
 /* Excel 다중 User 처리*/
 router.post('/userExcel', function (req, res) {
     var exceltojson;
-    exUd.upload(req, res, function (err) {
-        if (err) {
-            res.render('admin/userManage', {userList: "", msg: req.flash('error')});
-            return;
+    var list;
+    User.findAll({
+        where: {
+            category_id: req.user.category_id
         }
-        /** Multer gives us file info in req.file object */
-        if (!req.file) {
-            req.flash('error', "실패 : 업로드 파일이 없습니다!");
-            res.render('admin/userManage', {userList: "", msg: req.flash('error')});
-            return;
-        }
+    })
+        .then(function (rows) {
+            list = rows;
+            exUd.upload(req, res, function (err) {
+                if (err) {
+                    res.render('admin/userManage', {userList: list, msg: req.flash('error'), type: "error"});
+                    return;
+                }
+                /** Multer gives us file info in req.file object */
+                if (!req.file) {
+                    req.flash('error', "실패 : 업로드 파일이 없습니다!");
+                    res.render('admin/userManage', {userList: list, msg: req.flash('error'), type: "error"});
+                    return;
+                }
 
-        exTJ.exToJson(req, function (result) {
-            if (result == 'fail') {
-                res.render('admin/userManage', {userList: "", msg: req.flash('error')});
-            }
-            else {
-                addRows.insert(result, req.user.category_id, function (msg) {
-                    if (msg == "success") {
-                        User.findAll({
-                            where: {
-                                category_id: req.user.category_id
+                exTJ.exToJson(req, function (result) {
+                    if (result == 'fail') {
+                        res.render('admin/userManage', {userList: list, msg: req.flash('error'), type: "error"});
+                    }
+                    else {
+                        addRows.insert(result, req.user.category_id, function (msg) {
+                            if (msg == "success") {
+                                User.findAll({
+                                    where: {
+                                        category_id: req.user.category_id
+                                    }
+                                })
+                                    .then(function (result) {
+                                        res.render('admin/userManage', {
+                                            userList: result,
+                                            msg: "사용자 엑셀 추가 성공했습니다.",
+                                            type: "success"
+                                        });
+                                    });
+
                             }
-                        })
-                            .then(function (rows) {
-                                res.render('admin/userManage', {userList: rows, msg: "사용자 엑셀 추가 성공했습니다."});
-                            });
-
+                        });
+                        //res.render('admin/userManage',{list : result});
                     }
                 });
-                //res.render('admin/userManage',{list : result});
-            }
+
+            });
         });
-
-    });
-
 });
 
 /*사용자 삭제*/
