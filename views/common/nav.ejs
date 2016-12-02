@@ -168,7 +168,7 @@
     $(function () {
         $.ajax({
             //데이터를 전송할 URL. TODO : Node.js 는 기본적으로 다른 도메인끼리의 ajax를 허용하지 않으므로 localhost가 아닌 external ip를 사용하면 데이터가 넘어오지 않는다. 그래서 모듈을 사용해줘야한다.
-            url: 'http://localhost:3000/main/navSet',
+            url: '/main/navSet',
             //서버가 리턴하는 데이터 타입( xml, json, script, html)
             dataType: 'json',
             //서버로 전송할 데이터 타입(POST,GET)
