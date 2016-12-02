@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>성공회대학교</title>
+    <% include ../common/css.ejs %>
+
+</head>
+
+<body class="nav-md">
+    <div class="container body">
+        <div class="main_container">
+            <% include ../common/nav.ejs %>
+
+                <!-- page content -->
+                <div class="right_col" role="main">
+                    <div class="">
+                        <div class="page-title">
+                            <div class="title_left">
+                                <h3><%=grade%>기 동문명단</h3>
+                            </div>
+
+                            <div class="title_right">
+                                <div class="col-md-8 col-sm-8 col-xs-12 form-group pull-right top_search">
+                                    <div class="form-group" style="background: #fff; margin-top: 10px;">
+                                        <div class="col-md-4 col-sm-4 col-xs-6">
+                                          <form>
+                                          <select name="srchType" class="form-control">
+                                          <option value="0" <%= srchType == "0" ? "selected" : "" %>>검색 조건</option>
+                                          <option value="1" <%= srchType == "1" ? "selected" : "" %>>이름 검색</option>
+                                        </select>
+                                        </div>
+                                    </div>
+                                    <div class="input-group">
+                                        <input type="text" name="srchText" class="form-control" value="<%= srchText %>"  placeholder="검색">
+                                        <span class="input-group-btn">
+                                        <button class="btn btn-default" type="submit">찾기</button>
+                                    </span>
+                                    </div>
+                                  </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+
+                        <!--동문리스트 -->
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12 ">
+                                <div class="x_panel" id="list">
+                                    <div class="x_content" style="text-align:center;">
+
+                                        <!--돔 체이닝-->
+                                        <div id="innerList" style="margin:0 auto;">
+                                        <% if(userList!=null && userList!=""){%>
+                                          <% userList.forEach(function(user,idx){ %>
+                                            <div class="row col-md-6 col-sm-12 col-xs-12">
+                                                <div class="profile_details">
+                                                    <div class="well profile_view">
+                                                        <div class="col-md-12 col-xs-12 col-sm-12">
+                                                            <div class="left col-md-7 col-xs-7 col-sm-7">
+                                                                <h2>이름 :<%=user.user_name%></h2>
+                                                                <p>
+                                                                    기수 : <%=user.grade%>
+                                                                </p>
+                                                                <button type="button" class="btn btn-success btn-xs">
+                                                                  <i class="fa fa-phone"></i>
+                                                                </button>
+                                                                <button type="button" class="btn btn-primary btn-xs">
+                                                                  <i class="fa fa-envelope"> </i>
+                                                                </button>
+                                                            </div>
+                                                            <div class="right col-md-5 col-xs-5 col-sm-5 text-center">
+                                                                <img src="/res/production/images/user.png" alt="" class="img-circle img-responsive">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                          <%})%>
+                                        <%}%>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button id="add" type="button" value="4" class="btn btn-default" style="float:right;">더보기...</button>
+                            </div>
+                        </div>
+                        <!--/동문리스트 -->
+                    </div>
+
+                </div>
+                <!-- /page content -->
+        </div>
+        <!-- footer content -->
+        <footer>
+            <div class="pull-right">
+                성공회대학교 동문회 관리 시스템
+            </div>
+            <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+    </div>
+
+    <% include ../common/script.ejs %>
+    <script src="/res/assets/js/user/userManagerList.js"></script>
+</body>
+
+</html>
