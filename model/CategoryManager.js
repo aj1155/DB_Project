@@ -16,12 +16,6 @@ var CategoryManager = sequelize.define('categorymanager', {
        position:{
              type: Sequelize.STRING
        },
-       user_name:{
-         type:Sequelize.STRING
-       },
-       grade:{
-             type: Sequelize.INTEGER
-       }
  }, {
        freezeTableName: true, // Model tableName will be the same as the model name
        timestamps: false
