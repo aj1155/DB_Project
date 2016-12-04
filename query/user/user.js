@@ -327,4 +327,14 @@ user.selectOptions = function(param,callback){
     });
   });
 };
+/*user manager search Procedure*/
+user.selectManagerOptions = function(param,callback){
+  pool.getConnection(function(err,connection){
+    var query = "CALL user_manager_search(?,?,?,?,?,?)";
+    connection.query(query,param,function(err,row){
+        connection.release();
+        callback(row);
+    });
+  });
+};
 module.exports = user;
