@@ -30,6 +30,63 @@ user.SelectUserGrade = function(category_id, grade, callback) {
   });
 };
 
+user.GradeManagerInsert = function(params, callback) {
+  pool.getConnection(function(err, connection) {
+    connection.query("insert into grademanager(category_id, grade, user_id, user_name, position) values (?,?,?,?,?)", params, function(err, row) {
+        connection.release();
+        callback(true);
+    });
+  });
+};
+
+/*기수별 임원명단 전체 쿼리*/
+user.FindAllGradeManager = function(category_id, callback) {
+  pool.getConnection(function(err, connection) {
+    connection.query("select * from user join grademanager on user.id = grademanager.user_id where grademanager.category_id=? order by grademanager.grade",[category_id],function(err, rows) {
+      connection.release();
+      callback(rows);
+    });
+  });
+};
+
+/*카테고리 임원명단 전체 쿼리*/
+user.FindAllCategoryManager = function(category_id, callback) {
+  pool.getConnection(function(err, connection) {
+    connection.query("select * from categorymanager where category_id = ?",[category_id],function(err, rows) {
+      connection.release();
+      callback(rows);
+    });
+  });
+};
+
+/*기수별임원명단에 해당 회원이 있는지 검색하는 쿼리문*/
+user.FindgradeManager = function(user_id, callback) {
+  pool.getConnection(function(err, connection) {
+    connection.query("select * from grademanager where user_id=?",[user_id], function(err, row) {
+      connection.release();
+      if(err) {
+        callback(false);
+      }
+      else {
+        callback(row[0]);
+      }
+    });
+  });
+};
+/*해당카테고리의 임원 명단에 해당 회원이 있는지 검색하는 쿼리문*/
+user.FindcategoryManager = function(user_id, callback) {
+  pool.getConnection(function(err, connection) {
+    connection.query("select * from categorymanager where id=?",[user_id], function(err, row) {
+      connection.release();
+      if(err) {
+        callback(false);
+      }
+      else {
+        callback(row[0]);
+      }
+    });
+  });
+};
 /*profile사진이 있는지 검색하는 쿼리문*/
 user.FindProfileImage = function (id, callback) {
 

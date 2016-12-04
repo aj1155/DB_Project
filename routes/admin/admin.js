@@ -65,6 +65,80 @@ router.post('/guide',function(req,res,next){
 
 
 });
+/*기수별 임원 관리페이지 get라우트*/
+router.get('/gradeManager', function(req, res, next) {
+  sequelize.authenticate().then(function(err){
+    User.findAll({
+      where : {
+        category_id : req.user.category_id
+      },
+      limit: 10
+    })
+    .then(function(rows){
+      userDao.FindAllGradeManager(req.user.category_id, function(result) {
+        res.render('admin/gradeManager',{userList:rows, msg:"", type:"", gradeManagerList : result});
+      });
+    });
+  })
+  .catch(function(err){
+    res.send(err);
+  });
+});
+
+
+/*기수별 임원 추가페이지 get 라우트*/
+router.get('/gradeManagerAdd/:id', function(req, res, next) {
+  var id = req.params.id;
+  var result2;
+  userDao.FindgradeManager(id, function(rows) {
+    if(rows === undefined) {
+      rows = false;
+    }
+    userDao.FindOne(id, req.body.category_id, function(result) {
+      res.render('admin/gradeManagerAdd',{manager : result, message:req.flash('error'), managerbool : rows});
+    });
+  });
+});
+
+
+/*기수별 임원 추가페이지 post라우트*/
+router.post('/gradeManagerAdd/:id', function(req, res, next) {
+  var id = req.params.id;
+  var params = [req.user.category_id, req.body.grade, id, req.body.name, req.body.position];
+  userDao.GradeManagerInsert(params, function(result) {
+    if(result){
+      req.flash('error',"정상적으로 임원이 추가되었습니다.");
+      return res.redirect('/admin/gradeManagerAdd/'+id);
+    }else{
+      req.flash('error',"추가 실패, 다시 시도해주세요.");
+      return res.redirect('/admin/gradeManagerAdd/'+id);
+    }
+  });
+});
+
+
+/*카테고리 임원 관리페이지 라우트*/
+router.get('/categoryManager', function(req, res, next) {
+  sequelize.authenticate().then(function(err){
+    User.findAll({
+      where : {
+        category_id : req.user.category_id
+      },
+      limit: 10
+    })
+    .then(function(rows){
+      userDao.FindAllCategoryManager(req.user.category_id,function(result) {
+        res.render('admin/categoryManager',{userList:rows, msg:"", type:"", categoryManagerList : result});
+      });
+    });
+  })
+  .catch(function(err){
+    res.send(err);
+  });
+});
+
+
+
 
 //작성자 : 강철진 11/11 내용 :user 추가 편집 삭제 라우트설정
 router.get('/userManage', function(req, res ,next) {
@@ -84,6 +158,7 @@ router.get('/userManage', function(req, res ,next) {
     res.send(err);
   });
 });
+
 router.get('/userManage/:msg', function(req, res ,next) {
   var msg="";
   console.log(req.params.msg);
@@ -111,7 +186,7 @@ router.get('/userManage/:msg', function(req, res ,next) {
 router.get('/userEdit/:id', function(req, res, next) {
   var id = req.params.id;
   userDao.FindOne(id, req.user.category_id, function(rows){
-    res.render('admin/userEdit', {edit : rows, message : req.flash('error')});
+    res.render('admin/userEdit', {edit : rows, gm : result1, cm : result2, message : req.flash('error')});
   });
 });
 
@@ -119,13 +194,19 @@ router.post('/userEdit/:id', function(req, res, next) {
   var id = req.params.id;
 
   var params = [req.body.login_id, req.body.name, req.body.grade, req.body.social_status, req.body.phone_number, req.body.company_number, req.body.email, req.body.birth, id];
-  console.log('params length : ' + params.length);
-  console.log(params[1]);
   for(var i=0; i<params.length; i++) {
     if(params[i] === null || params[i] === '') {
       req.flash('error', "변경실패, 빈 값이 있습니다.");
       return res.redirect('/admin/userEdit/'+id);
     }
+  }
+  var categorymanager = false;
+  var grademanager=false;
+  if(req.body.grademanager){
+      categorymanager = true;
+  }
+  if(req.body.categorymanager){
+      grademanager = true;
   }
   userDao.updateOne(params,function(result){
     if(result){
