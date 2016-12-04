@@ -24,7 +24,7 @@
               <div class="">
                 <div class="page-title">
                   <div class="title_left">
-                    <h3>기수별 임원 추가</h3>
+                    <h3>기수별 임원 편집</h3>
                   </div>
 
 
@@ -49,13 +49,13 @@
                         <div class="col-md-12 col-sm-6 col-xs-12">
                           <div class="x_panel">
                             <div class="x_title">
-                              <h2>추가하실 임원의 직책명을 적어주십시오.</h2>
+                              <h2>편집하실 임원의 직책명을 수정해주십시오.</h2>
                               <div class="clearfix"></div>
                             </div>
                             <div class="x_content">
                                 <div id="myTabContent" class="tab-content">
                                   <% if (message && message != "") { %>
-                                     <% if(message == "정상적으로 임원이 추가되었습니다.") { %>
+                                     <% if(message == "정상적으로 임원이 수정되었습니다.") { %>
                                         <div class="alert alert-success"><%= message %></div>
                                      <% } else if (message == "변경실패, 직책명을 적어주세요.") {%>
                                         <div class="alert alert-danger"><%= message %></div>
@@ -133,18 +133,11 @@
                                         </div>
 
                                         <div class="form-group">
-                                          <%if(managerbool == false) { %>
+
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12">직책명</label>
                                             <div class="col-md-5 col-sm-9 col-xs-12">
-                                                <input type="text" name="position" class="form-control"/>
+                                                <input type="text" name="position" class="form-control" value="<%= managerbool.position %>"/>
                                             </div>
-                                          <% } else if(managerbool != false) {%>
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">직책명</label>
-                                            <div class="col-md-5 col-sm-9 col-xs-12">
-                                                <input type="text" name="position" class="form-control" readonly="readonly" value="<%= managerbool.position %>"/>
-                                                <p>*이미 직책을 맡고 있습니다.</p>
-                                            </div>
-                                          <% } %>
                                         </div>
 
 
@@ -152,12 +145,8 @@
                                       </br>
                                         <div class="form-group">
                                           <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-                                            <%if(managerbool == false) { %>
-                                              <button type="submit" class="btn btn-success">임원추가</button>
+                                              <button type="submit" class="btn btn-success">임원수정</button>
                                               <button type="button" class="btn btn-fail" onclick="location.href='/admin/gradeManager'">취소</button>
-                                            <% } else if(managerbool != false) { %>
-                                              <button type="button" class="btn btn-fail" onclick="location.href='/admin/gradeManager'">목록으로</button>
-                                            <% } %>
                                           </div>
                                         </div>
                                       </br>

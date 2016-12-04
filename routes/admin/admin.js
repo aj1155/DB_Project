@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../../model/User');
+var GradeManager = require('../../model/GradeManager');
+var CategoryManager = require('../../model/CategoryManager');
 var userDao = require('../../query/user/user');
 var Introduce = require('../../model/Introduce');
 var sequelize = require('../../join/sequelize'); /* node.js orm sequelize 설정을 불러옴 */
@@ -89,7 +91,6 @@ router.get('/gradeManager', function(req, res, next) {
 /*기수별 임원 추가페이지 get 라우트*/
 router.get('/gradeManagerAdd/:id', function(req, res, next) {
   var id = req.params.id;
-  var result2;
   userDao.FindgradeManager(id, function(rows) {
     if(rows === undefined) {
       rows = false;
@@ -101,10 +102,15 @@ router.get('/gradeManagerAdd/:id', function(req, res, next) {
 });
 
 
+
 /*기수별 임원 추가페이지 post라우트*/
 router.post('/gradeManagerAdd/:id', function(req, res, next) {
   var id = req.params.id;
   var params = [req.user.category_id, req.body.grade, id, req.body.name, req.body.position];
+  if(req.body.position === "" || req.body.position === null) {
+    req.flash('error', "변경실패, 직책명을 적어주세요.");
+    return res.redirect('/admin/gradeManagerAdd/'+id);
+  }
   userDao.GradeManagerInsert(params, function(result) {
     if(result){
       req.flash('error',"정상적으로 임원이 추가되었습니다.");
@@ -116,8 +122,54 @@ router.post('/gradeManagerAdd/:id', function(req, res, next) {
   });
 });
 
+/*기수별 임원 편집페이지 get라우트*/
+router.get('/gradeManagerEdit/:id', function(req, res, next) {
+  var id = req.params.id;
+  userDao.FindgradeManager(id, function(rows) {
+    if(rows === undefined) {
+      rows = false;
+    }
+    userDao.FindOne(id, req.body.category_id, function(result) {
+      res.render('admin/gradeManagerEdit',{manager : result, message:req.flash('error'), managerbool : rows});
+    });
+  });
+});
 
-/*카테고리 임원 관리페이지 라우트*/
+/*기수별 임원 편집페이지 post라우트*/
+router.post('/gradeManagerEdit/:id', function(req, res, next) {
+  var id = req.params.id;
+  var params = [req.body.position, id];
+  if(req.body.position === "" || req.body.position === null) {
+    req.flash('error', "변경실패, 직책명을 적어주세요.");
+    return res.redirect('/admin/gradeManagerEdit/'+id);
+  }
+  userDao.GradeManagerUpdate(params, function(result) {
+    if(result){
+      req.flash('error',"정상적으로 임원이 수정되었습니다.");
+      return res.redirect('/admin/gradeManagerEdit/'+id);
+    }else{
+      req.flash('error',"추가 실패, 다시 시도해주세요.");
+      return res.redirect('/admin/gradeManagerEdit/'+id);
+    }
+  });
+});
+/*기수별 임원 삭제 라우트*/
+router.delete('/gManager',function(req,res,next) {
+    var list = req.body.list.replace(/[^0-9.,]/g, "");
+    console.log('1111'+list);
+    var id = list.split(',');
+      GradeManager.destroy({
+              where:{
+                id : id
+              }
+      })
+      .then(function(result){
+        console.log(result);
+        res.json('success');
+      });
+});
+
+/*카테고리 임원 관리페이지 get라우트*/
 router.get('/categoryManager', function(req, res, next) {
   sequelize.authenticate().then(function(err){
     User.findAll({
@@ -137,6 +189,80 @@ router.get('/categoryManager', function(req, res, next) {
   });
 });
 
+/*카테고리 임원 추가페이지 get 라우트*/
+router.get('/categoryManagerAdd/:id', function(req, res, next) {
+  var id = req.params.id;
+  userDao.FindcategoryManager(id, function(rows) {
+    if(rows === undefined) {
+      rows = false;
+    }
+    userDao.FindOne(id, req.body.category_id, function(result) {
+      res.render('admin/categoryManagerAdd',{manager : result, message:req.flash('error'), managerbool : rows});
+    });
+  });
+});
+/*카테고리 임원 추가페이지 post라우트*/
+router.post('/categoryManagerAdd/:id', function(req, res, next) {
+  var id = req.params.id;
+  var params = [req.user.category_id, id, req.body.position];
+  if(req.body.position === "" || req.body.position === null) {
+    req.flash('error', "변경실패, 직책명을 적어주세요.");
+    return res.redirect('/admin/categoryManagerAdd/'+id);
+  }
+  userDao.CategoryManagerInsert(params, function(result) {
+    if(result){
+      req.flash('error',"정상적으로 임원이 추가되었습니다.");
+      return res.redirect('/admin/categoryManagerAdd/'+id);
+    }else{
+      req.flash('error',"추가 실패, 다시 시도해주세요.");
+      return res.redirect('/admin/categoryManagerAdd/'+id);
+    }
+  });
+});
+/*카테고리 임원 편집페이지 get라우트*/
+router.get('/categoryManagerEdit/:id', function(req, res, next) {
+  var id = req.params.id;
+  userDao.FindcategoryManager(id, function(rows) {
+    if(rows === undefined) {
+      rows = false;
+    }
+    userDao.FindOne(id, req.body.category_id, function(result) {
+      res.render('admin/categoryManagerEdit',{manager : result, message:req.flash('error'), managerbool : rows});
+    });
+  });
+});
+
+/*카테고리 임원 편집페이지 post라우트*/
+router.post('/categoryManagerEdit/:id', function(req, res, next) {
+  var id = req.params.id;
+  var params = [req.body.position, id];
+  if(req.body.position === "" || req.body.position === null) {
+    req.flash('error', "변경실패, 직책명을 적어주세요.");
+    return res.redirect('/admin/categoryManagerEdit/'+id);
+  }
+  userDao.CategoryManagerUpdate(params, function(result) {
+    if(result){
+      req.flash('error',"정상적으로 임원이 수정되었습니다.");
+      return res.redirect('/admin/categoryManagerEdit/'+id);
+    }else{
+      req.flash('error',"추가 실패, 다시 시도해주세요.");
+      return res.redirect('/admin/categoryManagerEdit/'+id);
+    }
+  });
+});
+/*기수별 임원 삭제 라우트*/
+router.delete('/cManager',function(req,res,next) {
+    var list = req.body.list.replace(/[^0-9.,]/g, "");
+    var id = list.split(',');
+      CategoryManager.destroy({
+              where:{
+                id : id
+              }
+      })
+      .then(function(result){
+        res.json('success');
+      });
+});
 
 
 

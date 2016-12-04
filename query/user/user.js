@@ -30,9 +30,49 @@ user.SelectUserGrade = function(category_id, grade, callback) {
   });
 };
 
+/*카테고리 임원 수정 쿼리문*/
+user.CategoryManagerUpdate = function(params, callback) {
+  pool.getConnection(function(err, connection) {
+    connection.query("update categorymanager set position=? where user_id = ?", params, function(err, result){
+      connection.release();
+      if(err) {
+        callback(false);
+      }
+      else {
+        callback(true);
+      }
+    });
+  });
+};
+/*기수별 임원 수정 쿼리문*/
+user.GradeManagerUpdate = function(params, callback) {
+  pool.getConnection(function(err, connection) {
+    connection.query("update grademanager set position=? where user_id = ?", params, function(err, result) {
+      connection.release();
+      if(err) {
+        callback(false);
+      }
+      else {
+        callback(true);
+      }
+    });
+  });
+};
+
+/*기수별 임원 추가 쿼리*/
 user.GradeManagerInsert = function(params, callback) {
   pool.getConnection(function(err, connection) {
     connection.query("insert into grademanager(category_id, grade, user_id, user_name, position) values (?,?,?,?,?)", params, function(err, row) {
+        connection.release();
+        callback(true);
+    });
+  });
+};
+
+/*최고경영 임원 추가 쿼리*/
+user.CategoryManagerInsert = function(params, callback) {
+  pool.getConnection(function(err, connection) {
+    connection.query("insert into categorymanager(category_id, user_id, position) values (?,?,?)", params, function(err, row) {
         connection.release();
         callback(true);
     });
@@ -52,7 +92,7 @@ user.FindAllGradeManager = function(category_id, callback) {
 /*카테고리 임원명단 전체 쿼리*/
 user.FindAllCategoryManager = function(category_id, callback) {
   pool.getConnection(function(err, connection) {
-    connection.query("select * from categorymanager where category_id = ?",[category_id],function(err, rows) {
+    connection.query("select * from user join categorymanager on user.id = categorymanager.user_id where categorymanager.category_id = ?",[category_id],function(err, rows) {
       connection.release();
       callback(rows);
     });
@@ -76,7 +116,7 @@ user.FindgradeManager = function(user_id, callback) {
 /*해당카테고리의 임원 명단에 해당 회원이 있는지 검색하는 쿼리문*/
 user.FindcategoryManager = function(user_id, callback) {
   pool.getConnection(function(err, connection) {
-    connection.query("select * from categorymanager where id=?",[user_id], function(err, row) {
+    connection.query("select * from categorymanager where user_id=?",[user_id], function(err, row) {
       connection.release();
       if(err) {
         callback(false);

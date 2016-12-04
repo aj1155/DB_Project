@@ -24,7 +24,7 @@
               <div class="">
                 <div class="page-title">
                   <div class="title_left">
-                    <h3>기수별 임원 추가</h3>
+                    <h3>최고경영 임원 추가</h3>
                   </div>
 
 
@@ -154,9 +154,9 @@
                                           <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
                                             <%if(managerbool == false) { %>
                                               <button type="submit" class="btn btn-success">임원추가</button>
-                                              <button type="button" class="btn btn-fail" onclick="location.href='/admin/gradeManager'">취소</button>
+                                              <button type="button" class="btn btn-fail" onclick="location.href='/admin/categoryManager'">취소</button>
                                             <% } else if(managerbool != false) { %>
-                                              <button type="button" class="btn btn-fail" onclick="location.href='/admin/gradeManager'">목록으로</button>
+                                              <button type="button" class="btn btn-fail" onclick="location.href='/admin/categoryManager'">목록으로</button>
                                             <% } %>
                                           </div>
                                         </div>
@@ -190,7 +190,6 @@
     </div>
 
     <% include ../common/script.ejs %>
-    <script src="/res/assets/js/admin/userManage.js"></script>
 
 </body>
 </html>
