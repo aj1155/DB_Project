@@ -388,4 +388,14 @@ user.selectManagerOptions = function(param,callback){
     });
   });
 };
+/*user list search Procedure*/
+user.selectAllOptions = function(param,callback){
+  pool.getConnection(function(err,connection){
+    var query = "CALL user_list_search(?,?,?,?,?)";
+    connection.query(query,param,function(err,row){
+        connection.release();
+        callback(row);
+    });
+  });
+};
 module.exports = user;
