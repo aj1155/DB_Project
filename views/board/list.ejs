@@ -36,7 +36,7 @@
                 <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
                   <div class="x_panel">
                     <div class="x_title">
-                      <%if(board_id=="1"){%>
+                      <%if(board_id%2==0){%>
                       <h2>공지사항</h2>
                       <%}else{%>
                         <h2>자유게시판</h2>
@@ -81,11 +81,11 @@
                         </thead>
                         <tbody>
                           <% for(var i=0; i<row.length; i++){%>
-                          <tr>
-                            <td><a data-url="/board/read/<%=row[i].id%>"><%=row[i].ROWNUM%></a></td>
-                            <td><%=row[i].title%></td>
-                            <td><%=row[i].user_name%></td>
-                            <td><%=row[i].create_time%></td>
+                          <tr data-url="/board/read/<%=board_id%>/<%=row[i].id%>">
+                            <td><%=row[i].ROWNUM%></td>
+                            <td style="overflow:hidden; text-overflow:ellipsis;"><%=row[i].title%></td>
+                            <td style="overflow:hidden; text-overflow:ellipsis;"><%=row[i].user_name%></td>
+                            <td style="overflow:hidden; text-overflow:ellipsis;"><%=row[i].create_time%></td>
                           </tr>
                           <%}%>
                         </tbody>
@@ -118,5 +118,13 @@
   </div>
     <% include ../common/script.ejs %>
   <script src="/res/assets/js/board/board.js"></script>
+  <script>
+    $(function(){
+      $(document).on("click","tr",function(){
+        event.stopPropagation();
+        location.href = $(this).attr("data-url");
+      });
+    });
+  </script>
 </body>
 </html>

@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var userDao = require('../../query/user/user');
-
+var boardDAO = require('../../query/board/board');
 /*
  req.user 정보 :
  {"id":2,"login_id":"01021248619","name":"강준구","password":"","phone_number":"1021248619","company_number":"0","email":"jungu942@naver.com","category_id":1,"grade":3,"social_status":"학생","is_admin":0,"is_phone_number":0,"is_social_status":0,"is_company_number":0,"is_email":0,"is_image":0,"birth":"931104"}
@@ -48,7 +48,11 @@ router.post('/navSet', function (req, res, next) {
 });
 
 router.get('/', function (req, res, next) {
-    return res.render('main/main');
+  boardDAO.main1(req.user.category_id,function(board2){
+    boardDAO.main2(req.user.category_id,function(board1){
+        return res.render('main/main',{row2:board1,row1:board2});
+    });
+  });
 });
 
 
