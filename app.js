@@ -54,7 +54,6 @@ app.use('/board', board);
 app.use(function (req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
-    console.error("error1 "+err.status);
     next(err);
 });
 

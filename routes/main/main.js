@@ -37,12 +37,11 @@ router.post('/navSet', function (req, res, next) {
 
         //이미지 데이터가 있는경우
 
-        var path = __dirname+"/../../public/profileImage/"+req.user.login_id+"/profile.jpg";
+        var path = __dirname+"/../../public/profileImage/"+req.user.id+"_Profile.jpg";
         fs.stat(path, function (err, stats) {
             var img = "/res/production/images/user.png";;
             if(!err){
-                console.error("no err"+err);
-                img = "/profileImage/"+req.user.login_id+"/profile.jpg";
+                img = "/profileImage/"+req.user.id+"_Profile.jpg";
             }
 
             return res.send({
