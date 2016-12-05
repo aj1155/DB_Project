@@ -10,7 +10,7 @@ $(document).ready(function(){
         var commentParentText = '<tr id="r1" name="commentParentCode">'+
                                       '<input type="hidden" name="comment_id" value='+result.id+'/>'+
                                           '<td colspan=2>'+
-                                               '<strong>'+result.user_name+'</strong> '+result.write_time+' <a style="cursor:pointer;" name="pAdd">답글</a> | <a style="cursor:pointer;" name="pDel">삭제</a>'+
+                                               '<strong>'+result.user_name+'</strong> '+result.write_time+' <a style="cursor:pointer;" name="pDel">삭제</a>'+
                                                '<p>'+message+'</p>'+
                                           '</td>'+
                                   '</tr>';
@@ -79,7 +79,7 @@ $(document).on("click","#commentChildSubmit",function(){
                                   '<input type="hidden" name="comment_id" value='+results.id+'/>'+
                                   '<input type="hidden" name="group_id" value='+results.group_id+'/>'+
                                   '<td style="width:99%">'+
-                                    '<strong>'+results.user_name+'</strong> '+date+' <a style="cursor:pointer;" name="cAdd">답글</a> | <a style="cursor:pointer;" name="cDel">삭제</a>'+
+                                    '<strong>'+results.user_name+'</strong> '+date+'<a style="cursor:pointer;" name="cDel">삭제</a>'+
                                       '<p>RE:'+message+'</p>'+
                                   '</td>'+
                              '</tr>';

@@ -92,13 +92,8 @@
                             커뮤니티
                             <span class="fa fa-chevron-down"></span>
                         </a>
-                        <ul class="nav child_menu">
-                            <li>
-                                <a href="tables.html">공지사항</a>
-                            </li>
-                            <li data-url="/board/list">
-                                <a>자유게시판</a>
-                            </li>
+                        <ul id=board_list class="nav child_menu">
+
                         </ul>
                     </li>
                     <!--관리자 메뉴바-->
@@ -191,6 +186,8 @@
                     if(result['is_admin'] == 1){
                         $("#admin_menu").css("display","inline");
                     }
+                    $('#board_list').append('<li><a href="/board/list/<%= user.category_id * 2 %>">공지사항</a><li>');
+                    $('#board_list').append('<li><a href="/board/list/<%= user.category_id * 2 - 1 %>">자유게시판</a></li>');
                 }
             }
         });

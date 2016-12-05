@@ -16,6 +16,8 @@ var flash = require('connect-flash');
 var app = express();
 var board = require('./routes/board/board');
 var cors = require('cors');
+var formidable = require('formidable');
+var mime = require('mime');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
