@@ -28,6 +28,7 @@
     "sequelize": "^3.25.0",
     "serve-favicon": "~2.3.0",
     "xls-to-json-lc": "^0.3.3",
-    "xlsx-to-json-lc": "^0.2.5"
+    "xlsx-to-json-lc": "^0.2.5",
+    "multiparty":"~4.1.2"
   }
 }
