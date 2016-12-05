@@ -20,6 +20,17 @@ var mysql = require('mysql');
 var pool = require('../../join/connection');
 
 var user = {};
+
+//카테고리명 
+user.GetCategoryName = function(id,callback){
+  pool.getConnection(function(err,connection){
+    connection.query("SELECT c.name FROM user u LEFT JOIN category c ON u.category_id = c.id WHERE u.id=?",[id],function(err,row){
+      connection.release();
+      callback(row[0]);
+    });
+  });
+};
+
 /**/
 user.SelectUserGrade = function(category_id, grade, callback) {
   pool.getConnection(function(err, connection) {

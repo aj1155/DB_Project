@@ -4,7 +4,7 @@
         <div class="navbar nav_title" style="border: 0;">
             <a class="site_title">
                 <i class="fa fa-university"></i>
-                <span data-url="/main">함께맞는비</span>
+                <span id="categoryName" data-url="/main"></span>
             </a>
         </div>
 
@@ -28,6 +28,7 @@
         <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
             <div class="menu_section">
                 <h3 id="grade">기수</h3>
+                <h3 id="admin" style="display:none;" >관리자</h3>
                 <ul class="nav side-menu">
                     <li>
                         <a>
@@ -93,10 +94,10 @@
                             <span class="fa fa-chevron-down"></span>
                         </a>
                         <ul class="nav child_menu">
-                            <li>
-                                <a href="tables.html">공지사항</a>
+                            <li data-url="/board/list/<%= user.category_id *2 -1 %>">
+                                <a>공지사항</a>
                             </li>
-                            <li data-url="/board/list">
+                            <li data-url="/board/list/<%= user.category_id *2 %>">
                                 <a>자유게시판</a>
                             </li>
                         </ul>
@@ -190,7 +191,10 @@
                     //관리자 페이지 보이기
                     if(result['is_admin'] == 1){
                         $("#admin_menu").css("display","inline");
+                        $("#grade").hide();
+                        $("#admin").show();
                     }
+                    $("#categoryName").append(result['cat_name']);
                 }
             }
         });
