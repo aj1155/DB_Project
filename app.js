@@ -68,27 +68,22 @@ app.get('/favicon.ico', function (req, res) {
 // will print stacktrace
 if (app.get('env') === 'development') {
     app.use(function (err, req, res, next) {
+        var message="";
+        var code="";
         if(err.status == 404){
-            res.render('common/page_404',{
-                message: err.message,
-                error: err
-            });
+            message="404 error";
+            code = "404";
         }else if(err.status == 403){
-            res.render('common/page_403',{
-                message: err.message,
-                error: err
-            });
-        }else if(err.status == 500){
-            res.render('common/page_500',{
-                message: err.message,
-                error: err
-            });
+            message="403 error";
+            code = "403";
         }else{
-            res.render('common/page_error',{
-                message: err.message,
-                error: err
-            });
+            message="500 error";
+            code = "500";
         }
+        return res.render('common/error_page',{
+            message: message,
+            code: code
+        });
     });
 }
 

@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>403 Page </title>
+    <title>error Page </title>
     <% include css.ejs %>
 </head>
 
@@ -18,9 +18,9 @@
         <div class="col-md-12">
             <div class="col-middle">
                 <div class="text-center text-center">
-                    <h1 class="error-number">403</h1>
-                    <h2>접근 거절</h2>
-                    <p>
+                    <h1 class="error-number"><%=code%></h1>
+                    <h2><%=message%> </h2>
+                    <p> 메인 페이지로 이동하여 실행해주세요
                     </p>
                     <div class="mid_center">
                         <a href="/main/main.ejs">메인 페이지로 이동</a>
@@ -31,7 +31,6 @@
         <!-- /page content -->
     </div>
 </div>
-
 <% include script.ejs %>
 </body>
 </html>
