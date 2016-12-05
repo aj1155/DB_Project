@@ -37,20 +37,22 @@ router.post('/navSet', function (req, res, next) {
 
         //이미지 데이터가 있는경우
 
-        var path = __dirname+"/../../public/profileImage/"+req.user.id+"_Profile.jpg";
+        var path = __dirname + "/../../public/profileImage/" + req.user.id + "_Profile.jpg";
         fs.stat(path, function (err, stats) {
-            var img = "/res/production/images/user.png";;
-            if(!err){
-                img = "/profileImage/"+req.user.id+"_Profile.jpg";
+            var img = "/res/production/images/user.png";
+            if (!err) {
+                img = "/profileImage/" + req.user.id + "_Profile.jpg";
             }
-
-            return res.send({
-                result: true,
-                name: req.user.name,
-                grade: req.user.grade,
-                profile: img,
-                maxGrade: grade.maxGrade,
-                is_admin: req.user.is_admin
+            userDao.GetCategoryName(req.user.id, function (category_name) {
+                return res.send({
+                    result: true,
+                    name: req.user.name,
+                    grade: req.user.grade,
+                    profile: img,
+                    maxGrade: grade.maxGrade,
+                    is_admin: req.user.is_admin,
+                    cat_name: category_name.name
+                });
             });
         });
     });
