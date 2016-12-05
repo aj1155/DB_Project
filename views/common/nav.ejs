@@ -4,7 +4,7 @@
         <div class="navbar nav_title" style="border: 0;">
             <a class="site_title">
                 <i class="fa fa-university"></i>
-                <span data-url="/main">함께맞는비</span>
+                <span id="categoryName" data-url="/main"></span>
             </a>
         </div>
 
@@ -28,6 +28,7 @@
         <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
             <div class="menu_section">
                 <h3 id="grade">기수</h3>
+                <h3 id="admin" style="display:none;" >관리자</h3>
                 <ul class="nav side-menu">
                     <li>
                         <a>
@@ -93,10 +94,10 @@
                             <span class="fa fa-chevron-down"></span>
                         </a>
                         <ul class="nav child_menu">
-                            <li>
-                                <a href="tables.html">공지사항</a>
+                            <li data-url="/board/list/<%= user.category_id *2 -1 %>">
+                                <a>공지사항</a>
                             </li>
-                            <li data-url="/board/list">
+                            <li data-url="/board/list/<%= user.category_id *2 %>">
                                 <a>자유게시판</a>
                             </li>
                         </ul>
@@ -110,17 +111,23 @@
                         </a>
                         <ul class="nav child_menu">
                             <!-- 하단 리스트 바-->
-                            <li data-url="/admin/request">
+                            <!-- <li data-url="/admin/request">
                                 <a>요청 관리</a>
                             </li>
                             <li data-url="/admin/send">
                                 <a>문자/메일 작성</a>
-                            </li>
+                            </li> -->
                             <li data-url="/admin/guide">
                                 <a>안내페이지 수정</a>
                             </li>
                             <li data-url="/admin/userManage">
                                 <a>회원 관리</a>
+                            </li>
+                            <li data-url="/admin/categoryManager">
+                                <a>최고경영 임원 관리</a>
+                            </li>
+                            <li data-url="/admin/gradeManager">
+                                <a>기수별 임원 관리</a>
                             </li>
                         </ul>
                     </li>
@@ -168,7 +175,7 @@
     $(function () {
         $.ajax({
             //데이터를 전송할 URL. TODO : Node.js 는 기본적으로 다른 도메인끼리의 ajax를 허용하지 않으므로 localhost가 아닌 external ip를 사용하면 데이터가 넘어오지 않는다. 그래서 모듈을 사용해줘야한다.
-            url: 'http://localhost:3000/main/navSet',
+            url: '/main/navSet',
             //서버가 리턴하는 데이터 타입( xml, json, script, html)
             dataType: 'json',
             //서버로 전송할 데이터 타입(POST,GET)
@@ -185,12 +192,15 @@
                     //max 기수만큼 리스트 만듬
                     for(var i = 0; i < result['maxGrade']; i++) {
                         $('#grade_list1').append('<li class="sub_menu" name="' + (i+1) + '" ' + '><a href="/users/userGradeList/<%= user.category_id %>/'+(i+1)+'">'+(i+1)+'기</a></li>');
-                        $('#grade_list2').append('<li><a>'+(i+1)+'기</a></li>');
+                        $('#grade_list2').append('<li><a href="/users/userManagerList/<%= user.category_id %>/'+(i+1)+'">'+(i+1)+'기</a></li>');
                     }
                     //관리자 페이지 보이기
                     if(result['is_admin'] == 1){
                         $("#admin_menu").css("display","inline");
+                        $("#grade").hide();
+                        $("#admin").show();
                     }
+                    $("#categoryName").append(result['cat_name']);
                 }
             }
         });
