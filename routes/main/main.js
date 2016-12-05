@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var userDao = require('../../query/user/user');
+var fs = require('fs');
 
 /*
  req.user 정보 :
@@ -18,30 +19,40 @@ router.use('/', function (req, res, next) {
 });
 
 /*session user정보를 local에 저장하여 명시적으로 넘겨주지않아도
-ejs파일로 render할 시에 자동적으로 넘어감 세션값 사용시 user로 꺼내쓰면됨*/
-router.use(function(req, res, next) {
-  if(req.user) res.locals.user = req.user;
-  else res.locals.user = undefined;
-  next();
+ ejs파일로 render할 시에 자동적으로 넘어감 세션값 사용시 user로 꺼내쓰면됨*/
+router.use(function (req, res, next) {
+    if (req.user) res.locals.user = req.user;
+    else res.locals.user = undefined;
+    next();
 });
 
 //nav에서 ajax로 호출해서 유저 데이터 및 사진 등 nav를 초기화 하는 데이터를 가져온다.
 router.post('/navSet', function (req, res, next) {
-    userDao.GetMaxGrade(req.user.category_id,function(grade){
+    userDao.GetMaxGrade(req.user.category_id, function (grade) {
         //에러가 난 경우
-        if(!grade){
+        if (!grade) {
             return res.redirect('/main');
         }
-        userDao.FindProfileImage(req.user.id, function (data) {
-            //기본이미지
-            var img = "/res/production/images/user.png";
-            //이미지 데이터가 있는경우
-            if (data) {
-                //img를 base64로 인코딩해서 넣어준다.
-                img = "data:image/gif;base64," + new Buffer(data.data).toString('base64');
+        //기본이미지
+
+        //이미지 데이터가 있는경우
+
+        var path = __dirname+"/../../public/profileImage/"+req.user.login_id+"/profile.jpg";
+        fs.stat(path, function (err, stats) {
+            var img = "/res/production/images/user.png";;
+            if(!err){
+                console.error("no err"+err);
+                img = "/profileImage/"+req.user.login_id+"/profile.jpg";
             }
 
-            return res.send({result: true, name: req.user.name, grade: req.user.grade, profile: img,maxGrade:grade.maxGrade,is_admin:req.user.is_admin});
+            return res.send({
+                result: true,
+                name: req.user.name,
+                grade: req.user.grade,
+                profile: img,
+                maxGrade: grade.maxGrade,
+                is_admin: req.user.is_admin
+            });
         });
     });
 });
