@@ -67,6 +67,24 @@ router.post('/guide', function (req, res, next) {
 
 
 });
+/*user list select options */
+router.get('/userListSelectOptions',function(req,res,next){
+  var category_id = req.user.category_id;
+  var srchType = req.query.srchType;
+  var srchText = req.query.srchText;
+  if(req.query.srchType==null) srchType = 0;
+  var count = 10;
+  var param=[
+    srchType,srchText,category_id,0,count
+  ];
+    userDao.selectAllOptions(param,function(result){
+      if(result[0].length>0){
+        res.render('admin/userManage', {userList:result[0],msg:"",type:""});
+      }else{
+        res.render('admin/userManage', {userList:"",msg:"",type:""});
+      }
+    });
+});
 /*기수별 임원 관리페이지 get라우트*/
 router.get('/gradeManager', function (req, res, next) {
     sequelize.authenticate().then(function (err) {
@@ -267,6 +285,8 @@ router.delete('/cManager', function (req, res, next) {
             res.json('success');
         });
 });
+
+
 
 
 //작성자 : 강철진 11/11 내용 :user 추가 편집 삭제 라우트설정
