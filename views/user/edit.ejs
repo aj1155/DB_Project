@@ -99,7 +99,11 @@
                                     <br /><br />
                                     <!-- <div id="cma_image" style="width:100%; max-width:100%; display:none;"></div> -->
                                     <div id="cma_image" style="width:70%; max-width:70%;"></div>
-                                    <img src="<%= profileImg %>" alt="..." class="img-circle profile_img" id="profileImg">
+                                    <% if (profileImg && profileImg != "") { %>
+                                    <img src="/profileImage/user.png" alt="..." class="img-circle profile_img" id="profileImg">
+                                    <% } else {%>
+                                    <img src="/profileImage/<%= user.id %>_Profile.jpg" alt="..." class="img-circle profile_img" id="profileImg">
+                                    <% } %>
                                   </div>
                                   <button type="submit" class="btn btn-success">프로필 사진 수정</button>
                                 </form>
