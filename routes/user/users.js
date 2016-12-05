@@ -3,7 +3,22 @@ var router = express.Router();
 var pool = require('../../join/connection');
 var userDao = require('../../query/user/user');
 var multiparty = require('multiparty');
+var multer = require('multer');
 var fs = require('fs');
+var sequelize = require('../../join/sequelize');
+var CategoryManager = require('../../model/CategoryManager');
+var storage = multer.diskStorage({
+  destination:function(req,file,cb){
+    var path='../public/profileImage/';
+    cb(null,path)
+  },
+  filename:function(req,file,cb){
+    cb(null,req.user.id+'_Profile.jpg')
+  }
+});
+var upload = multer({storage:storage});
+
+
 
 /*session user정보를 local에 저장하여 ejs파일로
 명시적으로 넘겨주지않아도 자동적으로 넘어감 세션값 사용시 user로 꺼내쓰면됨*/
@@ -15,10 +30,20 @@ router.use(function(req, res, next) {
 
 /* GET users listing. */
 router.get('/contacts', function(req, res, next) {
-  userDao.FindGrade(req.user.id, req.user.category_id, function(result){
-    res.render('user/contacts', {user : req.user, grade : result});
+  sequelize.authenticate().then(function(err){
+    CategoryManager.findAll({
+      where : {
+        category_id : req.user.category_id
+      }
+    })
+    .then(function(rows){
+      res.render('user/contacts',{userList:rows,msg:"",type:""});
+    });
+
+  })
+  .catch(function(err){
+    res.send(err);
   });
-  /* res.render('user/contacts');*/
 });
 router.get('/profile',function(req,res,next){
   userDao.FindGrade(req.user.id, req.user.category_id, function(result){
@@ -54,30 +79,80 @@ router.get('/userGradeListMore/:category_id/:grade',function(req,res,next){
     srchType,srchText,category_id,grade,current,count
   ];
   userDao.selectOptions(param,function(result){
-    var data ={
-      len : result[0].length,
-      list : result[0],
-      msg : "success"
-    };
+    var data={};
+    if(result[0].length>0){
+      data ={
+        len : result[0].length,
+        list : result[0],
+        msg : "success"
+      };
+    }else{
+      data = {
+        msg : "noData"
+      }
+    }
     res.json(data);
   });
+});
+/*user manager 검색 목록 더보기 */
+router.get('/userManagerListMore/:category_id/:grade',function(req,res,next){
+  var grade = req.params.grade;
+  var category_id = req.params.category_id;
+  var srchType = req.query.srchType;
+  var srchText = req.query.srchText;
+  var current = Number(req.query.current)+1;
+  if(req.query.srchType==null) srchType = 0;
+  var count = 3;
+  var param=[
+    srchType,srchText,category_id,grade,current,count
+  ];
+  userDao.selectManagerOptions(param,function(result){
+    var data={};
+    if(result[0].length>0){
+      data ={
+        len : result[0].length,
+        list : result[0],
+        msg : "success"
+      };
+    }else{
+      data = {
+        msg : "noData"
+      }
+    }
+
+    res.json(data);
+  });
+});
+
+
+/*userManagerList*/
+router.get('/userManagerList/:category_id/:grade', function(req, res, next) {
+  var grade = req.params.grade;
+  var category_id = req.params.category_id;
+  var srchType = req.query.srchType;
+  var srchText = req.query.srchText;
+  if(req.query.srchType==null) srchType = 0;
+  var count = 3;
+  var param=[
+    srchType,srchText,category_id,grade,0,count
+  ];
+    userDao.selectManagerOptions(param,function(result){
+      res.render('user/userManagerList', {user : req.user, grade : grade, userList : result[0],srchType:srchType,srchText:srchText});
+    });
 });
 //마이페이지 회원정보수정
 router.get('/edit',function(req,res,next){
   userDao.FindGrade(req.user.id, req.user.category_id, function(result){
-    userDao.FindProfileImage(req.user.id,function(data){
-      var image = "/res/production/images/user.png";
-      //이미지 데이터가 있는경우
-      if (data) {
-          //img를 base64로 인코딩해서 넣어준다.
-          image = "data:image/*;base64,"+new Buffer(data.data,'base64').toString('ascii');
-      }
       userDao.SelectUserInfo(req.user.id,function(rows){
-        res.render('user/edit',{ user:req.user, message:req.flash('error'), grade:result, profileImg:image });
+        fs.stat('../public/profileImage/'+req.user.id+'_Profile.jpg',function(err,data){
+            var not_exist;
+            if(err) not_exist=err;
+            res.render('user/edit',{ user:req.user, message:req.flash('error'), grade:result, profileImg:not_exist });
+        });
       });
     });
   });
-});
+
 
 router.post('/edit',function(req,res,next){
   if (req.body.passwd != req.body.passwdCheck) {
@@ -100,23 +175,8 @@ router.post('/edit',function(req,res,next){
   });
 });
 
-router.post('/profile',function(req,res,next){
-  var form = new multiparty.Form();
-  form.parse(req,function(err,fields,files){
-    var img = files.cma_file[0];
-    fs.readFile(img.path,function(err,data){
-      var imgData=data.toString('base64');
-      userDao.SetProfileImg(req.user.id,img.size,imgData,function(result){
-        if(result){
-          req.flash('error',"프로필 사진이 변경되었습니다.");
-          return res.redirect('/users/edit');
-        }else{
-          req.flash('error',"프로필 사진 변경이 실패하였습니다.");
-          return res.redirect('/users/edit');
-        }
-      });
-    });
-  });
+router.post('/profile',upload.any(),function(req,res,next){
+  return res.redirect('/users/edit');
 });
 
 module.exports = router;

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <!-- Meta, title, CSS, favicons, etc. -->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>성공회대학교</title>
+
+        <% include ../common/css.ejs %>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+    </head>
+
+    <body class="nav-md">
+        <div class="container body">
+            <div class="main_container">
+                <% include ../common/nav.ejs %>
+
+            <!-- page content -->
+            <div class="right_col" role="main">
+              <div class="">
+                <div class="page-title">
+                  <div class="title_left">
+                    <h3>기수별 임원 관리</h3>
+                  </div>
+
+
+                </div>
+                <div class="clearfix"></div>
+
+                <div class="row">
+
+                  <div class="col-md-12 col-xs-12">
+                    <div class="x_panel">
+                      <!-- <div class="x_title">
+                        <h2>회원추가, 수정, 삭제</h2>
+                        <div class="clearfix"></div>
+                      </div> -->
+                      <div class="x_content">
+                        <br/>
+
+
+
+
+
+                        <div class="col-md-12 col-sm-6 col-xs-12">
+                          <div class="x_panel">
+                            <div class="x_title">
+                              <h2><i class="fa fa-bars"></i>작업하실 탭을 클릭해주세요</h2>
+                              <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+
+
+                              <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                                <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                                  <li role="presentation" class="active"><a href="#user_create" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">추가</a>
+                                  </li>
+                                  <li role="presentation" class=""><a href="#user_edit" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">편집</a>
+                                  </li>
+                                  <li role="presentation" class=""><a href="#user_delete" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">삭제</a>
+                                  </li>
+                                  <li role="presentation" class=""><a href="#user_list" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">리스트</a>
+                                  </li>
+                                </ul>
+                                <div id="myTabContent" class="tab-content">
+                                  <% if (msg && msg!="" && type=="error") { %>
+                                    <div class="alert alert-danger"><%= msg %></div>
+                                  <% }else if(msg && msg!="" && type=="success"){ %>
+                                    <div class="alert alert-success"><%= msg %></div>
+                                  <% } %>
+
+                                  <!-- 회원추가 탭 내용 시작 -->
+                                  <div role="tabpanel" class="tab-pane fade active in" id="user_create" aria-labelledby="home-tab">
+                                    </br>
+                                    <div class="col-md-5">
+
+
+                                        <h2>회원 리스트</h2>
+                                        <h>임원 목록에 추가시킬 회원을 클릭해주세요.</h>
+                                        <div class="col-md-12 col-sm-8 col-xs-12 form-group pull-right top_search">
+                                            <div class="form-group"  style="background: #fff; margin-top: 10px;">
+                                                <div class="col-md-4 col-sm-4 col-xs-4">
+                                                    <select class="form-control">
+                                                        <option>검색 조건</option>
+                                                        <option>이름 검색</option>
+                                                        <option>전화번호 검색</option>
+                                                        <option>기수 검색</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" placeholder="검색">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-default" type="button">찾기</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <table id="datatable-checkbox" class="table table-striped table-bordered bulk_action">
+                                          <thead>
+                                            <tr>
+                                              <th>이름</th>
+                                              <th>기수</th>
+                                              <th>전화번호</th>
+                                              <th>이메일</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                          <% if(userList!=null && userList!=""){%>
+                                              <% userList.forEach(function(user,idx){ %>
+                                            <tr onClick="location.href='/admin/gradeManagerAdd/<%=user.id%>'" style="cursor:pointer;">
+                                                 <td><%=user.name%></td>
+                                                 <td><%=user.grade%></td>
+                                                 <td><%=user.phone_number%></td>
+                                                 <td><%=user.email%></td>
+                                            </tr>
+                                              <% }) %>
+                                          <% } %>
+                                          </tbody>
+                                        </table>
+
+
+                                    </div>
+                                    <div class="col-md-1 col-sm-6 col-xs-6 "></div>
+
+                                    <!-- 회원추가에 리스트 시작 -->
+                                    <div class="col-md-6 col-sm-6 col-xs-6 ">
+                                      <table id="datatable-checkbox" class="table table-striped table-bordered bulk_action">
+                                        <h2>기수별 임원 리스트</h2>
+                                        <h>현재 임원에 속해있는 리스트입니다.</h>
+                                        <thead>
+                                          <tr>
+                                            <th>임원 이름</th>
+                                            <th>임원 기수</th>
+                                            <th>임원 전화번호</th>
+                                            <th>임원 이메일</th>
+                                            <th>임원 직책</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                        <% if(gradeManagerList!=null && gradeManagerList!=""){%>
+                                            <% gradeManagerList.forEach(function(manager,idx){ %>
+                                          <tr>
+                                               <td><%=manager.user_name%></td>
+                                               <td><%=manager.grade%></td>
+                                               <td><%=manager.phone_number%></td>
+                                               <td><%=manager.email%></td>
+                                               <td><%=manager.position%></td>
+                                          </tr>
+                                            <% }) %>
+                                        <% } %>
+                                        </tbody>
+                                      </table>
+
+                                    </div>
+                                    <!-- 회원추가에 리스트 끝 -->
+                                  </div>
+                                  <!-- 추가 탭 내용 끝 -->
+
+
+                                  <div role="tabpanel" class="tab-pane fade" id="user_edit" aria-labelledby="home-tab">
+                                    <div class="col-md-12 col-sm-6 col-xs-6 ">
+                                      <div class="x_panel" id="list">
+                                        <div class="col-md-12 col-sm-8 col-xs-12 form-group pull-left top_search">
+                                            <h2>기수별 임원 전체리스트입니다.</h2>
+                                            <h2>수정하실 임원을 클릭하시면 해당 임원 수정페이지로 넘어갑니다.</h2>
+                                        </div>
+                                        <div class="col-md-8 col-sm-8 col-xs-12 form-group pull-right top_search">
+                                            <div class="form-group"  style="background: #fff; margin-top: 10px;">
+                                                <div class="col-md-4 col-sm-4 col-xs-4">
+                                                    <select class="form-control">
+                                                        <option>검색 조건</option>
+                                                        <option>이름 검색</option>
+                                                        <option>전화번호 검색</option>
+                                                        <option>기수 검색</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" placeholder="검색">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-default" type="button">찾기</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <table id="datatable-checkbox" class="table table-striped table-bordered bulk_action">
+                                          <thead>
+                                            <tr>
+                                              <th>임원 이름</th>
+                                              <th>임원 기수</th>
+                                              <th>임원 전화번호</th>
+                                              <th>임원 이메일</th>
+                                              <th>임원 직책</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                          <% if(gradeManagerList!=null && gradeManagerList!=""){%>
+                                              <% gradeManagerList.forEach(function(manager,idx){ %>
+                                            <tr onClick="location.href='/admin/gradeManagerEdit/<%=manager.user_id%>'" style="cursor:pointer;">
+                                                 <!-- <td><input type="checkbox" class="flat" name="table_records" value="<%=user.id%>"></td> -->
+                                                 <td><%=manager.user_name%></td>
+                                                 <td><%=manager.grade%></td>
+                                                 <td><%=manager.phone_number%></td>
+                                                 <td><%=manager.email%></td>
+                                                 <td><%=manager.position%></td>
+                                            </tr>
+                                              <% }) %>
+                                          <% } %>
+                                          </tbody>
+                                        </table>
+                                      </div>
+                                    </div>
+                                    <button id="add" type="button" class="btn btn-default" style="float:right;">더보기...</button>
+                                  </div>
+
+                                  <div role="tabpanel" class="tab-pane fade" id="user_delete" aria-labelledby="profile-tab">
+                                    <div class="col-md-12 col-sm-6 col-xs-6 ">
+                                      <div class="x_panel" id="list">
+                                        <div class="col-md-12 col-sm-8 col-xs-12 form-group pull-left top_search">
+                                            <h2>삭제할 임원을 선택해주세요</h2>
+                                            <h2>(선택 후에 삭제버튼을 누르면 삭제됩니다.)</h2>
+                                        </div>
+                                        <div class="col-md-8 col-sm-8 col-xs-12 form-group pull-right top_search">
+                                            <div class="form-group"  style="background: #fff; margin-top: 10px;">
+                                                <div class="col-md-4 col-sm-4 col-xs-4">
+                                                    <select class="form-control">
+                                                        <option>검색 조건</option>
+                                                        <option>이름 검색</option>
+                                                        <option>전화번호 검색</option>
+                                                        <option>기수 검색</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" placeholder="검색">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-default" type="button">찾기</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <table id="datatable-checkbox" class="table table-striped table-bordered bulk_action">
+                                          <thead>
+                                            <tr>
+                                              <th><input type="checkbox" id="check-all" class="flat"></th>
+                                              <th>임원 이름</th>
+                                              <th>임원 기수</th>
+                                              <th>임원 전화번호</th>
+                                              <th>임원 이메일</th>
+                                              <th>임원 직책</th>
+                                              <th>임원 id</th>
+                                              <th>임원 user_id</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                          <% if(gradeManagerList!=null && gradeManagerList!=""){%>
+                                              <% gradeManagerList.forEach(function(manager,idx){ %>
+                                            <tr>
+                                                 <td><input type="checkbox" class="flat" name="table_records" value="<%=manager.id%>"></td>
+                                                 <td><%=manager.user_name%></td>
+                                                 <td><%=manager.grade%></td>
+                                                 <td><%=manager.phone_number%></td>
+                                                 <td><%=manager.email%></td>
+                                                 <td><%=manager.position%></td>
+                                                 <td><%=manager.id%></td>
+                                                 <td><%=manager.user_id%></td>
+                                            </tr>
+                                              <% }) %>
+                                          <% } %>
+                                          </tbody>
+                                        </table>
+                                        <div class="form-group">
+                                          <div class="col-md-12 col-sm-9 col-xs-12 col-md-offset-5">
+                                            <button type="submit" class="del btn btn-success">삭제</button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <button id="add" type="button" class="btn btn-default" style="float:right;">더보기...</button>
+                                  </div>
+                                  <div role="tabpanel" class="tab-pane fade" id="user_list" aria-labelledby="profile-tab">
+                                    <div class="col-md-12 col-sm-6 col-xs-6 ">
+                                      <div class="x_panel" id="list">
+                                        <div class="col-md-12 col-sm-8 col-xs-12 form-group pull-left top_search">
+                                            <h2>기수별 임원 전체리스트입니다.</h2>
+                                            <h2>찾으실 회원을 검색해주세요</h2>
+                                        </div>
+                                        <div class="col-md-8 col-sm-8 col-xs-12 form-group pull-right top_search">
+                                            <div class="form-group"  style="background: #fff; margin-top: 10px;">
+                                                <div class="col-md-4 col-sm-4 col-xs-4">
+                                                    <select class="form-control">
+                                                        <option>검색 조건</option>
+                                                        <option>이름 검색</option>
+                                                        <option>전화번호 검색</option>
+                                                        <option>기수 검색</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" placeholder="검색">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-default" type="button">찾기</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <table id="datatable-checkbox" class="table table-striped table-bordered bulk_action">
+                                          <thead>
+                                            <tr>
+                                              <th>임원 이름</th>
+                                              <th>임원 기수</th>
+                                              <th>임원 전화번호</th>
+                                              <th>임원 이메일</th>
+                                              <th>임원 직책</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                          <% if(gradeManagerList!=null && gradeManagerList!=""){%>
+                                              <% gradeManagerList.forEach(function(manager,idx){ %>
+                                            <tr>
+                                                 <td><%=manager.user_name%></td>
+                                                 <td><%=manager.grade%></td>
+                                                 <td><%=manager.phone_number%></td>
+                                                 <td><%=manager.email%></td>
+                                                 <td><%=manager.position%></td>
+                                            </tr>
+                                              <% }) %>
+                                          <% } %>
+                                          </tbody>
+                                        </table>
+                                      </div>
+                                    </div>
+                                    <button id="add" type="button" class="btn btn-default" style="float:right;">더보기...</button>
+                                  </div>
+                                </div>
+                              </div>
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+            <!-- /page content -->
+        </div>
+        <!-- footer content -->
+        <footer>
+            <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+    </div>
+
+    <% include ../common/script.ejs %>
+    <script src="/res/assets/js/admin/gradeManager.js"></script>
+
+</body>
+</html>

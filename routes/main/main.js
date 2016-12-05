@@ -40,8 +40,9 @@ router.post('/navSet', function (req, res, next) {
                 //img를 base64로 인코딩해서 넣어준다.
                 img = "data:image/gif;base64," + new Buffer(data.data).toString('base64');
             }
-
-            return res.send({result: true, name: req.user.name, grade: req.user.grade, profile: img,maxGrade:grade.maxGrade,is_admin:req.user.is_admin});
+            userDao.GetCategoryName(req.user.id,function(category_name){
+                return res.send({result: true, name: req.user.name, grade: req.user.grade, profile: img,maxGrade:grade.maxGrade, is_admin:req.user.is_admin, cat_name:category_name.name});
+            });
         });
     });
 });
