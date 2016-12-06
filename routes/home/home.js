@@ -8,7 +8,6 @@ var mail = require('../../support/email');
 //암호화 관련 파일 require
 var encode = require("../../support/encode");
 
-
 /* GET home page. */
 router.get('/', function (req, res, next) {
     res.render('home/main');
