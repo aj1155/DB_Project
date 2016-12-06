@@ -46,7 +46,7 @@ router.post('/list/:board_id',function(req,res,next){
     res.render('board/list',{
       row:rows,board_id:req.params.board_id,srchText:req.body.srchText,srchType:req.body.srchType,currentPage:1
     });
-
+  });
 });
 
 router.get('/list/:currentPage/:srchType/:srchText/:board_id',function(req,res,next){
@@ -68,6 +68,7 @@ router.get('/read/:board_id/:id',function(req,res,next){
         res.render('board/read',{rows:rows,row:row,file:file,userId:req.user.id,board_id:req.params.board_id});
       });
     });
+  });
 });
 
 router.get('/write/:board_id', function (req, res, next) {

@@ -50,9 +50,8 @@
                   <label>작성자:</label><span><%=rows.user_name%></span><br/>
                   <label>작성일:</label><span><%=rows.create_time%></span><br/>
                   <label>첨부된 파일:</label>
-                  <% for(var i=0; i<file.length; i++){%>
-                    <span data-download="<%=file[i].id%>"><%=file[i].name%></span>
-                  <%}%>
+
+                    <span data-download="<%=file.id%>"><%=file.name%></span>
                   <div id="editor" class="editor-wrapper" style="min-height:350px;">
                     <%=rows.content%>
                   </div>

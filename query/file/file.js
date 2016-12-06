@@ -18,7 +18,7 @@ file.insert=function(params,callback){
 };
 
 file.selectByBoard_id=function(board_id,callback){
-  var query="SELECT * FROM file where board_id=?";
+  var query="SELECT id,name FROM file where board_id=?";
   pool.getConnection(function(err,connection){
     connection.query(query,board_id,function(err,result){
       if(err){
