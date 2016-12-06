@@ -49,7 +49,9 @@
                   <label>제목:</label><span><%=rows.title%></span><br/>
                   <label>작성자:</label><span><%=rows.user_name%></span><br/>
                   <label>작성일:</label><span><%=rows.create_time%></span><br/>
-                  <label>첨부된 파일:</label><span>askljdfs.jsp</span>
+                  <label>첨부된 파일:</label>
+
+                    <span data-download="<%=file.id%>"><%=file.name%></span>
                   <div id="editor" class="editor-wrapper" style="min-height:350px;">
                     <%=rows.content%>
                   </div>
@@ -83,7 +85,7 @@
                         <input type="hidden" name="group_id" value="<%=comment.group_id%>"/>
                         <td colspan=2>
                           <strong><%=comment.user_name%></strong><%=comment.write_time%>
-                          <a style="curosr:pointer;" id="pAdd" name="pAdd">답글</a> | <a style="curosr:pointer;" id="pDel" name="pDel">삭제</a>
+                          <a style="curosr:pointer;" id="pDel" name="pDel">삭제</a>
 
                           <% if(comment.level!=0){%>
                             <p>RE:<%=comment.content%></p>
@@ -98,10 +100,14 @@
                   </table>
 
                   <div class="form-group" style="float:right;">
-                    <button class="btn btn-defualt"><a href="/board/edit/<%=rows.id%>">수정</a></button>
-                    <button class="btn btn-primary">저장</button>
-                    <button class="btn btn-defualt"><a href="/board/list/1">목록으로</a></button>
-                    <button class="btn btn-defualt">삭제</button>
+                    <%if(rows.user_id==userId){%>
+                      <button class="btn btn-defualt"><a href="/board/edit/<%=board_id%>/<%=rows.id%>">글수정</a></button>
+                      <button class="btn btn-defualt"><a href="/board/fileEdit/<%=board_id%>/<%=rows.id%>">파일 수정</a></button>
+                    <%}%>
+                    <button class="btn btn-defualt"><a href="/board/list/<%=rows.board_id%>">목록으로</a></button>
+                    <%if(rows.user_id==userId){%>
+                    <button class="btn btn-defualt"><a href="/board/delete/<%=rows.id%>/<%=rows.board_id%>">삭제</a></button>
+                    <%}%>
                   </div>
 
               </div>
@@ -126,5 +132,11 @@
 
   <% include ../common/script.ejs %>
 <script src="/res/assets/js/Comment/Comment.js"></script>
+<script>
+  $("span[data-download]").click(function() {
+           event.stopPropagation();
+           location.href = '/board/download/'+$(this).attr("data-download");
+         });
+</script>
 </body>
 </html>

@@ -34,9 +34,8 @@ comment.defaultUpdate=function(board_id,id,callback){
 comment.parentCommentCreate=function(params,callback){
   pool.getConnection(function(err,connection){
     console.log(params);
-    var query="INSERT INTO comment(board_id,content,user_name,write_time,user_id,group_id,seq,level) VALUES(?,?,?,?,?,?,(select max(a.group_id)+1 from comment a where a.group_id=? and a.board_id=?),(select max(d.level)+1 from comment d where d.group_id=? and d.board_id=?));"
-    var query1="INSERT INTO comment(board_id,content,user_name,write_time,user_id,group_id,seq,level) values(1,1,1,1,1,1,1,1)"
-    connection.query(query1,[params],function(results){
+    var query="INSERT INTO comment(board_id,content,user_name,write_time,user_id,group_id,seq,level) VALUES(?,?,?,?,?,(select max(c.group_id)+1 from comment c where c.board_id=?),1,0);"
+    connection.query(query,[params],function(results){
       if(err){
         console.log(err);
       }else{
@@ -61,4 +60,31 @@ comment.commentCreate=function(params,callback){
   });
 };
 
+comment.childCommentCreateBefore=function(params,callback){
+  pool.getConnection(function(err,connection){
+    var query = "UPDATE comment SET seq=seq+1 where board_id=? and group_id=? and seq>(select * from(select max(c.seq) from comment c where c.id=?)A)";
+    connection.query(query,params,function(err,results){
+      if(err){
+        console.log(err);
+      }else{
+        callback(results);
+        connection.release();
+      }
+    });
+  });
+};
+
+comment.delete=function(id,callback){
+  pool.getConnection(function(err,connection){
+    var query = "delete from comment where board_id=?";
+    connection.query(query,id,function(err,results){
+      if(err){
+        console.log(err);
+      }else{
+        callback(results);
+        connection.release();
+      }
+    });
+  });
+};
 module.exports = comment;

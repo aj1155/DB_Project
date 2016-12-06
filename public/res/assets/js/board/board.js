@@ -17,8 +17,8 @@ $(document).ready(function(){
       success : function(result){
         console.log(result);
         for(var i=result.length-1; i>-1; i--){
-          var dataTable = '<tr>'+
-                            '<td><a data-utrl="/baord/read/'+result[i].id+'">'+result[i].ROWNUM+'</a></td>'+
+          var dataTable = '<tr data-url="/board/read/'+result[i].id+'">'+
+                            '<td>'+result[i].ROWNUM+'</td>'+
                             '<td>'+result[i].title+'</td>'+
                             '<td>'+result[i].user_name+'</td>'+
                             '<td>'+result[i].create_time+'</td>'+
