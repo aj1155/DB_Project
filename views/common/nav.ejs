@@ -93,13 +93,8 @@
                             커뮤니티
                             <span class="fa fa-chevron-down"></span>
                         </a>
-                        <ul class="nav child_menu">
-                            <li data-url="/board/list/<%= user.category_id *2 -1 %>">
-                                <a>공지사항</a>
-                            </li>
-                            <li data-url="/board/list/<%= user.category_id *2 %>">
-                                <a>자유게시판</a>
-                            </li>
+                        <ul id=board_list class="nav child_menu">
+
                         </ul>
                     </li>
                     <!--관리자 메뉴바-->
@@ -200,7 +195,8 @@
                         $("#grade").hide();
                         $("#admin").show();
                     }
-                    $("#categoryName").append(result['cat_name']);
+                    $('#board_list').append('<li><a href="/board/list/<%= user.category_id * 2 %>">공지사항</a><li>');
+                    $('#board_list').append('<li><a href="/board/list/<%= user.category_id * 2 - 1 %>">자유게시판</a></li>');
                 }
             }
         });
