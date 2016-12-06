@@ -51,3 +51,6 @@ email.js
 
 #암호화 파일
 encode.js
+
+#사진파일 폴더
+public/profileImage/*
