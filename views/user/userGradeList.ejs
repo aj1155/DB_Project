@@ -65,7 +65,7 @@
                                           <% userList.forEach(function(user,idx){ %>
                                             <div class="row col-md-6 col-sm-12 col-xs-12">
                                                 <div class="profile_details">
-                                                    <div class="well profile_view">
+                                                    <div class="well profile_view" onClick="location.href='/users/detailProfile/<%=user.id%>'" style="cursor:pointer;">
                                                         <div class="col-md-12 col-xs-12 col-sm-12">
                                                             <div class="left col-md-7 col-xs-7 col-sm-7">
                                                                 <h2>이름 :<%=user.name%></h2>
