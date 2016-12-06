@@ -331,7 +331,7 @@ router.get('/userManage/:msg', function(req, res ,next) {
 router.get('/userEdit/:id', function(req, res, next) {
   var id = req.params.id;
   userDao.FindOne(id, req.user.category_id, function(rows){
-    res.render('admin/userEdit', {edit : rows, gm : result1, cm : result2, message : req.flash('error')});
+    res.render('admin/userEdit', {edit : rows, message : req.flash('error')});
   });
 });
 
