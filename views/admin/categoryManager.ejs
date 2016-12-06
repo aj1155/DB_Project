@@ -59,12 +59,9 @@
                                 <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
                                   <li role="presentation" class="active"><a href="#user_create" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">추가</a>
                                   </li>
-                                  <li role="presentation" class=""><a href="#user_edit" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">편집</a>
+                                  <li role="presentation" class=""><a href="#user_delete" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">편집</a>
                                   </li>
-                                  <li role="presentation" class=""><a href="#user_delete" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">삭제</a>
-                                  </li>
-                                  <li role="presentation" class=""><a href="#user_list" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">리스트</a>
-                                  </li>
+
                                 </ul>
                                 <div id="myTabContent" class="tab-content">
                                   <% if (msg && msg!="" && type=="error") { %>
@@ -165,67 +162,12 @@
                                   <!-- 추가 탭 내용 끝 -->
 
 
-                                  <div role="tabpanel" class="tab-pane fade" id="user_edit" aria-labelledby="home-tab">
-                                    <div class="col-md-12 col-sm-6 col-xs-6 ">
-                                      <div class="x_panel" id="list">
-                                        <div class="col-md-12 col-sm-8 col-xs-12 form-group pull-left top_search">
-                                            <h2>최고경영 임원 전체리스트입니다.</h2>
-                                            <h2>수정하실 임원을 클릭하시면 임원수정페이지로 넘어갑니다.</h2>
-                                        </div>
-                                        <div class="col-md-8 col-sm-8 col-xs-12 form-group pull-right top_search">
-                                            <div class="form-group"  style="background: #fff; margin-top: 10px;">
-                                                <div class="col-md-4 col-sm-4 col-xs-4">
-                                                    <select class="form-control">
-                                                        <option>검색 조건</option>
-                                                        <option>이름 검색</option>
-                                                        <option>전화번호 검색</option>
-                                                        <option>기수 검색</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" placeholder="검색">
-                                                <span class="input-group-btn">
-                                                    <button class="btn btn-default" type="button">찾기</button>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <table id="datatable-checkbox" class="table table-striped table-bordered bulk_action">
-                                          <thead>
-                                            <tr>
-                                              <th>임원 이름</th>
-                                              <th>임원 기수</th>
-                                              <th>임원 전화번호</th>
-                                              <th>임원 이메일</th>
-                                              <th>임원 직책</th>
-                                            </tr>
-                                          </thead>
-                                          <tbody>
-                                          <% if(categoryManagerList!=null && categoryManagerList!=""){%>
-                                              <% categoryManagerList.forEach(function(manager,idx){ %>
-                                            <tr onClick="location.href='/admin/categoryManagerEdit/<%=manager.user_id%>'" style="cursor:pointer;">
-                                                 <!-- <td><input type="checkbox" class="flat" name="table_records" value="<%=user.id%>"></td> -->
-                                                 <td><%=manager.name%></td>
-                                                 <td><%=manager.grade%></td>
-                                                 <td><%=manager.phone_number%></td>
-                                                 <td><%=manager.email%></td>
-                                                 <td><%=manager.position%></td>
-                                            </tr>
-                                              <% }) %>
-                                          <% } %>
-                                          </tbody>
-                                        </table>
-                                      </div>
-                                    </div>
-                                    <button id="add" type="button" class="btn btn-default" style="float:right;">더보기...</button>
-                                  </div>
-
                                   <div role="tabpanel" class="tab-pane fade" id="user_delete" aria-labelledby="profile-tab">
                                     <div class="col-md-12 col-sm-6 col-xs-6 ">
                                       <div class="x_panel" id="list">
                                         <div class="col-md-12 col-sm-8 col-xs-12 form-group pull-left top_search">
-                                            <h2>삭제할 임원을 선택해주세요</h2>
-                                            <h2>(선택 후에 삭제버튼을 누르면 삭제됩니다.)</h2>
+                                            <h2>편집할 회원을 선택해주세요</h2>
+                                            <h2>(삭제는 체크박스를 이용해주시고 수정은 해당 회원을 클릭해주세요.)</h2>
                                         </div>
                                         <div class="col-md-8 col-sm-8 col-xs-12 form-group pull-right top_search">
                                             <div class="form-group"  style="background: #fff; margin-top: 10px;">
@@ -261,7 +203,7 @@
                                           <tbody>
                                           <% if(categoryManagerList!=null && categoryManagerList!=""){%>
                                               <% categoryManagerList.forEach(function(manager,idx){ %>
-                                            <tr>
+                                            <tr  onClick="location.href='/admin/categoryManagerEdit/<%=manager.user_id%>'" style="cursor:pointer;">
                                                  <td><input type="checkbox" class="flat" name="table_records" value="<%=manager.id%>"></td>
                                                  <td><%=manager.name%></td>
                                                  <td><%=manager.grade%></td>
@@ -277,66 +219,14 @@
                                         </table>
                                         <div class="form-group">
                                           <div class="col-md-12 col-sm-9 col-xs-12 col-md-offset-5">
-                                            <button type="submit" class="del btn btn-success">삭제</button>
+                                            <!-- <button type="submit" class="del btn btn-success">삭제</button> -->
                                           </div>
                                         </div>
                                       </div>
                                     </div>
                                     <button id="add" type="button" class="btn btn-default" style="float:right;">더보기...</button>
                                   </div>
-                                  <div role="tabpanel" class="tab-pane fade" id="user_list" aria-labelledby="profile-tab">
-                                    <div class="col-md-12 col-sm-6 col-xs-6 ">
-                                      <div class="x_panel" id="list">
-                                        <div class="col-md-12 col-sm-8 col-xs-12 form-group pull-left top_search">
-                                            <h2>최고경영 임원 전체리스트입니다.</h2>
-                                            <h2>찾으실 회원을 검색해주세요</h2>
-                                        </div>
-                                        <div class="col-md-8 col-sm-8 col-xs-12 form-group pull-right top_search">
-                                            <div class="form-group"  style="background: #fff; margin-top: 10px;">
-                                                <div class="col-md-4 col-sm-4 col-xs-4">
-                                                    <select class="form-control">
-                                                        <option>검색 조건</option>
-                                                        <option>이름 검색</option>
-                                                        <option>전화번호 검색</option>
-                                                        <option>기수 검색</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" placeholder="검색">
-                                                <span class="input-group-btn">
-                                                    <button class="btn btn-default" type="button">찾기</button>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <table id="datatable-checkbox" class="table table-striped table-bordered bulk_action">
-                                          <thead>
-                                            <tr>
-                                              <th>임원 이름</th>
-                                              <th>임원 기수</th>
-                                              <th>임원 전화번호</th>
-                                              <th>임원 이메일</th>
-                                              <th>임원 직책</th>
-                                            </tr>
-                                          </thead>
-                                          <tbody>
-                                          <% if(categoryManagerList!=null && categoryManagerList!=""){%>
-                                              <% categoryManagerList.forEach(function(manager,idx){ %>
-                                            <tr>
-                                                 <td><%=manager.name%></td>
-                                                 <td><%=manager.grade%></td>
-                                                 <td><%=manager.phone_number%></td>
-                                                 <td><%=manager.email%></td>
-                                                 <td><%=manager.position%></td>
-                                            </tr>
-                                              <% }) %>
-                                          <% } %>
-                                          </tbody>
-                                        </table>
-                                      </div>
-                                    </div>
-                                    <button id="add" type="button" class="btn btn-default" style="float:right;">더보기...</button>
-                                  </div>
+                                  
                                 </div>
                               </div>
 

@@ -179,4 +179,14 @@ router.post('/profile',upload.any(),function(req,res,next){
   return res.redirect('/users/edit');
 });
 
+
+
+router.get('/detailProfile/:id', function(req, res, next) {
+  var id = req.params.id;
+  userDao.FindOne(id, req.user.category_id, function(result) {
+    res.render('user/detailProfile', {userImformation : result});
+  });
+});
+
+
 module.exports = router;
