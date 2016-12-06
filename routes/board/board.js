@@ -13,11 +13,11 @@ var fs = require('fs');
 var formidable = require('formidable');
 var mime = require('mime');
 /*session user정보를 local에 저장하여 ejs파일로
-명시적으로 넘겨주지않아도 자동적으로 넘어감 세션값 사용시 user로 꺼내쓰면됨*/
-router.use(function(req, res, next) {
-   if(req.user) res.locals.user = req.user;
-   else res.locals.user = undefined;
-   next();
+ 명시적으로 넘겨주지않아도 자동적으로 넘어감 세션값 사용시 user로 꺼내쓰면됨*/
+router.use(function (req, res, next) {
+    if (req.user) res.locals.user = req.user;
+    else res.locals.user = undefined;
+    next();
 });
 
 router.get('/list/:board_id',function(req,res,next){
@@ -46,7 +46,6 @@ router.post('/list/:board_id',function(req,res,next){
     res.render('board/list',{
       row:rows,board_id:req.params.board_id,srchText:req.body.srchText,srchType:req.body.srchType,currentPage:1
     });
-  });
 
 });
 
@@ -69,12 +68,11 @@ router.get('/read/:board_id/:id',function(req,res,next){
         res.render('board/read',{rows:rows,row:row,file:file,userId:req.user.id,board_id:req.params.board_id});
       });
     });
-  });
 });
 
-router.get('/write/:board_id',function(req,res,next){
-  var board_id = req.params.board_id;
-  res.render('board/write',{board_id:board_id});
+router.get('/write/:board_id', function (req, res, next) {
+    var board_id = req.params.board_id;
+    res.render('board/write', {board_id: board_id});
 });
 router.post('/write/:board_id',function(req,res,next){
   var d = new Date();
@@ -120,8 +118,8 @@ router.post('/write/:board_id',function(req,res,next){
 router.get('/edit/:board_id/:id',function(req,res,next){
     sequelize.authenticate().then(function(err){
         Board_post.findOne({
-            where:{
-                id:req.params.id
+            where: {
+                id: req.params.id
             }
         })
             .then(function(result){
@@ -130,7 +128,7 @@ router.get('/edit/:board_id/:id',function(req,res,next){
               });
           });
     })
-        .catch(function(err){
+        .catch(function (err) {
             res.send(err);
         });
 });
@@ -162,7 +160,7 @@ router.post('/fileEdit/:board_id/:id',function(req,res,next){
 });
 router.post('/edit/:board_id/:id',function(req,res,next){
     var d = new Date();
-    var date =(d.getFullYear()) + '-' +
+    var date = (d.getFullYear()) + '-' +
         (d.getMonth() + 1) + '-' +
         (d.getDate()) + ' ';
       var params=[req.body.title,req.body.content,date,req.params.id];
@@ -207,20 +205,20 @@ router.get('/CommentCreate/:id/:message',function(req,res,next){
   });
 });
 
-router.get('/CommentDelete/:board_id',function(req,res,next){
-  sequelize.authenticate().then(function(err){
-    Comment.destroy({
-      where : {
-        parent_id : req.params.board_id
-      }
+router.get('/CommentDelete/:board_id', function (req, res, next) {
+    sequelize.authenticate().then(function (err) {
+        Comment.destroy({
+            where: {
+                parent_id: req.params.board_id
+            }
+        })
+            .then(function (results) {
+                res.json(results);
+            });
     })
-    .then(function(results){
-      res.json(results);
-    });
-  })
-  .catch(function(err){
-    console.log(err);
-  });
+        .catch(function (err) {
+            console.log(err);
+        });
 });
 
 router.get('/CommentCreate2/:board_id/:message/:parent_id/:group_id',function(req,res,next){
