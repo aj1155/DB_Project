@@ -24,7 +24,7 @@ file.selectByBoard_id=function(board_id,callback){
       if(err){
         console.log(err);
       }else{
-        callback(result);
+        callback(result[0]);
         connection.release();
       }
     });

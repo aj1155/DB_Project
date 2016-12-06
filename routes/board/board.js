@@ -65,6 +65,8 @@ router.get('/read/:board_id/:id',function(req,res,next){
   boardDAO.selectById([req.params.id],function(rows){
     commentDAO.selectByBoard_id([req.params.id],function(row){
       fileDAO.selectByBoard_id([rows.id],function(file){
+        console.log(file.id);
+        console.log(file.name);
         res.render('board/read',{rows:rows,row:row,file:file,userId:req.user.id,board_id:req.params.board_id});
       });
     });
