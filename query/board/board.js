@@ -5,7 +5,8 @@ var board={};
 
 board.selectList=function(params,callback){
   pool.getConnection(function(err,connection){
-    connection.query('CALL select_List(1,0,"",15,1,1)',[params],function(err,row){
+    var query="call select_list(?,?,?,?,?)";
+    connection.query(query,params,function(err,row){
       if(err){
         console.log(err);
       }else{
@@ -53,5 +54,78 @@ board.selectByCategory_id=function(category_id,callback){
       }
     });
   })
+};
+
+board.main1=function(category_id,callback){//메인에 카테고리별 자유게시판쿼리
+  var query = "select * from board_post where board_id=? order by id desc LIMIT 10";
+  pool.getConnection(function(err,connection){
+    var cid=Number(category_id)*2-1;
+    connection.query(query,[cid],function(err,result){
+      if(err){
+        console.log(err);
+      }else{
+        callback(result);
+        connection.release();
+      }
+    });
+  });
+};
+
+board.main2=function(category_id,callback){//메인에 카테고리별 공지사항쿼리
+  var query="select * from board_post where board_id=? order by id DESC LIMIT 5";
+  pool.getConnection(function(err,connection){
+    var cid=Number(category_id)*2;
+    console.log(cid);
+    connection.query(query,[cid],function(err,result){
+      if(err){
+        console.log(err);
+      }else{
+        callback(result);
+        connection.release();
+      }
+    });
+  });
+};
+
+board.insert=function(param,callback){
+  var query="INSERT INTO board_post(board_id,title,content,create_time,user_name,user_id) values(?,?,?,?,?,?)";
+  pool.getConnection(function(err,connection){
+    connection.query(query,param,function(err,result){
+      if(err){
+        console.log(err);
+      }else{
+        callback(result);
+        connection.release();
+      }
+    });
+  });
+};
+
+board.delete=function(id,callback){
+  var query="delete from board_post where id=?";
+  pool.getConnection(function(err,connection){
+    connection.query(query,id,function(err,result){
+      if(err){
+        console.log(err);
+      }else{
+        callback(result);
+        connection.release();
+      }
+    });
+  });
+};
+
+board.update=function(params,callback){
+  var query="UPDATE board_post SET title=?,content=?,create_time=? where id=?";
+  pool.getConnection(function(err,connection){
+    connection.query(query,params,function(err,result){
+      if(err){
+        console.log(err);
+      }else{
+        callback(result);
+        connection.release();
+      }
+    });
+  });
 };
 module.exports = board;

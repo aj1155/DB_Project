@@ -46,17 +46,17 @@
               <div class="col-md-12 col-sm-12 col-xs-12 col-sm-offset-1 col-lg-10">
               <div class="x_panel">
                 <div class="x_title">
-                  <h2>공지사항</h2>
+                  <h2>파일수정</h2>
 
                   <div class="clearfix"></div>
                 </div>
-                <form method="post" class="form-horizontal form-label-left">
+                <form method="post" class="form-horizontal form-label-left" enctype="multipart/form-data">
                   <div class="x_content">
                     <div class="form-group">
                        <label class="control-label col-sm-1" id="top"/><span>제목:</span>
                        </label>
                        <div class="col-sm-5 col-xs-6">
-                         <input type="text" name="title"  class="form-control" value="<%=result.title%>"/>
+                         <label><%=result.title%></label>
                        </div>
                     </div>
                     <div class="form-group">
@@ -72,7 +72,7 @@
                        <label class="control-label col-sm-1" id="top"/><span>파일:</span>
                        </label>
                        <div id="files" class="col-sm-5 col-xs-6">
-                           <span id="file"><%=files.name%></span>
+                        <input type="file" name="file" multiple="multiple" />
                        </div>
                        <!--
                        <button type="button" class="btn" id="addFile">
@@ -89,7 +89,7 @@
                     </div>
 
                     <div>
-                      <textarea name="content" class="editor-wrapper" style="height:100%; width:100%;"><%=result.content%></textarea>
+                      <textarea name="content" class="editor-wrapper" style="height:100%; width:100%; "readonly><%=result.content%></textarea>
                       <div class="ln_solid"></div>
                     </div>
 
@@ -122,13 +122,6 @@
 
   <% include ../common/script.ejs %>
 <script>
-$(function(){
-  $("button#addFile").click(function(){
-    var tag = '<input type="file" name="file" multiple="multiple" />';
-    $(tag).appendTo("div#files");
-  });
-});
-
 $(function(){
   $(document).on("click","button#fileDelete",function(){
     var id=$(this).attr("value");

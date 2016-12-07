@@ -33,14 +33,24 @@
 
               <div class="x_panel">
                 <div class="x_title">
+                  <%if(board_id%2==0){%>
                   <h2>공지사항</h2>
+                  <%}else{%>
+                  <h2>자유게시판</h2>
+                  <%}%>
                   <br/>
                   <div class="clearfix"></div>
                   <br/>
                 </div>
-                <form method="Post">
+                <form method="post" enctype="multipart/form-data">
               <div class="x_content">
                 <input name="title" class="form-control" type="text" placeholder="제목을 입력하세요">
+                <div id="files">
+                  <span>파일:</span><input type="file" name="file" multiple="multiple" />
+                </div>
+              <!--<button type="button" class="btn" id="addFile">
+                  <i class="icon-plus"></i>파일추가
+                </button>-->
                   <div id="alerts"></div>
                   <br/>
                   <br/>
@@ -83,6 +93,12 @@
         location.href="/board/list/<%=board_id%>/1";
       });
     });
+    /*$(function(){
+      $("button#addFile").click(function(){
+        var tag = "<span>파일:</span> <input type='file' name='file'multiple='multiple'/>";
+        $(tag).appendTo("div#files");
+      });
+    });*/
     </script>
 </body>
 </html>
