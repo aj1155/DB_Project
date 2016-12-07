@@ -504,4 +504,24 @@ router.put('/user',function(req,res){
 
 
 
+router.get('/gradeManagerListSelectOptions',function(req,res,next){
+  var category_id = req.user.category_id;
+  var srchType = req.query.srchType;
+  var srchText = req.query.srchText;
+  if(req.query.srchType===null) srchType = 0;
+  var count = 10;
+  var param=[
+    srchType,srchText,category_id,0,count
+  ];
+    userDao.selectAllOptions(param,function(result){
+      if(result[0].length>0){
+        res.render('admin/gradeManager', {userList:result[0],msg:"",type:""});
+      }else{
+        res.render('admin/gradeManager', {userList:"",msg:"",type:""});
+      }
+    });
+});
+
+
+
 module.exports = router;
