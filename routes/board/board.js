@@ -107,7 +107,7 @@ router.post('/write/:board_id',function(req,res,next){
           var fileData=data;
           var params=[fileName,fileSize,fileData,results.id];
           fileDAO.insert(params,function(result){
-            res.redirect('/board/read/'+results.id);
+            res.redirect('/board/read/'+board_id+'/'+results.id);
           });
         });
       });
