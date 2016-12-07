@@ -38,7 +38,7 @@ $(function(){
                 $("#more").val(Number($("#more").val())+data.len);
                 data.list.forEach(function(row){
                   var tr = $(
-                    '<tr onClick="location.href=/admin/userEdit/'+row.id+'" style="cursor:pointer;">'+
+                    '<tr onClick="location.href=\'/admin/userEdit/'+row.id+'\'" style="cursor:pointer;">'+
                     '<td><input type="checkbox" class="flat" name="table_records" value="'+row.id+'"></td>'+
                     '<td>'+row.name+'</td>'+
                     '<td>'+row.grade+'</td>'+

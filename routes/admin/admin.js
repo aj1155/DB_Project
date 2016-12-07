@@ -42,7 +42,13 @@ router.get('/send', function(req, res, next) {
   res.render('admin/send');
 });
 router.get('/guide', function(req, res, next) {
-  res.render('admin/guide');
+  Introduce.findAll({
+    attributes:['id','text']
+  }).then(function(result){
+      res.render('admin/guide',{intro:result[0]});
+  }).catch(function(err){
+    console.log(err);
+  });
 });
 router.post('/guide',function(req,res,next){
   var body = req.body;
@@ -455,6 +461,7 @@ router.post('/userExcel',function(req,res){
             res.render('admin/userManage',{userList:list, msg:req.flash('error'),type:"error",srchType:0,srchText:"",count:10});
           }
           else{
+            console.log(result);
             addRows.insert(result,req.user.category_id,function(msg){
                 if(msg == "success"){
                   User.findAll({
