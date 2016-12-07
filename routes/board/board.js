@@ -36,7 +36,7 @@ router.get('/list/:board_id',function(req,res,next){
   var pageSize = 15;
   var params=[currentPage,srchType,srchText,pageSize,board_id];
   boardDAO.selectList(params,function(rows){
-    res.render('board/list',{board_id:board_id,row:rows,currentPage:currentPage,srchType:srchType,srchText:"",currentPage:currentPage});
+    res.render('board/list',{board_id:board_id,row:rows,currentPage:currentPage,srchType:srchType,srchText:"",currentPage:currentPage,is_admin:req.user.is_admin});
   });
 });
 
@@ -44,7 +44,7 @@ router.post('/list/:board_id',function(req,res,next){
   var params=[1,req.body.srchType,req.body.srchText,15,req.params.board_id];
   boardDAO.selectList(params,function(rows){
     res.render('board/list',{
-      row:rows,board_id:req.params.board_id,srchText:req.body.srchText,srchType:req.body.srchType,currentPage:1
+      row:rows,board_id:req.params.board_id,srchText:req.body.srchText,srchType:req.body.srchType,currentPage:1,is_admin:req.user.is_admin
     });
   });
 });
@@ -63,10 +63,11 @@ router.get('/list/:currentPage/:srchType/:srchText/:board_id',function(req,res,n
 /*1은 공지사항 2는 자유게시판*/
 router.get('/read/:board_id/:id',function(req,res,next){
   boardDAO.selectById([req.params.id],function(rows){
+    console.log(rows);
     commentDAO.selectByBoard_id([req.params.id],function(row){
-      fileDAO.selectByBoard_id([rows.id],function(file){
-        console.log(file.id);
-        console.log(file.name);
+      console.log(row);
+      fileDAO.selectByBoard_id([req.params.id],function(file){
+        console.log(file);
         res.render('board/read',{rows:rows,row:row,file:file,userId:req.user.id,board_id:req.params.board_id});
       });
     });
