@@ -42,7 +42,13 @@ router.get('/send', function(req, res, next) {
   res.render('admin/send');
 });
 router.get('/guide', function(req, res, next) {
-  res.render('admin/guide');
+  Introduce.findAll({
+    attributes:['id','text']
+  }).then(function(result){
+      res.render('admin/guide',{intro:result[0]});
+  }).catch(function(err){
+    console.log(err);
+  });
 });
 router.post('/guide',function(req,res,next){
   var body = req.body;
@@ -73,15 +79,15 @@ router.get('/userListSelectOptions',function(req,res,next){
   var srchType = req.query.srchType;
   var srchText = req.query.srchText;
   if(req.query.srchType==null) srchType = 0;
-  var count = 10;
+  var count = 5;
   var param=[
     srchType,srchText,category_id,0,count
   ];
     userDao.selectAllOptions(param,function(result){
       if(result[0].length>0){
-        res.render('admin/userManage', {userList:result[0],msg:"",type:""});
+        res.render('admin/userManage', {userList:result[0],srchType:srchType,srchText:srchText,msg:"",type:"",count:result[0].length});
       }else{
-        res.render('admin/userManage', {userList:"",msg:"",type:""});
+        res.render('admin/userManage', {userList:"",srchType:srchType,srchText:srchText,msg:"",type:"",count:10});
       }
     });
 });
@@ -295,7 +301,7 @@ router.get('/userManage', function(req, res ,next) {
       limit: 10
     })
     .then(function(rows){
-      res.render('admin/userManage',{userList:rows,msg:"",type:""});
+      res.render('admin/userManage',{userList:rows,srchType:0,srchText:"",msg:"",type:"",count:10});
     });
 
   })
@@ -303,7 +309,33 @@ router.get('/userManage', function(req, res ,next) {
     res.send(err);
   });
 });
-
+/*user 검색 목록 더보기 */
+router.get('/userManagerListMore',function(req,res,next){
+  var category_id = req.user.category_id;
+  var srchType = req.query.srchType;
+  var srchText = req.query.srchText;
+  var current = Number(req.query.current)+1;
+  if(req.query.srchType==null) srchType = 0;
+  var count = 3;
+  var param=[
+    srchType,srchText,category_id,current,count
+  ];
+  userDao.selectAllOptions(param,function(result){
+    var data={};
+    if(result[0].length>0){
+      data ={
+        len : result[0].length,
+        list : result[0],
+        msg : "success"
+      };
+    }else{
+      data = {
+        msg : "noData"
+      }
+    }
+    res.json(data);
+  });
+});
 router.get('/userManage/:msg', function(req, res ,next) {
   var msg="";
   console.log(req.params.msg);
@@ -319,7 +351,7 @@ router.get('/userManage/:msg', function(req, res ,next) {
       limit: 10
     })
     .then(function(rows){
-      res.render('admin/userManage',{userList:rows,msg:msg,type:""});
+      res.render('admin/userManage',{userList:rows,srchType:0,srchText:"",msg:msg,type:"",count:10});
     });
 
   })
@@ -394,7 +426,8 @@ router.post('/user',function(req,res,next){
       limit: 10
     })
     .then(function(rows){
-      res.render('admin/userManage',{userList:rows, msg:"정상적으로 회원가입을 하였습니다.",type:"success"});
+      res.render('admin/userManage',{userList:rows, msg:"정상적으로 회원가입을 하였습니다.",type:"success",
+                                                          srchType:0,srchText:"",count:10});
     });
   });
 });
@@ -406,36 +439,39 @@ router.post('/userExcel',function(req,res){
   User.findAll({
     where : {
       category_id : req.user.category_id
-    }
+    },
+    limit : 10
   })
   .then(function(rows){
     list = rows;
     exUd.upload(req,res,function(err){
       if(err){
-             res.render('admin/userManage',{userList:list, msg:req.flash('error'),type:"error"});
+             res.render('admin/userManage',{userList:list, msg:req.flash('error'),type:"error",srchType:0,srchText:"",count:10});
              return;
         }
         /** Multer gives us file info in req.file object */
         if(!req.file){
             req.flash('error', "실패 : 업로드 파일이 없습니다!");
-            res.render('admin/userManage',{userList:list, msg:req.flash('error'),type:"error"});
+            res.render('admin/userManage',{userList:list, msg:req.flash('error'),type:"error",srchType:0,srchText:"",count:10});
             return;
         }
 
         exTJ.exToJson(req,function(result){
           if(result == 'fail'){
-            res.render('admin/userManage',{userList:list, msg:req.flash('error'),type:"error"});
+            res.render('admin/userManage',{userList:list, msg:req.flash('error'),type:"error",srchType:0,srchText:"",count:10});
           }
           else{
+            console.log(result);
             addRows.insert(result,req.user.category_id,function(msg){
                 if(msg == "success"){
                   User.findAll({
                     where : {
                       category_id : req.user.category_id
-                    }
+                    },
+                    limit : 10
                   })
                   .then(function(result){
-                    res.render('admin/userManage',{userList:result, msg:"사용자 엑셀 추가 성공했습니다.",type:"success"});
+                    res.render('admin/userManage',{userList:result, msg:"사용자 엑셀 추가 성공했습니다.",type:"success",srchType:0,srchText:"",count:10});
                   });
 
                 }

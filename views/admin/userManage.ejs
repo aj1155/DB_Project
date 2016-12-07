@@ -236,15 +236,15 @@
                                                 <div class="col-md-4 col-sm-4 col-xs-4">
                                                   <form action="/admin/userListSelectOptions">
                                                     <select name="srchType" class="form-control">
-                                                        <option value="0">검색 조건</option>
-                                                        <option value="1">이름 검색</option>
-                                                        <option value="2">직위 검색</option>
-                                                        <option value="3">핸드폰 번호 검색</option>
+                                                        <option value="0" <%= srchType == "0" ? "selected" : "" %>>검색 조건</option>
+                                                        <option value="1" <%= srchType == "1" ? "selected" : "" %>>이름 검색</option>
+                                                        <option value="2" <%= srchType == "2" ? "selected" : "" %>>직위 검색</option>
+                                                        <option value="3" <%= srchType == "3" ? "selected" : "" %>>핸드폰 번호 검색</option>
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="input-group">
-                                                <input type="text" name="srchText" class="form-control" placeholder="검색">
+                                                <input type="text" name="srchText" class="form-control" value="<%= srchText %>" placeholder="검색">
                                                 <span class="input-group-btn">
                                                     <button class="btn btn-default" type="submit">찾기</button>
                                                 </span>
@@ -265,7 +265,7 @@
                                               <th>관리자여부</th>
                                             </tr>
                                           </thead>
-                                          <tbody>
+                                          <tbody id="dataList">
                                           <% if(userList!=null && userList!=""){%>
                                               <% userList.forEach(function(user,idx){ %>
                                             <tr onClick="location.href='/admin/userEdit/<%=user.id%>'" style="cursor:pointer;">
@@ -291,7 +291,7 @@
                                         </div>
                                       </div>
                                     </div>
-                                    <button id="add" type="button" class="btn btn-default" style="float:right;">더보기...</button>
+                                    <button id="more" type="button" value="<%=count%>" class="btn btn-default" style="float:right;">더보기...</button>
                                   </div>
 
                                 </div>
@@ -318,26 +318,5 @@
 
     <% include ../common/script.ejs %>
     <script src="/res/assets/js/admin/userManage.js"></script>
-    <script>
-    $(document).ready(function(){
-      var fileTarget = $('.filebox .upload-hidden');
-
-      fileTarget.on('change', function(){  // 값이 변경되면
-          if(window.FileReader){  // modern browser
-            var filename = $(this)[0].files[0].name;
-          }
-          else {  // old IE
-            var filename = $(this).val().split('/').pop().split('\\').pop();  // 파일명만 추출
-          }
-
-          // 추출한 파일명 삽입
-          $(this).siblings('.upload-name').val(filename);
-        });
-      });
-    </script>
-    <script>
-
-
-    </script>
 </body>
 </html>
