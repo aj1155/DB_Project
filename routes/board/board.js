@@ -60,12 +60,12 @@ router.get('/list/:currentPage/:srchType/:srchText/:board_id',function(req,res,n
     res.json(rows);
   });
 });
-/*1은 공지사항 2는 자유게시판*/
+
 router.get('/read/:board_id/:id',function(req,res,next){
   boardDAO.selectById([req.params.id],function(rows){
     commentDAO.selectByBoard_id([req.params.id],function(row){
       fileDAO.selectByBoard_id([req.params.id],function(file){
-        res.render('board/read',{rows:rows,row:row,file:file,userId:req.user.id,board_id:req.params.board_id});
+        res.render('board/read',{rows:rows,row:row,file:file,userId:req.user.id,board_id:req.params.board_id,is_admin:req.user.is_admin});
       });
     });
   });
