@@ -119,7 +119,7 @@
                                 <a>회원 관리</a>
                             </li>
                             <li data-url="/admin/categoryManager">
-                                <a>최고경영 임원 관리</a>
+                                <a id="categoryManage"></a>
                             </li>
                             <li data-url="/admin/gradeManager">
                                 <a>기수별 임원 관리</a>
@@ -199,6 +199,7 @@
                     $('#board_list').append('<li><a href="/board/list/<%= user.category_id * 2 - 1 %>">자유게시판</a></li>');
                     $("#categoryName").append(result['cat_name']);
                     $("#categoryManager").append(result['cat_name']+' 임원명단');
+                    $('#categoryManage').append(result['cat_name']+' 임원관리');
                 }
             }
         });
