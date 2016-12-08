@@ -57,17 +57,16 @@ router.post('/guide',function(req,res,next){
   };
   var whereObj = {
     where : {
-      id : req.user.category_id
+        id : req.user.category_id
     }
   };
   Introduce.update(updateObj,whereObj)
   .then(function(result){
-    console.log(result);
-    if(result == 1){
-      res.render("admin/guide",{msg:'success'});
-    }else{
-      res.render("admin/guide",{msg:'fail'});
-    }
+    Introduce.findById(req.user.category_id)
+    .then(function(row){
+      console.log(row);
+        res.render("admin/guide",{msg:'success',intro:{text:row.dataValues.text}});
+    });
   });
 
 
