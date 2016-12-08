@@ -24,6 +24,7 @@ $(document).ready(function(){
                             '<td>'+result[i].create_time+'</td>'+
                           '</tr>';
           lastTr.after(dataTable);
+          $("input[name=currentPage]").val(Number(currentPage)+1);
         }
       },
       error : function(err){
