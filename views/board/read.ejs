@@ -90,8 +90,9 @@
                         <input type="hidden" name="group_id" value="<%=comment.group_id%>"/>
                         <td colspan=2>
                           <strong><%=comment.user_name%></strong><%=comment.write_time%>
+                          <% if(comment.user_id==userId || is_admin==1){%>
                           <a style="curosr:pointer;" id="pDel" name="pDel">삭제</a>
-
+                          <%}%>
                           <% if(comment.level!=0){%>
                             <p>RE:<%=comment.content%></p>
                           <%}else{%>
