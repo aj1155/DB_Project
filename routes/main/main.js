@@ -69,6 +69,7 @@ router.get('/', function (req, res, next) {
 
 /* session destroy 후 home으로 redirect*/
 router.get('/logout', function (req, res, next) {
+    console.error("logout");
     req.session.destroy(function (err) {
         if (err) {
             console.log('err');

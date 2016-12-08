@@ -1,138 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <!-- Meta, title, CSS, favicons, etc. -->
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>성공회대학교</title>
-      <% include ../common/css.ejs %>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>성공회대학교</title>
+    <% include ../common/css.ejs %>
 
-    </head>
+</head>
 
-    <body class="nav-md">
-        <div class="container body">
-            <div class="main_container">
-              <% include ../common/nav.ejs %>
+<body class="nav-md">
+<div class="container body">
+    <div class="main_container">
+        <% include ../common/nav.ejs %>
 
+        <!-- page content -->
+        <div class="right_col" role="main">
 
+            <img src="/res/production/images/함께맞는비.jpg" alt="..." class="img-main">
 
-                    <!-- page content -->
-              <div class="right_col" role="main">
+            <div class="row">
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>공지사항
+                            </h2>
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li>
+                                    <a href="/board/list/<%= row2[0].board_id %>">
+                                        <i>더보기</i>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <div class="dashboard-widget-content">
 
-                  <img src="/res/production/images/함께맞는비.jpg" alt="..." class="img-main">
+                                <ul class="list-unstyled timeline widget">
 
-                  <div class="row">
-                      <div class="col-md-6 col-sm-6 col-xs-12">
-                          <div class="x_panel">
-                              <div class="x_title">
-                                  <h2>공지사항
-                                  </h2>
-                                  <ul class="nav navbar-right panel_toolbox">
-                                      <li>
-                                          <a href="/board/list/<%=row2[0].board_id%>">
-                                              <i>더보기</i>
-                                          </a>
-                                      </li>
-                                  </ul>
-                                  <div class="clearfix"></div>
-                              </div>
-                              <div class="x_content">
-                                  <div class="dashboard-widget-content">
-
-                                      <ul class="list-unstyled timeline widget">
-
-                                            <% for(var i=0; i<row2.length; i++){%>
-                                              <li>
-                                                <div class="block">
-                                                    <div class="block_content">
-                                                        <h2 class="title">
-                                                            <a href="/board/read/<%=row2[i].board_id%>/<%=row2[i].id%>"><%=row2[i].title%></a>
-                                                        </h2>
-                                                        <div class="byline">
-                                                            <span><%=row2[i].create_time%></span>
-                                                            <a><%=row2[i].user_name%></a>
-                                                        </div>
-                                                        <p class="excerpt" style="overflow:hidden; text-overflow:ellipsis;"><%=row2[i].content%>
-                                                        </p>
-                                                    </div>
+                                    <% for(var i = 0; i < row2.length; i++){ %>
+                                    <li>
+                                        <div class="block">
+                                            <div class="block_content">
+                                                <h2 class="title">
+                                                    <a href="/board/read/<%= row2[i].board_id %>/<%= row2[i].id %>"><%= row2[i].title %></a>
+                                                </h2>
+                                                <div class="byline">
+                                                    <span><%= row2[i].create_time %></span>
+                                                    <a><%= row2[i].user_name %></a>
                                                 </div>
-                                            </li>
-                                            <%}%>
-                                      </ul>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                      <!--자유게시판-->
-                      <div class="col-md-6 col-sm-6 col-xs-12">
-                          <div class="x_panel">
-                              <div class="x_title">
-                                  <h2>자유게시판
-                                  </h2>
-                                  <ul class="nav navbar-right panel_toolbox">
-                                      <li>
-                                          <a href="/board/list/<%=row1[0].board_id%>">
-                                              <i>더보기</i>
-                                          </a>
-                                      </li>
-                                  </ul>
-                                  <div class="clearfix"></div>
-                              </div>
-                              <div class="x_content">
+                                                <p class="excerpt"
+                                                   style="overflow:hidden; text-overflow:ellipsis;"><%= row2[i].content %>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <% } %>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--자유게시판-->
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>자유게시판
+                            </h2>
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li>
+                                    <a href="/board/list/<%= row1[0].board_id %>">
+                                        <i>더보기</i>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
 
-                                  <table class="table table-striped">
-                                      <thead>
-                                          <tr>
-                                              <th>번호</th>
-                                              <th>날짜</th>
-                                              <th>이름</th>
-                                              <th>제목</th>
-                                          </tr>
-                                      </thead>
-                                      <tbody>
-                                        <% for(var i=0; i<row1.length; i++){%>
-                                          <tr data-url="/board/read/<%=row1[i].board_id%>/<%=row1[i].id%>">
-                                              <th scope="row"><%=i+1%></th>
-                                              <td><%=row1[i].create_time%></td>
-                                              <td><%=row1[i].user_name%></td>
-                                              <td><%=row1[i].content%></td>
-                                          </tr>
-                                        <%}%>
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>번호</th>
+                                    <th>날짜</th>
+                                    <th>이름</th>
+                                    <th>제목</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <% for(var i = 0; i < row1.length; i++){ %>
+                                <tr data-url="/board/read/<%= row1[i].board_id %>/<%= row1[i].id %>">
+                                    <th scope="row"><%= i+1 %></th>
+                                    <td><%= row1[i].create_time %></td>
+                                    <td><%= row1[i].user_name %></td>
+                                    <td><%= row1[i].content %></td>
+                                </tr>
+                                <% } %>
 
+                                </tbody>
+                            </table>
 
-                                      </tbody>
-                                  </table>
-
-                              </div>
-                          </div>
-                      </div>
-                      <div class="clearfix"></div>
-                  </div>
-
-              </div>
-          </div>
-          <!-- /page content -->
-        </div>
-        <!-- footer content -->
-        <footer>
-            <div class="pull-right">
-                성공회대학교 동문회 관리 시스템
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
             </div>
-            <div class="clearfix"></div>
-        </footer>
-        <!-- /footer content -->
+
+        </div>
     </div>
+    <!-- /page content -->
+</div>
+<!-- footer content -->
+<footer>
+    <div class="pull-right">
+        성공회대학교 동문회 관리 시스템
+    </div>
+    <div class="clearfix"></div>
+</footer>
+<!-- /footer content -->
+</div>
 
 <% include ../common/script.ejs %>
 <script>
-  $(function(){
-    $("tr[data-url]").click(function(){
-      event.stopPropagation();
-      location.href = $(this).attr("data-url");
+    $(function () {
+        $("tr[data-url]").click(function () {
+            event.stopPropagation();
+            location.href = $(this).attr("data-url");
+        });
     });
-  });
 </script>
 </body>
 </html>
