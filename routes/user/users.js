@@ -187,7 +187,9 @@ router.get('/detailProfile/:id', function(req, res, next) {
     userDao.SelectUserInfo(req.user.id,function(rows){
       fs.stat('../public/profileImage/'+req.user.id+'_Profile.jpg',function(err,data){
           var not_exist;
-          if(err) not_exist=err;
+          if(err) not_exist=false;
+          console.log(data);
+          not_exist = data;
           res.render('user/detailProfile',{ message:req.flash('error'), profileImg:not_exist, userImformation : result });
       });
     });

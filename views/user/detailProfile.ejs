@@ -12,6 +12,7 @@
 
     <% include ../common/css.ejs %>
 
+
 </head>
 
 <body class="nav-md">
@@ -37,7 +38,12 @@
                                 <div class="x_content" >
                                     <div class="col-md-3 col-sm-3 col-xs-12 profile_left" >
                                         <div class="profile_img"  >
-                                            <img class="img-responsive avatar-view" src="/res/production/images/user.png" alt="Avatar" title="Change the avatar" style="height:48vh;weight:36vw;">
+                                          <% if (profileImg===false && profileImg != "") { %>
+                                          <img src="/profileImage/user.png" alt="..." class="img-circle profile_img" id="profileImg">
+                                          <% } else {%>
+                                          <img src="/profileImage/<%= userImformation.id %>_Profile.jpg" alt="..." class="img-circle profile_img" id="profileImg">
+                                          <% } %>
+                                            <!-- <img class="img-responsive avatar-view" src="/res/production/images/user.png" alt="Avatar" title="Change the avatar" style="height:48vh;weight:36vw;"> -->
                                         </div>
                                     </div>
                                     <div class="col-md-9 col-sm-9 col-xs-12" >
