@@ -63,11 +63,8 @@ router.get('/list/:currentPage/:srchType/:srchText/:board_id',function(req,res,n
 /*1은 공지사항 2는 자유게시판*/
 router.get('/read/:board_id/:id',function(req,res,next){
   boardDAO.selectById([req.params.id],function(rows){
-    console.log(rows);
     commentDAO.selectByBoard_id([req.params.id],function(row){
-      console.log(row);
       fileDAO.selectByBoard_id([req.params.id],function(file){
-        console.log(file);
         res.render('board/read',{rows:rows,row:row,file:file,userId:req.user.id,board_id:req.params.board_id});
       });
     });
@@ -128,7 +125,11 @@ router.get('/edit/:board_id/:id',function(req,res,next){
         })
             .then(function(result){
               fileDAO.selectByBoard_id(req.params.id,function(files){
-                res.render('board/edit',{result:result,files:files,board_id:req.params.board_id});
+                if(files===undefined){
+                  res.render('board/edit',{result:result,files:null,board_id:req.params.board_id});
+                }else{
+                  res.render('board/edit',{result:result,files:files,board_id:req.params.board_id});
+                }
               });
           });
     })
