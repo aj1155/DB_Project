@@ -94,9 +94,11 @@
                   </div>
                   </div>
                   <div class="pull-right">
+                    <%if(is_admin==1 || board_id%2!=0){%>
                     <a class="btn btn-primary" href="/board/write/<%=board_id%>">글쓰기</a>
+                    <%}%>
                     <span id="listSubmit"><a>더보기</a></button>
-                    <input type="hidden" name="currentPage" value="<%=currentPage+1%>"/>
+                    <input type="hidden" name="currentPage" value="<%=currentPage%>"/>
                     <input type="hidden" name="board_id" value="<%=board_id%>"/>
                   </div>
                 </div>
