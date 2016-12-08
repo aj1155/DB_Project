@@ -83,15 +83,15 @@
                                                 <div class="col-md-4 col-sm-4 col-xs-4">
                                                   <form action="/admin/gradeManagerListSelectOptions">
                                                     <select name="srchType" class="form-control">
-                                                      <option value="0">검색 조건</option>
-                                                      <option value="1">이름 검색</option>
-                                                      <option value="2">직위 검색</option>
-                                                      <option value="3">핸드폰 번호 검색</option>
+                                                      <option value="0" <%= srchType == "0" ? "selected" : "" %>>검색 조건</option>
+                                                      <option value="1" <%= srchType == "1" ? "selected" : "" %>>이름 검색</option>
+                                                      <option value="2" <%= srchType == "2" ? "selected" : "" %>>직위 검색</option>
+                                                      <option value="3" <%= srchType == "3" ? "selected" : "" %>>핸드폰 번호 검색</option>
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="input-group">
-                                                <input type="text" name="srchText" class="form-control" placeholder="검색">
+                                                <input type="text" name="srchText" class="form-control" value="<%= srchText %>" placeholder="검색">
                                                 <span class="input-group-btn">
                                                     <button class="btn btn-default" type="submit">찾기</button>
                                                 </span>
@@ -156,13 +156,15 @@
 
                                     </div>
                                     <!-- 회원추가에 리스트 끝 -->
+
                                   </div>
                                   <!-- 추가 탭 내용 끝 -->
 
 
+
                                   <div role="tabpanel" class="tab-pane fade" id="user_delete" aria-labelledby="profile-tab">
-                                    <div class="col-md-12 col-sm-6 col-xs-6 ">
-                                      <div class="x_panel" id="list">
+                                    <div class="col-md-12 col-sm-6 col-xs-6 " id="list">
+                                      <!-- <div class="x_panel" id="list"> -->
                                         <div class="col-md-12 col-sm-8 col-xs-12 form-group pull-left top_search">
                                            <h2>편집할 회원을 선택해주세요</h2>
                                            <h2>(삭제는 체크박스를 이용해주시고 수정은 해당 회원을 클릭해주세요.)</h2>
@@ -170,12 +172,12 @@
                                         <div class="col-md-8 col-sm-8 col-xs-12 form-group pull-right top_search">
                                             <div class="form-group"  style="background: #fff; margin-top: 10px;">
                                                 <div class="col-md-4 col-sm-4 col-xs-4">
-                                                  <form action="/admin/gradeManagerListSelectOptions">
+                                                  <form>
                                                     <select name="srchType" class="form-control">
-                                                        <option value="0">검색 조건</option>
-                                                        <option value="1">이름 검색</option>
-                                                        <option value="2">직위 검색</option>
-                                                        <option value="3">핸드폰 번호 검색</option>
+                                                      <option value="0" <%= srchType == "0" ? "selected" : "" %>>검색 조건</option>
+                                                      <option value="1" <%= srchType == "1" ? "selected" : "" %>>이름 검색</option>
+                                                      <option value="2" <%= srchType == "2" ? "selected" : "" %>>직위 검색</option>
+                                                      <option value="3" <%= srchType == "3" ? "selected" : "" %>>핸드폰 번호 검색</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -222,15 +224,22 @@
                                             <!-- <button type="submit" class="del btn btn-success">삭제</button> -->
                                           </div>
                                         </div>
-                                      </div>
+                                      <!-- </div> -->
                                     </div>
-                                    <button id="add" type="button" class="btn btn-default" style="float:right;">더보기...</button>
                                   </div>
+
 
                                 </div>
                               </div>
 
                             </div>
+                          </div>
+                          <div class="col-md-12 col-sm-8 col-xs-12 form-group pull-right top_search">
+                              <div class="form-group"  style="background: #fff; margin-top: 10px;">
+                                  <div class="col-md-4 col-sm-4 col-xs-4">
+                                    <button id="more" type="button" value="<%=count%>" class="btn btn-default" style="float:right;">더보기...</button>
+                                  </div>
+                              </div>
                           </div>
                         </div>
                       </div>
