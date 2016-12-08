@@ -25,7 +25,7 @@
                 <div class="">
                     <div class="page-title">
                         <div class="title_left">
-                            <h3>프로필</h3>
+                            <h3>임원 프로필</h3>
                         </div>
                     </div>
 
@@ -38,7 +38,7 @@
                                 <div class="x_content" >
                                     <div class="col-md-3 col-sm-3 col-xs-12 profile_left" >
                                         <div class="profile_img"  >
-                                          <% if (profileImg == false) { %>
+                                          <% if (profileImg==false) { %>
                                           <img src="/profileImage/user.png" alt="..." class="img-circle profile_img" id="profileImg">
                                           <% } else {%>
                                           <img src="/profileImage/<%= userImformation.id %>_Profile.jpg" alt="..." class="img-circle profile_img" id="profileImg">
@@ -105,7 +105,7 @@
                                 </div>
                             </div>
                         </div>
-                        <button id="add" type="button" class="btn btn-default" style="float:right;" onClick="location.href='/users/userGradeList/<%=user.category_id%>/<%=userImformation.grade%>'">목록으로</button>
+                        <button id="add" type="button" class="btn btn-default" style="float:right;" onClick="location.href='/users/userManagerList/<%=user.category_id%>/<%=userImformation.grade%>'">목록으로</button>
                     </div>
 
                 </div>

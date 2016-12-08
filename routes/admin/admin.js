@@ -563,23 +563,7 @@ router.get('/gradeManagerListSelectOptions',function(req,res,next){
       }
     });
 });
-// router.get('/userListSelectOptions',function(req,res,next){
-//   var category_id = req.user.category_id;
-//   var srchType = req.query.srchType;
-//   var srchText = req.query.srchText;
-//   if(req.query.srchType==null) srchType = 0;
-//   var count = 5;
-//   var param=[
-//     srchType,srchText,category_id,0,count
-//   ];
-//     userDao.selectAllOptions(param,function(result){
-//       if(result[0].length>0){
-//         res.render('admin/userManage', {userList:result[0],srchType:srchType,srchText:srchText,msg:"",type:"",count:result[0].length});
-//       }else{
-//         res.render('admin/userManage', {userList:"",srchType:srchType,srchText:srchText,msg:"",type:"",count:10});
-//       }
-//     });
-// });
+
 
 
 module.exports = router;

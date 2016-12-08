@@ -132,7 +132,7 @@ router.get('/userManagerList/:category_id/:grade', function(req, res, next) {
   var srchType = req.query.srchType;
   var srchText = req.query.srchText;
   if(req.query.srchType==null) srchType = 0;
-  var count = 3;
+  var count = 4;
   var param=[
     srchType,srchText,category_id,grade,0,count
   ];
@@ -184,17 +184,40 @@ router.post('/profile',upload.any(),function(req,res,next){
 router.get('/detailProfile/:id', function(req, res, next) {
   var id = req.params.id;
   userDao.FindOne(id, req.user.category_id, function(result) {
-    userDao.SelectUserInfo(req.user.id,function(rows){
-      fs.stat('../public/profileImage/'+req.user.id+'_Profile.jpg',function(err,data){
-          var not_exist;
-          if(err) not_exist=false;
-          console.log(data);
-          not_exist = data;
-          res.render('user/detailProfile',{ message:req.flash('error'), profileImg:not_exist, userImformation : result });
-      });
+    fs.exists('../public/profileImage/'+req.params.id+'_Profile.jpg', function(exists){       // 파일 존재 여부 확인
+      if(exists){
+          res.render('user/detailProfile',{ message:req.flash('error'), profileImg:true, userImformation : result });
+      } else {
+          res.render('user/detailProfile',{ message:req.flash('error'), profileImg:false, userImformation : result });
+      }
     });
   });
 });
 
+router.get('/detailContactsProfile/:id', function(req, res, next) {
+  var id = req.params.id;
+  userDao.FindOne(id, req.user.category_id, function(result) {
+    fs.exists('../public/profileImage/'+req.params.id+'_Profile.jpg', function(exists){       // 파일 존재 여부 확인
+      if(exists){
+          res.render('user/detailContactsProfile',{ message:req.flash('error'), profileImg:true, userImformation : result });
+      } else {
+          res.render('user/detailContactsProfile',{ message:req.flash('error'), profileImg:false, userImformation : result });
+      }
+    });
+  });
+});
+
+router.get('/detailManagerProfile/:id', function(req, res, next) {
+  var id = req.params.id;
+  userDao.FindOne(id, req.user.category_id, function(result) {
+    fs.exists('../public/profileImage/'+req.params.id+'_Profile.jpg', function(exists){       // 파일 존재 여부 확인
+      if(exists){
+          res.render('user/detailManagerProfile',{ message:req.flash('error'), profileImg:true, userImformation : result });
+      } else {
+          res.render('user/detailManagerProfile',{ message:req.flash('error'), profileImg:false, userImformation : result });
+      }
+    });
+  });
+});
 
 module.exports = router;
