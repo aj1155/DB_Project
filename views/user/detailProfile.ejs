@@ -34,7 +34,6 @@
                         <div class="col-md-12 col-sm-12 col-xs-12">
 
                             <div class="x_panel">
-
                                 <div class="x_content" >
                                     <div class="col-md-3 col-sm-3 col-xs-12 profile_left" >
                                         <div class="profile_img"  >
@@ -49,28 +48,49 @@
                                                 <i class="fa fa-group">기수 : <%=userImformation.grade%>기</i>
                                             </li>
                                             <br/>
-                                            <li><i class="fa fa-map-marker user-profile-icon"></i>주소 : 서울특별시 구로구 연동로 320 성공회대학교
-                                            </li>
+
+                                            <% if(userImformation.is_phone_number == 0) { %>
+                                              <li class="m-top-xs">
+                                                  <i class="fa fa-mobile">휴대전화 : 비공개</i>
+                                              </li>
+                                            <% } else if(userImformation.is_phone_number == 1) { %>
+                                              <li class="m-top-xs">
+                                                  <i class="fa fa-mobile">휴대전화 : <%=userImformation.phone_number%></i>
+                                              </li>
+                                            <% } %>
                                             <br/>
-                                            <li class="m-top-xs">
-                                                <i class="fa fa-mobile">휴대전화 : <%=userImformation.phone_number%></i>
-                                            </li>
+
+                                            <% if(userImformation.is_social_status == 0) { %>
+                                              <li>
+                                                  <i class="fa fa-briefcase user-profile-icon"></i>소속지위 : 비공개
+                                              </li>
+                                            <% } else if(userImformation.is_social_status == 1) {%>
+                                              <li>
+                                                  <i class="fa fa-briefcase user-profile-icon"></i>소속지위 : <%=userImformation.social_status%>
+                                              </li>
+                                            <% } %>
                                             <br/>
-                                            <li>
-                                                <i class="fa fa-briefcase user-profile-icon"></i>직업 : <%=userImformation.social_status%>
-                                            </li>
+
+                                            <% if(userImformation.is_company_number==0) { %>
+                                              <li class="m-top-xs">
+                                                  <i class="fa fa-mobile">직장전화 : 비공개</i>
+                                              </li>
+                                            <% } else if(userImformation.is_company_number==1) { %>
+                                              <li class="m-top-xs">
+                                                  <i class="fa fa-mobile">직장전화 : <%=userImformation.company_number%></i>
+                                              </li>
+                                            <% }%>
                                             <br/>
-                                            <li class="m-top-xs">
-                                                <i class="fa fa-mobile">직장전화 : <%=userImformation.company_number%></i>
-                                            </li>
-                                            <br/>
-                                            <li class="m-top-xs">
-                                                <i class="fa fa-user">소속지위 : 사장</i>
-                                            </li>
-                                            <br/>
-                                            <li class="m-top-xs">
-                                                <i class="fa fa-paper-plane-o">이메일 : <%=userImformation.email%></i>
-                                            </li>
+
+                                            <% if(userImformation.is_email == 0) {%>
+                                              <li class="m-top-xs">
+                                                  <i class="fa fa-paper-plane-o">이메일 : 비공개</i>
+                                              </li>
+                                            <% } else if(userImformation.is_email == 1) { %>
+                                              <li class="m-top-xs">
+                                                  <i class="fa fa-paper-plane-o">이메일 : <%=userImformation.email%></i>
+                                              </li>
+                                            <% }%>
                                             <br/>
                                         </ul>
 
@@ -79,7 +99,7 @@
                                 </div>
                             </div>
                         </div>
-                        <button id="add" type="button" class="btn btn-default" style="float:right;">목록으로</button>
+                        <button id="add" type="button" class="btn btn-default" style="float:right;" onClick="location.href='/users/userGradeList/<%=user.category_id%>/<%=userImformation.grade%>'">목록으로</button>
                     </div>
 
                 </div>

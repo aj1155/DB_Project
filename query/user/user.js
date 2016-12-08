@@ -21,7 +21,7 @@ var crypto = require('crypto');
 
 var user = {};
 
-//카테고리명 
+//카테고리명
 user.GetCategoryName = function(id,callback){
   pool.getConnection(function(err,connection){
     connection.query("SELECT c.name FROM user u LEFT JOIN category c ON u.category_id = c.id WHERE u.id=?",[id],function(err,row){
