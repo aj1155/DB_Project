@@ -456,8 +456,11 @@ router.post('/userExcel',function(req,res){
         }
 
         exTJ.exToJson(req,function(result){
-          if(result == 'fail'){
-            res.render('admin/userManage',{userList:list, msg:req.flash('error'),type:"error",srchType:0,srchText:"",count:10});
+          if(result.msg == 'excelTypeErr'){
+            res.render('admin/userManage',{userList:list, msg:"엑셀형식을 확인해주세요 ms excel을 이용해야 합니다.",type:"error",srchType:0,srchText:"",count:10});
+          }
+          else if(result.msg == 'userDataMiss'){
+            res.render('admin/userManage',{userList:list, msg:"회원 정보를 다시 확인해서 넣어주세요.",type:"error",srchType:0,srchText:"",count:10});
           }
           else{
             console.log(result);
