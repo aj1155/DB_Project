@@ -95,7 +95,8 @@ router.get('/gradeManager', function(req, res, next) {
   sequelize.authenticate().then(function(err){
     User.findAll({
       where : {
-        category_id : req.user.category_id
+        category_id : req.user.category_id,
+        is_admin : false
       },
       limit: 10
     })
@@ -197,7 +198,8 @@ router.get('/categoryManager', function(req, res, next) {
   sequelize.authenticate().then(function(err){
     User.findAll({
       where : {
-        category_id : req.user.category_id
+        category_id : req.user.category_id,
+        is_admin : false
       },
       limit: 10
     })
@@ -227,7 +229,7 @@ router.get('/categoryManagerAdd/:id', function(req, res, next) {
 /*카테고리 임원 추가페이지 post라우트*/
 router.post('/categoryManagerAdd/:id', function(req, res, next) {
   var id = req.params.id;
-  var params = [req.user.category_id, id, req.body.position];
+  var params = [req.user.category_id, id, req.body.position, req.body.name, req.body.grade];
   if(req.body.position === "" || req.body.position === null) {
     req.flash('error', "변경실패, 직책명을 적어주세요.");
     return res.redirect('/admin/categoryManagerAdd/'+id);
@@ -561,23 +563,7 @@ router.get('/gradeManagerListSelectOptions',function(req,res,next){
       }
     });
 });
-// router.get('/userListSelectOptions',function(req,res,next){
-//   var category_id = req.user.category_id;
-//   var srchType = req.query.srchType;
-//   var srchText = req.query.srchText;
-//   if(req.query.srchType==null) srchType = 0;
-//   var count = 5;
-//   var param=[
-//     srchType,srchText,category_id,0,count
-//   ];
-//     userDao.selectAllOptions(param,function(result){
-//       if(result[0].length>0){
-//         res.render('admin/userManage', {userList:result[0],srchType:srchType,srchText:srchText,msg:"",type:"",count:result[0].length});
-//       }else{
-//         res.render('admin/userManage', {userList:"",srchType:srchType,srchText:srchText,msg:"",type:"",count:10});
-//       }
-//     });
-// });
+
 
 
 module.exports = router;

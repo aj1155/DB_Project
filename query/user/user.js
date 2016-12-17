@@ -83,7 +83,7 @@ user.GradeManagerInsert = function(params, callback) {
 /*최고경영 임원 추가 쿼리*/
 user.CategoryManagerInsert = function(params, callback) {
   pool.getConnection(function(err, connection) {
-    connection.query("insert into categorymanager(category_id, user_id, position) values (?,?,?)", params, function(err, row) {
+    connection.query("insert into categorymanager(category_id, user_id, position, user_name, grade) values (?,?,?,?,?)", params, function(err, row) {
         connection.release();
         callback(true);
     });
@@ -93,7 +93,7 @@ user.CategoryManagerInsert = function(params, callback) {
 /*기수별 임원명단 전체 쿼리*/
 user.FindAllGradeManager = function(category_id, callback) {
   pool.getConnection(function(err, connection) {
-    connection.query("select * from user join grademanager on user.id = grademanager.user_id where grademanager.category_id=? order by grademanager.grade",[category_id],function(err, rows) {
+    connection.query("select * from user join grademanager on user.id = grademanager.user_id where grademanager.category_id=? and user.is_admin = '0' order by grademanager.grade",[category_id],function(err, rows) {
       connection.release();
       callback(rows);
     });
@@ -103,7 +103,7 @@ user.FindAllGradeManager = function(category_id, callback) {
 /*카테고리 임원명단 전체 쿼리*/
 user.FindAllCategoryManager = function(category_id, callback) {
   pool.getConnection(function(err, connection) {
-    connection.query("select * from user join categorymanager on user.id = categorymanager.user_id where categorymanager.category_id = ?",[category_id],function(err, rows) {
+    connection.query("select * from user join categorymanager on user.id = categorymanager.user_id where categorymanager.category_id = ? and user.is_admin = '0'",[category_id],function(err, rows) {
       connection.release();
       callback(rows);
     });
