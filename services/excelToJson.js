@@ -16,16 +16,20 @@ var exToJson = function(req,callback){
       }, function(err,result){
           if(err) {
               //return res.json({error_code:1,err_desc:err, data: null});
+              result.msg="userDataMiss";
               req.flash('error', "엑셀에 유저 정보 입력을 확인 해주세요!");
-              callback(fail);
+              callback(result);
           }
 
           //res.json({error_code:0,err_desc:null, data: result});
+          result.msg = "success";
           callback(result);
       });
   } catch (err){
       //res.json({error_code:1,err_desc:"Corupted excel file"});
-      callback(fail);
+       var result={};
+       result.msg="excelTypeErr";
+      callback(result);
   }
 
 }

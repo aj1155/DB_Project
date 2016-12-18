@@ -95,13 +95,14 @@ router.get('/gradeManager', function(req, res, next) {
   sequelize.authenticate().then(function(err){
     User.findAll({
       where : {
-        category_id : req.user.category_id
+        category_id : req.user.category_id,
+        is_admin : false
       },
       limit: 10
     })
     .then(function(rows){
       userDao.FindAllGradeManager(req.user.category_id, function(result) {
-        res.render('admin/gradeManager',{userList:rows, msg:"", type:"", gradeManagerList : result});
+        res.render('admin/gradeManager',{userList:rows, gradeManagerList : result, srchType:0,srchText:"", msg:"", type:"", count:10});
       });
     });
   })
@@ -197,7 +198,8 @@ router.get('/categoryManager', function(req, res, next) {
   sequelize.authenticate().then(function(err){
     User.findAll({
       where : {
-        category_id : req.user.category_id
+        category_id : req.user.category_id,
+        is_admin : false
       },
       limit: 10
     })
@@ -227,7 +229,7 @@ router.get('/categoryManagerAdd/:id', function(req, res, next) {
 /*카테고리 임원 추가페이지 post라우트*/
 router.post('/categoryManagerAdd/:id', function(req, res, next) {
   var id = req.params.id;
-  var params = [req.user.category_id, id, req.body.position];
+  var params = [req.user.category_id, id, req.body.position, req.body.name, req.body.grade];
   if(req.body.position === "" || req.body.position === null) {
     req.flash('error', "변경실패, 직책명을 적어주세요.");
     return res.redirect('/admin/categoryManagerAdd/'+id);
@@ -456,8 +458,11 @@ router.post('/userExcel',function(req,res){
         }
 
         exTJ.exToJson(req,function(result){
-          if(result == 'fail'){
-            res.render('admin/userManage',{userList:list, msg:req.flash('error'),type:"error",srchType:0,srchText:"",count:10});
+          if(result.msg == 'excelTypeErr'){
+            res.render('admin/userManage',{userList:list, msg:"엑셀형식을 확인해주세요 ms excel을 이용해야 합니다.",type:"error",srchType:0,srchText:"",count:10});
+          }
+          else if(result.msg == 'userDataMiss'){
+            res.render('admin/userManage',{userList:list, msg:"회원 정보를 다시 확인해서 넣어주세요.",type:"error",srchType:0,srchText:"",count:10});
           }
           else{
             console.log(result);
@@ -543,16 +548,18 @@ router.get('/gradeManagerListSelectOptions',function(req,res,next){
   var category_id = req.user.category_id;
   var srchType = req.query.srchType;
   var srchText = req.query.srchText;
+
   if(req.query.srchType===null) srchType = 0;
-  var count = 10;
+  var count = 5;
   var param=[
     srchType,srchText,category_id,0,count
   ];
     userDao.selectAllOptions(param,function(result){
       if(result[0].length>0){
-        res.render('admin/gradeManager', {userList:result[0],msg:"",type:""});
+        res.render('admin/gradeManager', {userList:result[0],srchType:srchType,srchText:srchText,msg:"",type:"",count:result[0].length});
       }else{
-        res.render('admin/gradeManager', {userList:"",msg:"",type:""});
+        console.log('2222222');
+        res.render('admin/gradeManager', {userList:"", manager:"",srchType:srchType,srchText:srchText,msg:"",type:"",count:10});
       }
     });
 });

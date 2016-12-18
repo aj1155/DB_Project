@@ -22,7 +22,7 @@
                     <div class="">
                         <div class="page-title">
                             <div class="title_left">
-                                <h3><%=grade%>기 동문명단</h3>
+                                <h3><%=grade%>기 임원 명단</h3>
                             </div>
 
                             <div class="title_right">
@@ -62,12 +62,15 @@
                                           <% userList.forEach(function(user,idx){ %>
                                             <div class="row col-md-6 col-sm-12 col-xs-12">
                                                 <div class="profile_details">
-                                                    <div class="well profile_view">
+                                                    <div class="well profile_view" onClick="location.href='/users/detailManagerProfile/<%=user.user_id%>'" style="cursor:pointer;">
                                                         <div class="col-md-12 col-xs-12 col-sm-12">
                                                             <div class="left col-md-7 col-xs-7 col-sm-7">
                                                                 <h2>이름 :<%=user.user_name%></h2>
                                                                 <p>
                                                                     기수 : <%=user.grade%>
+                                                                </p>
+                                                                <p>
+                                                                    직책 : <%=user.position%>
                                                                 </p>
                                                                 <button type="button" class="btn btn-success btn-xs">
                                                                   <i class="fa fa-phone"></i>

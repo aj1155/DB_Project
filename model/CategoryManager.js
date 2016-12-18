@@ -7,6 +7,12 @@ var CategoryManager = sequelize.define('categorymanager', {
              primaryKey: true,
              autoIncrement: true
        },
+       grade : {
+         type : Sequelize.INTEGER
+       },
+       user_name : {
+         type : Sequelize.STRING
+       },
        category_id:{
          type : Sequelize.INTEGER
        },
