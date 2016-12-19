@@ -1,10 +1,11 @@
+#!/usr/bin/env node
 
 /**
  * Module dependencies.
  */
 
 var app = require('../app');
-var debug = require('debug')('DB_Project:server');
+var debug = require('debug')('info:server');
 var http = require('http');
 
 /**
