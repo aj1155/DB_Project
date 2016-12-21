@@ -148,7 +148,7 @@ img { max-width: 100%; }
 .divider-1 span {
 	display: inline-block;
 	width: 200px;
-	border-bottom: 1px dotted #aaa;
+	border-bottom: 1px dotted #fff;
 }
 
 
