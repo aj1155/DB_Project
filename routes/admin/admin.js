@@ -103,7 +103,7 @@ router.get('/gradeManager', function(req, res, next) {
     })
     .then(function(rows){
       userDao.FindAllGradeManager(req.user.category_id, function(result) {
-        res.render('admin/gradeManager',{userList:rows, gradeManagerList : result, srchType:0,srchText:"", msg:"", type:"", count:10});
+        res.render('admin/gradeManager',{userList:rows, gradeManagerList : result, gradeEditManagerList:result, srchType:0,srchText:"", msg:"", type:"", count:10, srchType2:0,srchText2:""});
       });
     });
   })
@@ -206,7 +206,7 @@ router.get('/categoryManager', function(req, res, next) {
     })
     .then(function(rows){
       userDao.FindAllCategoryManager(req.user.category_id,function(result) {
-        res.render('admin/categoryManager',{userList:rows, msg:"", type:"", categoryManagerList : result});
+        res.render('admin/categoryManager',{userList:rows, categoryManagerList : result, categoryManagerEditList : result, srchType:0, srchText:"", msg:"", type:"", count:10 ,srchType2:0, srchText2:""});
       });
     });
   })
@@ -554,24 +554,99 @@ router.put('/user',function(req,res){
 
 
 
+
+router.get('/gradeManagerListMore',function(req,res,next){
+  var category_id = req.user.category_id;
+  var srchType = req.query.srchType;
+  var srchText = req.query.srchText;
+  var current = Number(req.query.current)+1;
+  if(req.query.srchType==null) srchType = 0;
+  var count = 3;
+  var param=[
+    srchType,srchText,category_id,current,count
+  ];
+  userDao.selectAllOptions(param,function(result){
+    var data={};
+    if(result[0].length>0){
+      data ={
+        len : result[0].length,
+        list : result[0],
+        msg : "success"
+      };
+    }else{
+      data = {
+        msg : "noData"
+      }
+    }
+    res.json(data);
+  });
+});
+
 router.get('/gradeManagerListSelectOptions',function(req,res,next){
   var category_id = req.user.category_id;
   var srchType = req.query.srchType;
   var srchText = req.query.srchText;
-
-  if(req.query.srchType===null) srchType = 0;
+  if(req.query.srchType==null) srchType = 0;
   var count = 5;
   var param=[
     srchType,srchText,category_id,0,count
   ];
+  userDao.FindAllGradeManager(req.user.category_id, function(result2) {
     userDao.selectAllOptions(param,function(result){
       if(result[0].length>0){
-        res.render('admin/gradeManager', {userList:result[0],srchType:srchType,srchText:srchText,msg:"",type:"",count:result[0].length});
+        res.render('admin/gradeManager', {userList:result[0],gradeManagerList:result2, gradeManagerEditList:result2, srchType:srchType,srchText:srchText,msg:"",type:"",count:result[0].length,srchType2:0,srchText2:""});
       }else{
-        console.log('2222222');
-        res.render('admin/gradeManager', {userList:"", manager:"",srchType:srchType,srchText:srchText,msg:"",type:"",count:10});
+        res.render('admin/gradeManager', {userList:"",gradeManagerList:result2, gradeManagerEditList:result2, srchType:srchType,srchText:srchText,msg:"",type:"",count:10,srchType2:0,srchText2:""});
       }
     });
+  });
+});
+
+router.get('/categoryManagerListSelectOptions',function(req,res,next){
+  var category_id = req.user.category_id;
+  var srchType = req.query.srchType;
+  var srchText = req.query.srchText;
+  if(req.query.srchType==null) srchType = 0;
+  var count = 5;
+  var param=[
+    srchType,srchText,category_id,0,count
+  ];
+  userDao.FindAllCategoryManager(req.user.category_id, function(result2) {
+    userDao.selectAllOptions(param,function(result){
+      if(result[0].length>0){
+        res.render('admin/categoryManager', {userList:result[0],categoryManagerList:result2, categoryManagerEditList:result2, srchType:srchType,srchText:srchText,msg:"",type:"",count:result[0].length,srchType2:0, srchText2:""});
+      }else{
+        res.render('admin/categoryManager', {userList:"",categoryManagerList:result2, categoryManagerEditList:result2, srchType:srchType,srchText:srchText,msg:"",type:"",count:10,srchType2:0, srchText2:""});
+      }
+    });
+  });
+});
+
+router.get('/categoryManagerListMore',function(req,res,next){
+  var category_id = req.user.category_id;
+  var srchType = req.query.srchType;
+  var srchText = req.query.srchText;
+  var current = Number(req.query.current)+1;
+  if(req.query.srchType==null) srchType = 0;
+  var count = 3;
+  var param=[
+    srchType,srchText,category_id,current,count
+  ];
+  userDao.selectAllOptions(param,function(result){
+    var data={};
+    if(result[0].length>0){
+      data ={
+        len : result[0].length,
+        list : result[0],
+        msg : "success"
+      };
+    }else{
+      data = {
+        msg : "noData"
+      }
+    }
+    res.json(data);
+  });
 });
 
 router.get('/loginIdrequest', function(req, res, next) {
@@ -593,6 +668,112 @@ router.get('/request/:user_id',function(req,res,next){
     });
   });
 });
+router.get('/gradeManagerEditListSelectOptions',function(req,res,next){
+  var srchType2 = req.query.srchType2;
+  var srchText2 = req.query.srchText2;
+  if(req.query.srchType===null) srchType2 = 0;
+  var count = 5;
+  var param=[
+    srchType2,srchText2,0,count
+  ];
+  sequelize.authenticate().then(function(err){
+    User.findAll({
+      where : {
+        category_id : req.user.category_id,
+        is_admin : false
+      },
+      limit: 10
+    })
+    .then(function(rows){
+      userDao.FindAllGradeManager(req.user.category_id, function(result1) {
+        if(srchType2 == 1) {
+          userDao.GradeManagerNameSearch(srchText2,function(result2){
+            console.log(result2);
+            if(result2.length>0){
+              res.render('admin/gradeManager', {userList:rows, gradeManagerList:result1, gradeEditManagerList:result2, srchType2:srchType2, srchText2:srchText2, msg:"", type:"", count:result2[0].length, srchType:0, srchText:""});
+            }else{
+              res.render('admin/gradeManager', {userList:rows, gradeManagerList:result1, gradeEditManagerList:"", srchType2:srchType2, srchText2:srchText2, msg:"", type:"", count:10, srchType:0, srchText:""});
+            }
+          });
+        }
+        else if(srchType2 == 2) {
+          userDao.GradeManagerGradeSearch(srchText2,function(result2){
+            if(result2.length>0){
+              res.render('admin/gradeManager', {userList:rows, gradeManagerList:result1, gradeEditManagerList:result2, srchType2:srchType2, srchText2:srchText2, msg:"", type:"", count:result2[0].length, srchType:0, srchText:""});
+            }else{
+              res.render('admin/gradeManager', {userList:rows, gradeManagerList:result1, gradeEditManagerList:"", srchType:srchType2, srchText:srchText2, msg:"", type:"", count:10, srchType:0, srchText:""});
+            }
+          });
+        }
+        else if(srchType2 == 3) {
+          userDao.GradeManagerPhoneSearch(srchText2,function(result2){
+            if(result2.length>0){
+              res.render('admin/gradeManager', {userList:rows, gradeManagerList:result1, gradeEditManagerList:result2, srchType:srchType2, srchText:srchText2, msg:"", type:"", count:result2[0].length, srchType:0, srchText:""});
+            }else{
+              res.render('admin/gradeManager', {userList:rows, gradeManagerList:result1, gradeEditManagerList:"", srchType:srchType2, srchText:srchText2, msg:"", type:"", count:10, srchType:0, srchText:""});
+            }
+          });
+        }
+      });
+    });
+  })
+  .catch(function(err){
+    res.send(err);
+  });
+});
 
+router.get('/categoryManagerEditListSelectOptions',function(req,res,next){
+  var srchType2 = req.query.srchType2;
+  var srchText2 = req.query.srchText2;
+  if(req.query.srchType===null) srchType2 = 0;
+  var count = 5;
+  var param=[
+    srchType2,srchText2,0,count
+  ];
+  sequelize.authenticate().then(function(err){
+    User.findAll({
+      where : {
+        category_id : req.user.category_id,
+        is_admin : false
+      },
+      limit: 10
+    })
+    .then(function(rows){
+      userDao.FindAllGradeManager(req.user.category_id, function(result1) {
+        if(srchType2 == 1) {
+          userDao.CategoryManagerNameSearch(srchText2,function(result2){
+            console.log(result2);
+            if(result2.length>0){
+              res.render('admin/categoryManager', {userList:rows, categoryManagerList:result1, categoryManagerEditList:result2, srchType2:srchType2, srchText2:srchText2, msg:"", type:"", count:result2[0].length, srchType:0, srchText:""});
+            }else{
+              res.render('admin/categoryManager', {userList:rows, categoryManagerList:result1, categoryManagerEditList:"", srchType2:srchType2, srchText2:srchText2, msg:"", type:"", count:10, srchType:0, srchText:""});
+            }
+          });
+        }
+        else if(srchType2 == 2) {
+          userDao.CategoryManagerGradeSearch(srchText2,function(result2){
+            if(result2.length>0){
+              res.render('admin/categoryManager', {userList:rows, categoryManagerList:result1, categoryManagerEditList:result2, srchType2:srchType2, srchText2:srchText2, msg:"", type:"", count:result2[0].length, srchType:0, srchText:""});
+            }else{
+              res.render('admin/categoryManager', {userList:rows, categoryManagerList:result1, categoryManagerEditList:"", srchType:srchType2, srchText:srchText2, msg:"", type:"", count:10, srchType:0, srchText:""});
+            }
+          });
+        }
+        else if(srchType2 == 3) {
+          userDao.CategoryManagerPhoneSearch(srchText2,function(result2){
+            if(result2.length>0){
+              res.render('admin/categoryManager', {userList:rows, categoryManagerList:result1, categoryManagerEditList:result2, srchType:srchType2, srchText:srchText2, msg:"", type:"", count:result2[0].length, srchType:0, srchText:""});
+            }else{
+              res.render('admin/categoryManager', {userList:rows, categoryManagerList:result1, categoryManagerEditList:"", srchType:srchType2, srchText:srchText2, msg:"", type:"", count:10, srchType:0, srchText:""});
+            }
+          });
+        }
+      });
+    });
+  })
+  .catch(function(err){
+    res.send(err);
+  });
+});
 
 module.exports = router;

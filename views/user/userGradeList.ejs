@@ -9,7 +9,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>성공회대학교</title>
     <% include ../common/css.ejs %>
-
 </head>
 
 <body class="nav-md">
@@ -80,7 +79,11 @@
                                                                 </button>
                                                             </div>
                                                             <div class="right col-md-5 col-xs-5 col-sm-5 text-center">
+                                                              <% if(user.is_image == 1 || user.is_image == true) { %>
+                                                                <img src="/profileImage/<%= user.id %>_Profile.jpg" alt="" class="img-circle img-responsive">
+                                                              <% } else { %>
                                                                 <img src="/res/production/images/user.png" alt="" class="img-circle img-responsive">
+                                                              <% } %>
                                                             </div>
                                                         </div>
                                                     </div>

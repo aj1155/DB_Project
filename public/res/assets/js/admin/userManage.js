@@ -41,7 +41,7 @@ $(function(){
                     '<tr onClick="location.href=\'/admin/userEdit/'+row.id+'\'" style="cursor:pointer;">'+
                     '<td>'+
                         '<div class="icheckbox_flat-green" style="position: relative;">'+
-                          '<input type="checkbox" class="flat" name="table_records" value="'+row.id+'" style="position: absolute; opacity: 0;"">'+
+                          '<input type="checkbox" class="flat" name="table_records" value="'+row.id+'" style="position: relative; opacity: 0;"">'+
                           '<ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>'+
                          '</div>'+
                     '</td>'+
@@ -64,6 +64,8 @@ $(function(){
     });
 });
 
+
+
 $(document).ready(function(){
   var fileTarget = $('.filebox .upload-hidden');
 
@@ -78,4 +80,13 @@ $(document).ready(function(){
       // 추출한 파일명 삽입
       $(this).siblings('.upload-name').val(filename);
     });
+
   });
+
+
+
+window.onload = function() {
+  var removeEdit = function(event) {
+    return false;
+  };
+};

@@ -7,6 +7,7 @@ var multer = require('multer');
 var fs = require('fs');
 var sequelize = require('../../join/sequelize');
 var CategoryManager = require('../../model/CategoryManager');
+var gm = require('gm'); /*이미지파일 리사이즈위한 모듈*/
 var storage = multer.diskStorage({
   destination:function(req,file,cb){
     var path='../public/profileImage/';
@@ -16,9 +17,10 @@ var storage = multer.diskStorage({
     cb(null,req.user.id+'_Profile.jpg')
   }
 });
+
 var upload = multer({storage:storage});
 var user_requestDAO=require('../../query/user_request/user_request.js');
-
+var crypto = require('crypto');
 
 /*session user정보를 local에 저장하여 ejs파일로
 명시적으로 넘겨주지않아도 자동적으로 넘어감 세션값 사용시 user로 꺼내쓰면됨*/
@@ -45,6 +47,7 @@ router.get('/contacts', function(req, res, next) {
     res.send(err);
   });
 });
+
 router.get('/profile',function(req,res,next){
   userDao.FindGrade(req.user.id, req.user.category_id, function(result){
     res.render('users/profile', {user : req.user, grade : result});
@@ -163,7 +166,14 @@ router.post('/edit',function(req,res,next){
       return res.redirect('/users/edit');
   }
 
-  var param = [req.body.passwd,req.body.social_status,req.body.iCheck1,req.body.phone_number,req.body.iCheck2,req.body.company_number,req.body.iCheck3,req.body.email,req.body.iCheck4,req.user.id];
+  var key = 'secret password crypto';
+  var myPass = req.body.passwd;/*암호화 전에 패스워드*/
+
+  var cipherPass = crypto.createCipher('aes192', key);
+  cipherPass.update(myPass, 'utf8', 'base64');
+  cipherPass = cipherPass.final('base64'); /*암호화 후에 패스워드*/
+
+  var param = [cipherPass,req.body.social_status,req.body.iCheck1,req.body.phone_number,req.body.iCheck2,req.body.company_number,req.body.iCheck3,req.body.email,req.body.iCheck4,req.user.id];
   userDao.UpdateUserInfo(param,function(result){
     if(result){
       userDao.select_loginId(req.user.id,function(loginId){
@@ -188,6 +198,9 @@ router.post('/edit',function(req,res,next){
 });
 
 router.post('/profile',upload.any(),function(req,res,next){
+  // console.log('../public/profileImage/'+req.user.id+'_Profile.jpg');
+  // gm('../public/profileImage/'+req.user.id+'_Profile.jpg')
+  //   .resize('200', '200', '^');
   return res.redirect('/users/edit');
 });
 
