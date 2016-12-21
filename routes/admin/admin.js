@@ -16,6 +16,8 @@ var addRows = require('../../services/addRows');
 var crypto = require('crypto');
 var user_requestDAO = require('../../query/user_request/user_request');
 var mail = require('../../support/email');
+var fs = require('fs');
+
 
 
 /*session user정보를 local에 저장하여 ejs파일로
@@ -426,11 +428,13 @@ router.delete('/cManager', function (req, res, next) {
 
 
 //작성자 : 강철진 11/11 내용 :user 추가 편집 삭제 라우트설정
+
 router.get('/userManage', function (req, res, next) {
     sequelize.authenticate().then(function (err) {
         User.findAll({
             where: {
-                category_id: req.user.category_id
+                category_id: req.user.category_id,
+                is_admin : 0
             },
             limit: 10
         })
@@ -444,7 +448,6 @@ router.get('/userManage', function (req, res, next) {
                     count: 10
                 });
             });
-
     })
         .catch(function (err) {
             res.send(err);
@@ -677,10 +680,15 @@ router.post('/userExcel', function (req, res) {
 });
 
 /*사용자 삭제*/
+
 router.delete('/user', function (req, res, next) {
     var list = req.body.list.replace(/[^0-9.,]/g, "");
     console.log(list);
     var id = list.split(',');
+    fs.unlink('../public/profileImage/'+id+'_Profile.jpg',function(err){
+      if(err) return console.log(err);
+      console.log('Profile image deleted successfully');
+    });
     sequelize.transaction().then(function (t) {
         return User.destroy({
             where: {

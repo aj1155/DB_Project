@@ -15,7 +15,6 @@
       table{
         font-size:20px;
       }
-
       tbody tr:hover{
         color:#555555;
         cursor:pointer;
@@ -49,7 +48,7 @@
                           <div class="input-group">
                             <form method="post" id="list">
                             <div class="input-group-btn">
-                              <input type="text" name="srchText" class="form-control" aria-label="Text input with dropdown button" style="width:310px;" value="<%=srchText%>">
+                              <input type="text" name="srchText" class="form-control" aria-label="Text input with dropdown button" style="width:200px; max-width:60%" value="<%=srchText%>">
                               <select name="srchType" class="btn btn-default dropdown-toggle" style="max-width:100%; margin:-5; padding-top:8px; padding-bottom:8px;">
                                 <option value="0" <%="0"==srchType ? "selected" : ""%>>검색조건</option>
                                 <option value="1" <%="1"==srchType ? "selected" : ""%>>제목</option>

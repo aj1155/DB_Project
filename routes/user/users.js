@@ -52,7 +52,6 @@ router.get('/profile',function(req,res,next){
   userDao.FindGrade(req.user.id, req.user.category_id, function(result){
     res.render('users/profile', {user : req.user, grade : result});
   });
-  /* res.render('user/profile');*/
 });
 
 router.get('/userGradeList/:category_id/:grade', function(req, res, next) {
@@ -83,6 +82,7 @@ router.get('/userGradeListMore/:category_id/:grade',function(req,res,next){
   ];
   userDao.selectOptions(param,function(result){
     var data={};
+    console.log(result);
     if(result[0].length>0){
       data ={
         len : result[0].length,
@@ -173,7 +173,7 @@ router.post('/edit',function(req,res,next){
   cipherPass.update(myPass, 'utf8', 'base64');
   cipherPass = cipherPass.final('base64'); /*암호화 후에 패스워드*/
 
-  var param = [cipherPass,req.body.social_status,req.body.iCheck1,req.body.phone_number,req.body.iCheck2,req.body.company_number,req.body.iCheck3,req.body.email,req.body.iCheck4,req.user.id];
+  var param = [cipherPass,req.body.iCheck0,req.body.social_status,req.body.iCheck1,req.body.phone_number,req.body.iCheck2,req.body.company_number,req.body.iCheck3,req.body.email,req.body.iCheck4,req.user.id];
   userDao.UpdateUserInfo(param,function(result){
     if(result){
       userDao.select_loginId(req.user.id,function(loginId){
@@ -198,10 +198,14 @@ router.post('/edit',function(req,res,next){
 });
 
 router.post('/profile',upload.any(),function(req,res,next){
+  userDao.UpdateIsimg(req.user.id,function(result){
+    if(result){
+      return res.redirect('/users/edit');
+    }
+  });
   // console.log('../public/profileImage/'+req.user.id+'_Profile.jpg');
   // gm('../public/profileImage/'+req.user.id+'_Profile.jpg')
   //   .resize('200', '200', '^');
-  return res.redirect('/users/edit');
 });
 
 
