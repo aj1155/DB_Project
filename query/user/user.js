@@ -411,7 +411,7 @@ user.select_loginId=function(id,callback){
       }
     });
   });
-});
+};
 
 //기수별 인원 다 찾기
 user.selectUserGradeAll = function(grade,category_id,callback){
