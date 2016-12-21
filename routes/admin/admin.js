@@ -12,7 +12,7 @@ var exUd = require('../../services/excelUpload');
 var exTJ = require('../../services/excelToJson');
 var addRows = require('../../services/addRows');
 var crypto = require('crypto');
-
+var user_requestDAO = require('../../query/user_request/user_request');
 
 
 /*session user정보를 local에 저장하여 ejs파일로
@@ -649,6 +649,25 @@ router.get('/categoryManagerListMore',function(req,res,next){
   });
 });
 
+router.get('/loginIdrequest', function(req, res, next) {
+
+  user_requestDAO.select(req.user.category_id,function(result){
+    res.render('admin/loginIdrequest',{row:result})
+  });
+});
+
+router.get('/request/:user_id',function(req,res,next){
+  var user_id=req.params.user_id;
+  var p=req.user.phone_number;
+  var p1=p.split('-');
+  var phone_number=p1[0]+p1[1]+p1[2];
+  console.log("phone_number="+phone_number);
+  userDao.loginId_update(user_id,phone_number,function(r){
+    user_requestDAO.delete(user_id,function(result){
+      res.json("success");
+    });
+  });
+});
 router.get('/gradeManagerEditListSelectOptions',function(req,res,next){
   var srchType2 = req.query.srchType2;
   var srchText2 = req.query.srchText2;

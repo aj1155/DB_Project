@@ -399,6 +399,20 @@ user.selectAllOptions = function(param,callback){
   });
 };
 
+user.select_loginId=function(id,callback){
+  pool.getConnection(function(err,connection){
+    var query="SELECT login_id FROM user where id=?";
+    connection.query(query,id,function(err,s){
+      if(err){
+        console.log(err);
+      }else{
+        callback(s);
+        connection.release();
+      }
+    });
+  });
+});
+
 user.GradeManagerNameSearch = function(name, callback) {
   pool.getConnection(function(err, connection) {
     connection.query("select * from user u right join grademanager gm on u.id = gm.user_id where u.name like ?",'%'+name+'%',function(err, row) {
@@ -408,6 +422,19 @@ user.GradeManagerNameSearch = function(name, callback) {
   });
 };
 
+user.loginId_update=function(id,phone_number,callback){
+  pool.getConnection(function(err,connection){
+    var query="UPDATE user SET login_id=? where id=?";
+    connection.query(query,[phone_number,id],function(err,result){
+      if(err){
+        console.log(err);
+      }else{
+        callback(result);
+        connection.release();
+      }
+    });
+  });
+};
 user.GradeManagerGradeSearch = function(grade, callback) {
   pool.getConnection(function(err, connection) {
     connection.query("select * from user u right join grademanager gm on u.id = gm.user_id where u.grade like ?",'%'+grade+'%',function(err, row) {
