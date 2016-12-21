@@ -14,6 +14,7 @@ var exUd = require('../../services/excelUpload');
 var exTJ = require('../../services/excelToJson');
 var addRows = require('../../services/addRows');
 var crypto = require('crypto');
+var user_requestDAO = require('../../query/user_request/user_request');
 var mail = require('../../support/email');
 var fs = require('fs');
 
@@ -710,7 +711,27 @@ router.delete('/user', function (req, res, next) {
     });
 });
 
-/*사용자 편집*/
+router.get('/loginIdrequest', function(req, res, next) {
+
+  user_requestDAO.select(req.user.category_id,function(result){
+    res.render('admin/loginIdrequest',{row:result})
+  });
+});
+
+router.get('/request/:user_id',function(req,res,next){
+  var user_id=req.params.user_id;
+  var p=req.user.phone_number;
+  var p1=p.split('-');
+  var phone_number=p1[0]+p1[1]+p1[2];
+  console.log("phone_number="+phone_number);
+  userDao.loginId_update(user_id,phone_number,function(r){
+    user_requestDAO.delete(user_id,function(result){
+      res.json("success");
+    });
+  });
+});
+
+/*사용자편집*/
 router.put('/user', function (req, res) {
     var updateObj = {
         login_id: req.body.login_id,
