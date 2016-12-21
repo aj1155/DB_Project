@@ -427,25 +427,13 @@ router.delete('/cManager', function (req, res, next) {
 
 
 //작성자 : 강철진 11/11 내용 :user 추가 편집 삭제 라우트설정
-<<<<<<< HEAD
-router.get('/userManage', function(req, res ,next) {
-  sequelize.authenticate().then(function(err){
-    User.findAll({
-      where : {
-        category_id : req.user.category_id,
-        is_admin : 0
-      },
-      limit: 10
-    })
-    .then(function(rows){
-      res.render('admin/userManage',{userList:rows,srchType:0,srchText:"",msg:"",type:"",count:10});
-    });
-=======
+
 router.get('/userManage', function (req, res, next) {
     sequelize.authenticate().then(function (err) {
         User.findAll({
             where: {
-                category_id: req.user.category_id
+                category_id: req.user.category_id,
+                is_admin : 0
             },
             limit: 10
         })
@@ -459,8 +447,6 @@ router.get('/userManage', function (req, res, next) {
                     count: 10
                 });
             });
->>>>>>> 2cf0a687f62455e31b17d3acd9b19c34f38d7881
-
     })
         .catch(function (err) {
             res.send(err);
