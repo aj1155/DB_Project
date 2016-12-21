@@ -21,4 +21,34 @@ $(function(){
           });
         }
     });
+    $('#more').click(function(){
+      $.ajax({
+          url:'/admin/categoryManagerListMore',
+          type:'get',
+          data:{
+            srchType : $("select[name=srchType]").val(),
+            srchText : $("input[name=srchText]").val(),
+            current : $("#more").val(),
+            count: 4
+          },
+          success:function(data){
+              if(data.msg=="success"){
+                console.log(data);
+                $("#more").val(Number($("#more").val())+data.len);
+                data.list.forEach(function(row){
+                  var tr = $(
+                    '<tr onClick="location.href=\'/admin/categoryManagerAdd/'+row.id+'\'" style="cursor:pointer;">'+
+                    '<td>'+row.name+'</td>'+
+                    '<td>'+row.grade+'</td>'+
+                    '<td>'+row.phone_number+'</td>'+
+                    '<td>'+row.email+'</td>'+
+                    '</tr>'
+                  );
+                  tr.appendTo($('#dataList'));
+                });
+
+              }
+          }
+      });
+    });
 });
