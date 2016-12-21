@@ -133,9 +133,16 @@ router.post('/ipfind', function (req, res, next) {
             encode.MakeURL(login_id, category_id, function (result) {
                 //TODO: 주소 변경하기
                 var sendURL = "http://localhost:3000/home/initpass/" + result;
-                mail.send("성공회대학교 비밀번호 초기화 이메일 입니다.", email, "클릭하여 비밀번호를 초기화 해주세요 \n" + '<html><a href=' + '"' + sendURL + '"' + 'target="_blank">비밀번호 초기화 페이지</a></html>');
-                req.flash('error', "이메일을 확인하여 비밀번호를 초기화 하고 로그인해주세요.");
-                return res.redirect('/home/ipfind');
+                mail.send("성공회대학교 비밀번호 초기화 이메일 입니다.", email, "클릭하여 비밀번호를 초기화 해주세요 \n" + '<html><a href=' + '"' + sendURL + '"' + 'target="_blank">비밀번호 초기화 페이지</a></html>',function(result){
+                    if(result == true){
+                        req.flash('error', "이메일을 확인하여 비밀번호를 초기화 하고 로그인해주세요.");
+                        return res.redirect('/home/ipfind');
+                    }else{
+                        req.flash('error', "에러가 발생하였습니다 관리자에게 문의해주세요");
+                        return res.redirect('/home/ipfind');
+                    }
+                });
+
             });
         } else {
             //이메일이 다른 경우
