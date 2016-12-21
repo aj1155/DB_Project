@@ -22,121 +22,121 @@ var crypto = require('crypto');
 var user = {};
 
 //카테고리명
-user.GetCategoryName = function(id,callback){
-  pool.getConnection(function(err,connection){
-    connection.query("SELECT c.name FROM user u LEFT JOIN category c ON u.category_id = c.id WHERE u.id=?",[id],function(err,row){
-      connection.release();
-      callback(row[0]);
+user.GetCategoryName = function (id, callback) {
+    pool.getConnection(function (err, connection) {
+        connection.query("SELECT c.name FROM user u LEFT JOIN category c ON u.category_id = c.id WHERE u.id=?", [id], function (err, row) {
+            connection.release();
+            callback(row[0]);
+        });
     });
-  });
 };
 
 /**/
-user.SelectUserGrade = function(category_id, grade, callback) {
-  pool.getConnection(function(err, connection) {
-    connection.query("select * from user where category_id=? and grade=? limit 4",[category_id, grade],function(err, rows) {
-      connection.release();
-      callback(rows);
+user.SelectUserGrade = function (category_id, grade, callback) {
+    pool.getConnection(function (err, connection) {
+        connection.query("select * from user where category_id=? and grade=? limit 4", [category_id, grade], function (err, rows) {
+            connection.release();
+            callback(rows);
+        });
     });
-  });
 };
 
 /*카테고리 임원 수정 쿼리문*/
-user.CategoryManagerUpdate = function(params, callback) {
-  pool.getConnection(function(err, connection) {
-    connection.query("update categorymanager set position=? where user_id = ?", params, function(err, result){
-      connection.release();
-      if(err) {
-        callback(false);
-      }
-      else {
-        callback(true);
-      }
+user.CategoryManagerUpdate = function (params, callback) {
+    pool.getConnection(function (err, connection) {
+        connection.query("update categorymanager set position=? where user_id = ?", params, function (err, result) {
+            connection.release();
+            if (err) {
+                callback(false);
+            }
+            else {
+                callback(true);
+            }
+        });
     });
-  });
 };
 /*기수별 임원 수정 쿼리문*/
-user.GradeManagerUpdate = function(params, callback) {
-  pool.getConnection(function(err, connection) {
-    connection.query("update grademanager set position=? where user_id = ?", params, function(err, result) {
-      connection.release();
-      if(err) {
-        callback(false);
-      }
-      else {
-        callback(true);
-      }
+user.GradeManagerUpdate = function (params, callback) {
+    pool.getConnection(function (err, connection) {
+        connection.query("update grademanager set position=? where user_id = ?", params, function (err, result) {
+            connection.release();
+            if (err) {
+                callback(false);
+            }
+            else {
+                callback(true);
+            }
+        });
     });
-  });
 };
 
 /*기수별 임원 추가 쿼리*/
-user.GradeManagerInsert = function(params, callback) {
-  pool.getConnection(function(err, connection) {
-    connection.query("insert into grademanager(category_id, grade, user_id, user_name, position) values (?,?,?,?,?)", params, function(err, row) {
-        connection.release();
-        callback(true);
+user.GradeManagerInsert = function (params, callback) {
+    pool.getConnection(function (err, connection) {
+        connection.query("insert into grademanager(category_id, grade, user_id, user_name, position) values (?,?,?,?,?)", params, function (err, row) {
+            connection.release();
+            callback(true);
+        });
     });
-  });
 };
 
 /*최고경영 임원 추가 쿼리*/
-user.CategoryManagerInsert = function(params, callback) {
-  pool.getConnection(function(err, connection) {
-    connection.query("insert into categorymanager(category_id, user_id, position, user_name, grade) values (?,?,?,?,?)", params, function(err, row) {
-        connection.release();
-        callback(true);
+user.CategoryManagerInsert = function (params, callback) {
+    pool.getConnection(function (err, connection) {
+        connection.query("insert into categorymanager(category_id, user_id, position, user_name, grade) values (?,?,?,?,?)", params, function (err, row) {
+            connection.release();
+            callback(true);
+        });
     });
-  });
 };
 
 /*기수별 임원명단 전체 쿼리*/
-user.FindAllGradeManager = function(category_id, callback) {
-  pool.getConnection(function(err, connection) {
-    connection.query("select * from user join grademanager on user.id = grademanager.user_id where grademanager.category_id=? and user.is_admin = '0' order by grademanager.grade",[category_id],function(err, rows) {
-      connection.release();
-      callback(rows);
+user.FindAllGradeManager = function (category_id, callback) {
+    pool.getConnection(function (err, connection) {
+        connection.query("select * from user join grademanager on user.id = grademanager.user_id where grademanager.category_id=? and user.is_admin = '0' order by grademanager.grade", [category_id], function (err, rows) {
+            connection.release();
+            callback(rows);
+        });
     });
-  });
 };
 
 /*카테고리 임원명단 전체 쿼리*/
-user.FindAllCategoryManager = function(category_id, callback) {
-  pool.getConnection(function(err, connection) {
-    connection.query("select * from user join categorymanager on user.id = categorymanager.user_id where categorymanager.category_id = ? and user.is_admin = '0'",[category_id],function(err, rows) {
-      connection.release();
-      callback(rows);
+user.FindAllCategoryManager = function (category_id, callback) {
+    pool.getConnection(function (err, connection) {
+        connection.query("select * from user join categorymanager on user.id = categorymanager.user_id where categorymanager.category_id = ? and user.is_admin = '0'", [category_id], function (err, rows) {
+            connection.release();
+            callback(rows);
+        });
     });
-  });
 };
 
 /*기수별임원명단에 해당 회원이 있는지 검색하는 쿼리문*/
-user.FindgradeManager = function(user_id, callback) {
-  pool.getConnection(function(err, connection) {
-    connection.query("select * from grademanager where user_id=?",[user_id], function(err, row) {
-      connection.release();
-      if(err) {
-        callback(false);
-      }
-      else {
-        callback(row[0]);
-      }
+user.FindgradeManager = function (user_id, callback) {
+    pool.getConnection(function (err, connection) {
+        connection.query("select * from grademanager where user_id=?", [user_id], function (err, row) {
+            connection.release();
+            if (err) {
+                callback(false);
+            }
+            else {
+                callback(row[0]);
+            }
+        });
     });
-  });
 };
 /*해당카테고리의 임원 명단에 해당 회원이 있는지 검색하는 쿼리문*/
-user.FindcategoryManager = function(user_id, callback) {
-  pool.getConnection(function(err, connection) {
-    connection.query("select * from categorymanager where user_id=?",[user_id], function(err, row) {
-      connection.release();
-      if(err) {
-        callback(false);
-      }
-      else {
-        callback(row[0]);
-      }
+user.FindcategoryManager = function (user_id, callback) {
+    pool.getConnection(function (err, connection) {
+        connection.query("select * from categorymanager where user_id=?", [user_id], function (err, row) {
+            connection.release();
+            if (err) {
+                callback(false);
+            }
+            else {
+                callback(row[0]);
+            }
+        });
     });
-  });
 };
 /*profile사진이 있는지 검색하는 쿼리문*/
 user.FindProfileImage = function (id, callback) {
@@ -169,26 +169,26 @@ user.FindOne = function (id, category_id, callback) {
         connection.query("select * from user where id=?", [id], function (err, row) {
             /* query의 결과가 배열 형태로 오게 되는데
              결과가 1개 일 경우는 [0]을 붙여 주어야 받을 때 undefined 문제가 안생긴다*/
-             connection.release();
-             callback(row[0]);
+            connection.release();
+            callback(row[0]);
 
         });
     });
 
 };
 
-user.updateOne = function(params, callback) {
-  pool.getConnection(function(err,connection){
-    connection.query("update user set login_id=?, name=?, grade=?, social_status=?, phone_number=?, company_number=?, email=?, birth=? where id = ?",params,function(err,result){
-      connection.release();
-      if(err) {
-        callback(err);
-      }
-      else {
-        callback(true);
-      }
+user.updateOne = function (params, callback) {
+    pool.getConnection(function (err, connection) {
+        connection.query("update user set login_id=?, name=?, grade=?, social_status=?, phone_number=?, company_number=?, email=?, birth=? where id = ?", params, function (err, result) {
+            connection.release();
+            if (err) {
+                callback(err);
+            }
+            else {
+                callback(true);
+            }
+        });
     });
-  });
 };
 
 //첫번째 로그인인지 아닌지 알아내는 함수 (생년월일과 현재 비밀번호 비교)
@@ -221,10 +221,10 @@ user.passwordUpdate = function (id, password, callback) {
             //패스워드 업데이트 실패
             if (err) {
                 callback(err);
-            } else{
+            } else {
                 //패스워드 업데이트 성공
                 callback(true);
-              }
+            }
         });
     });
 };
@@ -232,7 +232,7 @@ user.passwordUpdate = function (id, password, callback) {
 //로그인 아이디와 카테고리 아이디를 통해 유저 정보를 가져온다.
 user.GetUser = function (login_id, category_id, callback) {
     pool.getConnection(function (err, connection) {
-      console.error('err' +err);
+        console.error('err' + err);
         connection.query("select email from user where login_id=? && category_id = ? ", [login_id, category_id], function (err, row) {
             connection.release();
 
@@ -264,32 +264,32 @@ user.ResetPassword = function (login_id, category_id, callback) {
     });
 };
 
-user.ResetPasswordToBirth = function(login_id, category_id, birth, callback) {
-  pool.getConnection(function(err, connection) {
-      connection.query('update user set password = ? where login_id = ? && category_id = ? ', [birth, login_id, category_id], function(err, row) {
-        connection.release();
-        if(err) {
-          callback(false);
-        }
-        else {
-          callback(true);
-        }
-      });
-  });
+user.ResetPasswordToBirth = function (login_id, category_id, birth, callback) {
+    pool.getConnection(function (err, connection) {
+        connection.query('update user set password = ? where login_id = ? && category_id = ? ', [birth, login_id, category_id], function (err, row) {
+            connection.release();
+            if (err) {
+                callback(false);
+            }
+            else {
+                callback(true);
+            }
+        });
+    });
 };
 /*비밀번호를 생년월일로 초기화 하기 위해 생년월일을 뽑아내는 쿼리*/
 user.GetBirth = function (login_id, category_id, callback) {
-  pool.getConnection(function (err, connection) {
-      connection.query('select birth from user where login_id=? && category_id=?;', [login_id, category_id], function(err, row) {
-        connection.release();
-        if(err) {
-          callback(false);
-        }
-        else {
-          callback(row[0]);
-        }
-      });
-  });
+    pool.getConnection(function (err, connection) {
+        connection.query('select birth from user where login_id=? && category_id=?;', [login_id, category_id], function (err, row) {
+            connection.release();
+            if (err) {
+                callback(false);
+            }
+            else {
+                callback(row[0]);
+            }
+        });
+    });
 };
 
 //제일 큰 기수를 가져온다
@@ -309,32 +309,32 @@ user.GetMaxGrade = function (category_id, callback) {
 };
 
 //프로필사진 저장
-user.SetProfileImg = function(id,size,data,callback){
-  pool.getConnection(function(err,connection){
-    connection.query("SELECT * FROM image WHERE id=?",[id],function(err,row){
-      if(err){
-        callback(false);
-      }else if(row[0]){
-        connection.query("UPDATE image SET size=?, data=? WHERE id=?",[size,data,id],function(err,row){
-          connection.release();
-          if(err){
-            callback(false);
-          }else {
-            callback(true);
-          }
+user.SetProfileImg = function (id, size, data, callback) {
+    pool.getConnection(function (err, connection) {
+        connection.query("SELECT * FROM image WHERE id=?", [id], function (err, row) {
+            if (err) {
+                callback(false);
+            } else if (row[0]) {
+                connection.query("UPDATE image SET size=?, data=? WHERE id=?", [size, data, id], function (err, row) {
+                    connection.release();
+                    if (err) {
+                        callback(false);
+                    } else {
+                        callback(true);
+                    }
+                });
+            } else {
+                connection.query("INSERT INTO image(id,size,data) VALUES(?,?,?)", [id, size, data], function (err, row) {
+                    connection.release();
+                    if (err) {
+                        callback(false);
+                    } else {
+                        callback(true);
+                    }
+                });
+            }
         });
-      }else{
-        connection.query("INSERT INTO image(id,size,data) VALUES(?,?,?)",[id,size,data],function(err,row){
-          connection.release();
-          if(err){
-            callback(false);
-          }else {
-            callback(true);
-          }
-        });
-      }
     });
-  });
 };
 
 
@@ -369,34 +369,34 @@ user.UpdateUserInfo = function (param, callback) {
     });
 };
 /*user search Procedure*/
-user.selectOptions = function(param,callback){
-  pool.getConnection(function(err,connection){
-    var query = "CALL user_search(?,?,?,?,?,?)";
-    connection.query(query,param,function(err,row){
-        connection.release();
-        callback(row);
+user.selectOptions = function (param, callback) {
+    pool.getConnection(function (err, connection) {
+        var query = "CALL user_search(?,?,?,?,?,?)";
+        connection.query(query, param, function (err, row) {
+            connection.release();
+            callback(row);
+        });
     });
-  });
 };
 /*user manager search Procedure*/
-user.selectManagerOptions = function(param,callback){
-  pool.getConnection(function(err,connection){
-    var query = "CALL user_manager_search(?,?,?,?,?,?)";
-    connection.query(query,param,function(err,row){
-        connection.release();
-        callback(row);
+user.selectManagerOptions = function (param, callback) {
+    pool.getConnection(function (err, connection) {
+        var query = "CALL user_manager_search(?,?,?,?,?,?)";
+        connection.query(query, param, function (err, row) {
+            connection.release();
+            callback(row);
+        });
     });
-  });
 };
 /*user list search Procedure*/
-user.selectAllOptions = function(param,callback){
-  pool.getConnection(function(err,connection){
-    var query = "CALL user_list_search(?,?,?,?,?)";
-    connection.query(query,param,function(err,row){
-        connection.release();
-        callback(row);
+user.selectAllOptions = function (param, callback) {
+    pool.getConnection(function (err, connection) {
+        var query = "CALL user_list_search(?,?,?,?,?)";
+        connection.query(query, param, function (err, row) {
+            connection.release();
+            callback(row);
+        });
     });
-  });
 };
 
 user.select_loginId=function(id,callback){
@@ -412,6 +412,16 @@ user.select_loginId=function(id,callback){
     });
   });
 });
+
+//기수별 인원 다 찾기
+user.selectUserGradeAll = function(grade,category_id,callback){
+    pool.getConnection(function (err, connection) {
+        connection.query("select id,name,email from user where category_id=? and grade=?", [category_id, grade], function (err, rows) {
+            connection.release();
+            callback(rows);
+        });
+    });
+};
 
 user.GradeManagerNameSearch = function(name, callback) {
   pool.getConnection(function(err, connection) {
@@ -480,5 +490,14 @@ user.CategoryManagerPhoneSearch = function(phone_number, callback) {
   });
 };
 
+//이름으로 인원 찾기
+user.selectUserByName = function(name,category_id,callback){
+    pool.getConnection(function (err, connection) {
+        connection.query("select id,name,email from user where category_id=? and name=?", [category_id, name], function (err, rows) {
+            connection.release();
+            callback(rows);
+        });
+    });
+};
 
 module.exports = user;
