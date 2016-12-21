@@ -23,6 +23,11 @@
             $("img[id=profileImg]").hide();
           }
         }
+        $(document).ready(function(){
+          $('#profile_edit').click(function(){
+              alert('휴대전화 번호를 변경하실시 자동으로 아이디변경 요청이 됩니다.');
+            })
+          })
     </script>
     <style>
     .filebox label {
@@ -174,6 +179,7 @@
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">휴대전화</label>
                             <div class="col-md-4 col-sm-9 col-xs-12">
                               <input type="text" name="phone_number" class="form-control" value="<%= user.phone_number %>">
+                              <input type="hidden" name="phone_number2" value="<%=user.phone_number%>"/>
                             </div>
                           </div>
 
@@ -241,7 +247,7 @@
                               <% if (message && message != "") { %>
                               <div class="alert alert-danger"><%= message %></div>
                               <% } %>
-                              <button type="submit" class="btn btn-success">수정</button>
+                              <button type="submit" class="btn btn-success" id="profile_edit">수정</button>
                               <button type="reset" class="btn btn-primary">취소</button>
                             </div>
                           </div>

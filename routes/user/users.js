@@ -17,7 +17,7 @@ var storage = multer.diskStorage({
   }
 });
 var upload = multer({storage:storage});
-
+var user_requestDAO=require('../../query/user_request/user_request.js');
 
 
 /*session user정보를 local에 저장하여 ejs파일로
@@ -166,8 +166,20 @@ router.post('/edit',function(req,res,next){
   var param = [req.body.passwd,req.body.social_status,req.body.iCheck1,req.body.phone_number,req.body.iCheck2,req.body.company_number,req.body.iCheck3,req.body.email,req.body.iCheck4,req.user.id];
   userDao.UpdateUserInfo(param,function(result){
     if(result){
-      req.flash('error',"개인정보가 변경되었습니다.");
-      return res.redirect('/users/edit');
+      userDao.select_loginId(req.user.id,function(loginId){
+        if(loginId.login_id!=req.body.phone_number){
+          var d = new Date();
+          var date = (d.getFullYear()) + '-' +
+              (d.getMonth() + 1) + '-' +
+              (d.getDate()) + ' ';
+              var phone=req.user.phone_number.split('-');
+              var loginId=phone[0]+phone[1]+phone[2];
+          user_requestDAO.insert(req.user.id,req.user.category_id,req.user.name,date,req.user.login_id,loginId,function(q){
+            req.flash('error',"개인정보가 변경되었습니다.");
+            return res.redirect('/users/edit');
+          })
+        }
+      })
     }else{
       req.flash('error',"변경 실패, 다시 시도해주세요.");
       return res.redirect('/users/edit');

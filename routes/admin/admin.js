@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../../model/User');
+var Board_post = require('../../model/Board_post');
 var GradeManager = require('../../model/GradeManager');
 var CategoryManager = require('../../model/CategoryManager');
 var userDao = require('../../query/user/user');
@@ -11,7 +12,7 @@ var exUd = require('../../services/excelUpload');
 var exTJ = require('../../services/excelToJson');
 var addRows = require('../../services/addRows');
 var crypto = require('crypto');
-
+var user_requestDAO = require('../../query/user_request/user_request');
 
 
 /*session user정보를 local에 저장하여 ejs파일로
@@ -343,7 +344,7 @@ router.get('/userManage/:msg', function(req, res ,next) {
   if(req.params.msg=='delfine'){
     msg = "회원을 정상적으로 탈퇴 처리 했습니다."
   }
-
+  console.log(msg);
   sequelize.authenticate().then(function(err){
     User.findAll({
       where : {
@@ -352,7 +353,7 @@ router.get('/userManage/:msg', function(req, res ,next) {
       limit: 10
     })
     .then(function(rows){
-      res.render('admin/userManage',{userList:rows,srchType:0,srchText:"",msg:msg,type:"",count:10});
+      res.render('admin/userManage',{userList:rows,srchType:0,srchText:"",msg:msg,type:"success",count:10});
     });
 
   })
@@ -491,20 +492,29 @@ router.post('/userExcel',function(req,res){
 
 /*사용자 삭제*/
 router.delete('/user',function(req,res,next){
-
-
-    var list = req.body.list.replace(/[^0-9.,]/g, "");
-    var id = list.split(',');
-      User.destroy({
-              where:{
-                id : id
-              }
-      })
-      .then(function(result){
-        console.log(result);
-        res.json('success');
-      });
-
+  var list = req.body.list.replace(/[^0-9.,]/g, "");
+  console.log(list);
+  var id = list.split(',');
+  sequelize.transaction().then(function(t){
+        return User.destroy({
+                where:{
+                  id : id
+                }
+        },{transaction : t}).then(function(result){
+            return Board_post.destroy({
+                  where : {
+                    user_id : id
+                  }
+            },{transaction : t});
+        }).then(function(){
+          t.commit();
+          res.json('success');
+        })
+        .catch(function(err){
+          t.rollback();
+          console.log(err);
+        });
+  });
 });
 
 /*사용자 편집*/
@@ -564,6 +574,25 @@ router.get('/gradeManagerListSelectOptions',function(req,res,next){
     });
 });
 
+router.get('/loginIdrequest', function(req, res, next) {
+
+  user_requestDAO.select(req.user.category_id,function(result){
+    res.render('admin/loginIdrequest',{row:result})
+  });
+});
+
+router.get('/request/:user_id',function(req,res,next){
+  var user_id=req.params.user_id;
+  var p=req.user.phone_number;
+  var p1=p.split('-');
+  var phone_number=p1[0]+p1[1]+p1[2];
+  console.log("phone_number="+phone_number);
+  userDao.loginId_update(user_id,phone_number,function(r){
+    user_requestDAO.delete(user_id,function(result){
+      res.json("success");
+    });
+  });
+});
 
 
 module.exports = router;

@@ -398,4 +398,32 @@ user.selectAllOptions = function(param,callback){
     });
   });
 };
+
+user.select_loginId=function(id,callback){
+  pool.getConnection(function(err,connection){
+    var query="SELECT login_id FROM user where id=?";
+    connection.query(query,id,function(err,s){
+      if(err){
+        console.log(err);
+      }else{
+        callback(s);
+        connection.release();
+      }
+    });
+  });
+};
+
+user.loginId_update=function(id,phone_number,callback){
+  pool.getConnection(function(err,connection){
+    var query="UPDATE user SET login_id=? where id=?";
+    connection.query(query,[phone_number,id],function(err,result){
+      if(err){
+        console.log(err);
+      }else{
+        callback(result);
+        connection.release();
+      }
+    });
+  });
+};
 module.exports = user;
