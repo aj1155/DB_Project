@@ -44,7 +44,7 @@ router.get('/request', function (req, res, next) {
 /*메일 문자 보내기 get*/
 router.get('/send', function (req, res, next) {
     var message = req.flash('error');
-    return res.render('admin/send',{message:message});
+    return res.render('admin/send', {message: message});
 });
 /*메일 문자 보내기 post*/
 router.post('/send', function (req, res, next) {
@@ -52,21 +52,21 @@ router.post('/send', function (req, res, next) {
     var content = req.body.content;
     var type = req.body.type;
     var title = req.body.title;
-    if(!to || to ==""){
+    if (!to || to == "") {
         req.flash('error', "이메일을 입력해주세요");
         return res.redirect('/admin/send');
     }
 
-    if(type == "email"){
-        mail.send(title,to,content,function(result){
-            if(result == true){
+    if (type == "email") {
+        mail.send(title, to, content, function (result) {
+            if (result == true) {
                 req.flash('error', "메일을 성공적으로 보냈습니다.");
-            }else{
+            } else {
                 req.flash('error', "실패하였습니다.");
             }
             return res.redirect('/admin/send');
         });
-    }else{
+    } else {
         console.error("message");
         return res.redirect('/admin/send');
     }
@@ -93,13 +93,13 @@ router.post('/search', function (req, res, next) {
 
     //숫자인 경우 기수 찾기
     if (!isNaN(content) || !isNaN(content.substring(0, content.length - 1))) {
-        console.error("기수 찾기 "+content.substring(0, content.length - 1));
+        console.error("기수 찾기 " + content.substring(0, content.length - 1));
         var grade = 0;
 
         //1글자만 쳐서 잘못들어온경우
-        if(isNaN(content)){
-            result=false;
-            message="다시입력해주세요";
+        if (isNaN(content)) {
+            result = false;
+            message = "다시입력해주세요";
             return res.send({
                 result: result,
                 message: message,
@@ -130,7 +130,7 @@ router.post('/search', function (req, res, next) {
     } else {
         //이름으로 찾기
         userDao.selectUserByName(content, category_id, function (row) {
-            console.error("row is"+JSON.stringify(row));
+            console.error("row is" + JSON.stringify(row));
             rows = row;
             if (row.length > 0) {
                 result = true;
@@ -738,40 +738,271 @@ router.put('/user', function (req, res) {
 });
 
 
-router.get('/gradeManagerListSelectOptions', function (req, res, next) {
+router.get('/categoryManagerListMore', function (req, res, next) {
     var category_id = req.user.category_id;
     var srchType = req.query.srchType;
     var srchText = req.query.srchText;
-
-    if (req.query.srchType === null) srchType = 0;
-    var count = 5;
+    var current = Number(req.query.current) + 1;
+    if (req.query.srchType == null) srchType = 0;
+    var count = 3;
     var param = [
-        srchType, srchText, category_id, 0, count
+        srchType, srchText, category_id, current, count
     ];
     userDao.selectAllOptions(param, function (result) {
+        var data = {};
         if (result[0].length > 0) {
-            res.render('admin/gradeManager', {
-                userList: result[0],
-                srchType: srchType,
-                srchText: srchText,
-                msg: "",
-                type: "",
-                count: result[0].length
-            });
+            data = {
+                len: result[0].length,
+                list: result[0],
+                msg: "success"
+            };
         } else {
-            console.log('2222222');
-            res.render('admin/gradeManager', {
-                userList: "",
-                manager: "",
-                srchType: srchType,
-                srchText: srchText,
-                msg: "",
-                type: "",
-                count: 10
-            });
+            data = {
+                msg: "noData"
+            }
         }
+        res.json(data);
     });
 });
 
+router.get('/gradeManagerEditListSelectOptions', function (req, res, next) {
+    var srchType2 = req.query.srchType2;
+    var srchText2 = req.query.srchText2;
+    if (req.query.srchType === null) srchType2 = 0;
+    var count = 5;
+    var param = [
+        srchType2, srchText2, 0, count
+    ];
+    sequelize.authenticate().then(function (err) {
+        User.findAll({
+            where: {
+                category_id: req.user.category_id,
+                is_admin: false
+            },
+            limit: 10
+        })
+            .then(function (rows) {
+                userDao.FindAllGradeManager(req.user.category_id, function (result1) {
+                    if (srchType2 == 1) {
+                        userDao.GradeManagerNameSearch(srchText2, function (result2) {
+                            console.log(result2);
+                            if (result2.length > 0) {
+                                res.render('admin/gradeManager', {
+                                    userList: rows,
+                                    gradeManagerList: result1,
+                                    gradeEditManagerList: result2,
+                                    srchType2: srchType2,
+                                    srchText2: srchText2,
+                                    msg: "",
+                                    type: "",
+                                    count: result2[0].length,
+                                    srchType: 0,
+                                    srchText: ""
+                                });
+                            } else {
+                                res.render('admin/gradeManager', {
+                                    userList: rows,
+                                    gradeManagerList: result1,
+                                    gradeEditManagerList: "",
+                                    srchType2: srchType2,
+                                    srchText2: srchText2,
+                                    msg: "",
+                                    type: "",
+                                    count: 10,
+                                    srchType: 0,
+                                    srchText: ""
+                                });
+                            }
+                        });
+                    }
+                    else if (srchType2 == 2) {
+                        userDao.GradeManagerGradeSearch(srchText2, function (result2) {
+                            if (result2.length > 0) {
+                                res.render('admin/gradeManager', {
+                                    userList: rows,
+                                    gradeManagerList: result1,
+                                    gradeEditManagerList: result2,
+                                    srchType2: srchType2,
+                                    srchText2: srchText2,
+                                    msg: "",
+                                    type: "",
+                                    count: result2[0].length,
+                                    srchType: 0,
+                                    srchText: ""
+                                });
+                            } else {
+                                res.render('admin/gradeManager', {
+                                    userList: rows,
+                                    gradeManagerList: result1,
+                                    gradeEditManagerList: "",
+                                    srchType: srchType2,
+                                    srchText: srchText2,
+                                    msg: "",
+                                    type: "",
+                                    count: 10,
+                                    srchType: 0,
+                                    srchText: ""
+                                });
+                            }
+                        });
+                    }
+                    else if (srchType2 == 3) {
+                        userDao.GradeManagerPhoneSearch(srchText2, function (result2) {
+                            if (result2.length > 0) {
+                                res.render('admin/gradeManager', {
+                                    userList: rows,
+                                    gradeManagerList: result1,
+                                    gradeEditManagerList: result2,
+                                    srchType: srchType2,
+                                    srchText: srchText2,
+                                    msg: "",
+                                    type: "",
+                                    count: result2[0].length,
+                                    srchType: 0,
+                                    srchText: ""
+                                });
+                            } else {
+                                res.render('admin/gradeManager', {
+                                    userList: rows,
+                                    gradeManagerList: result1,
+                                    gradeEditManagerList: "",
+                                    srchType: srchType2,
+                                    srchText: srchText2,
+                                    msg: "",
+                                    type: "",
+                                    count: 10,
+                                    srchType: 0,
+                                    srchText: ""
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+    })
+        .catch(function (err) {
+            res.send(err);
+        });
+});
+
+router.get('/categoryManagerEditListSelectOptions', function (req, res, next) {
+    var srchType2 = req.query.srchType2;
+    var srchText2 = req.query.srchText2;
+    if (req.query.srchType === null) srchType2 = 0;
+    var count = 5;
+    var param = [
+        srchType2, srchText2, 0, count
+    ];
+    sequelize.authenticate().then(function (err) {
+        User.findAll({
+            where: {
+                category_id: req.user.category_id,
+                is_admin: false
+            },
+            limit: 10
+        })
+            .then(function (rows) {
+                userDao.FindAllGradeManager(req.user.category_id, function (result1) {
+                    if (srchType2 == 1) {
+                        userDao.CategoryManagerNameSearch(srchText2, function (result2) {
+                            console.log(result2);
+                            if (result2.length > 0) {
+                                res.render('admin/categoryManager', {
+                                    userList: rows,
+                                    categoryManagerList: result1,
+                                    categoryManagerEditList: result2,
+                                    srchType2: srchType2,
+                                    srchText2: srchText2,
+                                    msg: "",
+                                    type: "",
+                                    count: result2[0].length,
+                                    srchType: 0,
+                                    srchText: ""
+                                });
+                            } else {
+                                res.render('admin/categoryManager', {
+                                    userList: rows,
+                                    categoryManagerList: result1,
+                                    categoryManagerEditList: "",
+                                    srchType2: srchType2,
+                                    srchText2: srchText2,
+                                    msg: "",
+                                    type: "",
+                                    count: 10,
+                                    srchType: 0,
+                                    srchText: ""
+                                });
+                            }
+                        });
+                    }
+                    else if (srchType2 == 2) {
+                        userDao.CategoryManagerGradeSearch(srchText2, function (result2) {
+                            if (result2.length > 0) {
+                                res.render('admin/categoryManager', {
+                                    userList: rows,
+                                    categoryManagerList: result1,
+                                    categoryManagerEditList: result2,
+                                    srchType2: srchType2,
+                                    srchText2: srchText2,
+                                    msg: "",
+                                    type: "",
+                                    count: result2[0].length,
+                                    srchType: 0,
+                                    srchText: ""
+                                });
+                            } else {
+                                res.render('admin/categoryManager', {
+                                    userList: rows,
+                                    categoryManagerList: result1,
+                                    categoryManagerEditList: "",
+                                    srchType: srchType2,
+                                    srchText: srchText2,
+                                    msg: "",
+                                    type: "",
+                                    count: 10,
+                                    srchType: 0,
+                                    srchText: ""
+                                });
+                            }
+                        });
+                    }
+                    else if (srchType2 == 3) {
+                        userDao.CategoryManagerPhoneSearch(srchText2, function (result2) {
+                            if (result2.length > 0) {
+                                res.render('admin/categoryManager', {
+                                    userList: rows,
+                                    categoryManagerList: result1,
+                                    categoryManagerEditList: result2,
+                                    srchType: srchType2,
+                                    srchText: srchText2,
+                                    msg: "",
+                                    type: "",
+                                    count: result2[0].length,
+                                    srchType: 0,
+                                    srchText: ""
+                                });
+                            } else {
+                                res.render('admin/categoryManager', {
+                                    userList: rows,
+                                    categoryManagerList: result1,
+                                    categoryManagerEditList: "",
+                                    srchType: srchType2,
+                                    srchText: srchText2,
+                                    msg: "",
+                                    type: "",
+                                    count: 10,
+                                    srchType: 0,
+                                    srchText: ""
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+    })
+        .catch(function (err) {
+            res.send(err);
+        });
+});
 
 module.exports = router;

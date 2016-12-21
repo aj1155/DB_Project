@@ -37,7 +37,7 @@ $(function(){
                 $("#more").val(Number($("#more").val())+data.len);
                 data.list.forEach(function(row){
                   var tr = $(
-                    '<tr onClick="location.href=\'/admin/gradeManagerEdit/'+row.id+'\'" style="cursor:pointer;">'+
+                    '<tr onClick="location.href=\'/admin/gradeManagerAdd/'+row.id+'\'" style="cursor:pointer;">'+
                     '<td>'+row.name+'</td>'+
                     '<td>'+row.grade+'</td>'+
                     '<td>'+row.phone_number+'</td>'+
