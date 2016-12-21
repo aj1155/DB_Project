@@ -27,7 +27,7 @@ router.use(function (req, res, next) {
 });
 
 //nav에서 ajax로 호출해서 유저 데이터 및 사진 등 nav를 초기화 하는 데이터를 가져온다.
-router.get('/navSet', function (req, res, next) {
+router.post('/navSet', function (req, res, next) {
     userDao.GetMaxGrade(req.user.category_id, function (grade) {
         //에러가 난 경우
         if (!grade) {
@@ -44,7 +44,7 @@ router.get('/navSet', function (req, res, next) {
                 img = "/profileImage/" + req.user.id + "_Profile.jpg";
             }
             userDao.GetCategoryName(req.user.id, function (category_name) {
-                return res.json({
+                return res.send({
                     result: true,
                     name: req.user.name,
                     grade: req.user.grade,

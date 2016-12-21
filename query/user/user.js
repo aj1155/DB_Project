@@ -398,4 +398,60 @@ user.selectAllOptions = function(param,callback){
     });
   });
 };
+
+user.GradeManagerNameSearch = function(name, callback) {
+  pool.getConnection(function(err, connection) {
+    connection.query("select * from user u right join grademanager gm on u.id = gm.user_id where u.name like ?",'%'+name+'%',function(err, row) {
+      connection.release();
+      callback(row);
+    });
+  });
+};
+
+user.GradeManagerGradeSearch = function(grade, callback) {
+  pool.getConnection(function(err, connection) {
+    connection.query("select * from user u right join grademanager gm on u.id = gm.user_id where u.grade like ?",'%'+grade+'%',function(err, row) {
+      connection.release();
+      callback(row);
+    });
+  });
+};
+
+user.GradeManagerPhoneSearch = function(phone_number, callback) {
+  pool.getConnection(function(err, connection) {
+    connection.query("select * from user u right join grademanager gm on u.id = gm.user_id where u.phone_number like ?",'%'+phone_number+'%',function(err, row) {
+      connection.release();
+      callback(row);
+    });
+  });
+};
+
+user.CategoryManagerNameSearch = function(name, callback) {
+  pool.getConnection(function(err, connection) {
+    connection.query("select * from user u right join categorymanager cm on u.id = cm.user_id where u.name like ?",'%'+name+'%',function(err, row) {
+      connection.release();
+      callback(row);
+    });
+  });
+};
+
+user.CategoryManagerGradeSearch = function(grade, callback) {
+  pool.getConnection(function(err, connection) {
+    connection.query("select * from user u right join categorymanager cm on u.id = cm.user_id where u.grade like ?",'%'+grade+'%',function(err, row) {
+      connection.release();
+      callback(row);
+    });
+  });
+};
+
+user.CategoryManagerPhoneSearch = function(phone_number, callback) {
+  pool.getConnection(function(err, connection) {
+    connection.query("select * from user u right join categorymanager cm on u.id = cm.user_id where u.phone_number like ?",'%'+phone_number+'%',function(err, row) {
+      connection.release();
+      callback(row);
+    });
+  });
+};
+
+
 module.exports = user;

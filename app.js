@@ -13,7 +13,6 @@ var home = require('./routes/home/home');
 var guide = require('./routes/guide/guide');
 var main = require('./routes/main/main');
 var admin = require('./routes/admin/admin');
-var file = require('./routes/file/file');
 var flash = require('connect-flash');
 var app = express();
 var board = require('./routes/board/board');
@@ -53,7 +52,6 @@ app.use('/guide', guide);
 app.use('/main', main);
 app.use('/admin', admin);
 app.use('/board', board);
-app.use('/file',file);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     var err = new Error('Not Found');

@@ -17,8 +17,22 @@ $(function(){
             if(data.msg=="success"){
               $("#add").val(Number($("#add").val())+data.len);
               data.list.forEach(function(row){
-                var div = $(
-                    '<div class="row col-md-6 col-sm-12 col-xs-12"><div class="profile_details"><div class="well profile_view" onClick="location.href=\'/users/detailManagerProfile/'+row.user_id+'\'" style="cursor:pointer;"><div class="col-md-12 col-xs-12 col-sm-12"><div class="left col-md-7 col-xs-7 col-sm-7"><h2>이름 :'+row.user_name+'</h2><p>기수 : '+row.grade+'</p><p>직책 : '+row.position+'</p><button type="button" class="btn btn-success btn-xs"><i class="fa fa-phone"></i></button><button type="button" class="btn btn-primary btn-xs"><i class="fa fa-envelope"> </i> </button></div><div class="right col-md-5 col-xs-5 col-sm-5 text-center"><img src="/res/production/images/user.png" alt="" class="img-circle img-responsive"></div></div></div></div></div>'
+                var div = $('<div class="row col-md-6 col-sm-12 col-xs-12">'+
+                  '<div class="profile_details">'+
+                  '<div class="well profile_view" onClick="location.href=\'/users/detailManagerProfile/'+row.user_id+'\'" style="cursor:pointer;">'+
+                  '<div class="col-md-12 col-xs-12 col-sm-12"><div class="left col-md-7 col-xs-7 col-sm-7">'+
+                  '<h2>이름 :'+row.user_name+'</h2>'+
+                  '<p>기수 : '+row.grade+'</p>'+
+                  '<p>직책 : '+row.position+'</p>'+
+                  '<button type="button" class="btn btn-success btn-xs">'+
+                  '<i class="fa fa-phone"></i></button><button type="button" class="btn btn-primary btn-xs">'+
+                  '<i class="fa fa-envelope"> </i> </button></div><div class="right col-md-5 col-xs-5 col-sm-5 text-center">'+
+                  '<img src="/profileImage/'+row.id+'_Profile.jpg" alt="" class="img-circle img-responsive" onerror="this.src=\'/res/production/images/user.png\'">'+
+                  '</div>'+
+                  '</div>'+
+                  '</div>'+
+                  '</div>'+
+                  '</div>'
                 );
                 div.appendTo($('#innerList'));
               });
