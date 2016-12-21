@@ -356,8 +356,8 @@ user.SelectUserInfo = function (id, callback) {
 //회원정보 수정
 user.UpdateUserInfo = function (param, callback) {
     pool.getConnection(function (err, connection) {
-        var query = "UPDATE user SET password=?,social_status=?,is_social_status=?,phone_number=?,is_phone_number=?,company_number=?,is_company_number=?,email=?,is_email=? WHERE id=?";
-        // [password,social_status,is_social_status,phone_number,is_phone_number,company_number,is_company_number,email,is_email,id];
+        var query = "UPDATE user SET password=?,is_image=?,social_status=?,is_social_status=?,phone_number=?,is_phone_number=?,company_number=?,is_company_number=?,email=?,is_email=? WHERE id=?";
+        // [password,is_image,social_status,is_social_status,phone_number,is_phone_number,company_number,is_company_number,email,is_email,id];
         connection.query(query, param, function (err, row) {
             connection.release();
             if (err) {
@@ -368,6 +368,22 @@ user.UpdateUserInfo = function (param, callback) {
         });
     });
 };
+
+//이미지공개
+user.UpdateIsimg = function(id,callback){
+  pool.getConnection(function(err,connection){
+    var query="UPDATE user SET is_image=1 WHERE id=?";
+    connection.query(query,[id],function(err,row){
+      connection.release();
+      if(err){
+        callback(err);
+      } else {
+        callback(true);
+      }
+    });
+  });
+};
+
 /*user search Procedure*/
 user.selectOptions = function(param,callback){
   pool.getConnection(function(err,connection){

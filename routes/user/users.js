@@ -49,7 +49,6 @@ router.get('/profile',function(req,res,next){
   userDao.FindGrade(req.user.id, req.user.category_id, function(result){
     res.render('user/profile', {user : req.user, grade : result});
   });
-  /* res.render('user/profile');*/
 });
 
 router.get('/userGradeList/:category_id/:grade', function(req, res, next) {
@@ -80,6 +79,7 @@ router.get('/userGradeListMore/:category_id/:grade',function(req,res,next){
   ];
   userDao.selectOptions(param,function(result){
     var data={};
+    console.log(result);
     if(result[0].length>0){
       data ={
         len : result[0].length,
@@ -163,7 +163,7 @@ router.post('/edit',function(req,res,next){
       return res.redirect('/users/edit');
   }
 
-  var param = [req.body.passwd,req.body.social_status,req.body.iCheck1,req.body.phone_number,req.body.iCheck2,req.body.company_number,req.body.iCheck3,req.body.email,req.body.iCheck4,req.user.id];
+  var param = [req.body.passwd,req.body.iCheck0,req.body.social_status,req.body.iCheck1,req.body.phone_number,req.body.iCheck2,req.body.company_number,req.body.iCheck3,req.body.email,req.body.iCheck4,req.user.id];
   userDao.UpdateUserInfo(param,function(result){
     if(result){
       req.flash('error',"개인정보가 변경되었습니다.");
@@ -176,7 +176,14 @@ router.post('/edit',function(req,res,next){
 });
 
 router.post('/profile',upload.any(),function(req,res,next){
-  return res.redirect('/users/edit');
+  userDao.UpdateIsimg(req.user.id,function(result){
+    if(result){
+      return res.redirect('/users/edit');
+    }else{
+      req.flash('error',"프로필 이미지 수정 실패, 다시 시도해주세요.");
+      return res.redirect('/users/edit');
+    }
+  });
 });
 
 

@@ -12,6 +12,7 @@ var exUd = require('../../services/excelUpload');
 var exTJ = require('../../services/excelToJson');
 var addRows = require('../../services/addRows');
 var crypto = require('crypto');
+var fs = require('fs');
 
 
 
@@ -298,7 +299,8 @@ router.get('/userManage', function(req, res ,next) {
   sequelize.authenticate().then(function(err){
     User.findAll({
       where : {
-        category_id : req.user.category_id
+        category_id : req.user.category_id,
+        is_admin : 0
       },
       limit: 10
     })
@@ -495,6 +497,10 @@ router.delete('/user',function(req,res,next){
   var list = req.body.list.replace(/[^0-9.,]/g, "");
   console.log(list);
   var id = list.split(',');
+  fs.unlink('../public/profileImage/'+id+'_Profile.jpg',function(err){
+    if(err) return console.log(err);
+    console.log('Profile image deleted successfully');
+  });
   sequelize.transaction().then(function(t){
         return User.destroy({
                 where:{
