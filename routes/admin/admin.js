@@ -679,23 +679,16 @@ router.post('/userExcel', function (req, res) {
 });
 
 /*사용자 삭제*/
-<<<<<<< HEAD
-router.delete('/user',function(req,res,next){
-  var list = req.body.list.replace(/[^0-9.,]/g, "");
-  console.log(list);
-  var id = list.split(',');
-  fs.unlink('../public/profileImage/'+id+'_Profile.jpg',function(err){
-    if(err) return console.log(err);
-    console.log('Profile image deleted successfully');
-  });
-  sequelize.transaction().then(function(t){
-=======
+
 router.delete('/user', function (req, res, next) {
     var list = req.body.list.replace(/[^0-9.,]/g, "");
     console.log(list);
     var id = list.split(',');
+    fs.unlink('../public/profileImage/'+id+'_Profile.jpg',function(err){
+      if(err) return console.log(err);
+      console.log('Profile image deleted successfully');
+    });
     sequelize.transaction().then(function (t) {
->>>>>>> 2cf0a687f62455e31b17d3acd9b19c34f38d7881
         return User.destroy({
             where: {
                 id: id
