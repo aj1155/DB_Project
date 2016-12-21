@@ -4,7 +4,7 @@
  */
 
 var app = require('../app');
-var debug = require('debug')('Reunion:server');
+var debug = require('debug')('DB_Project:server');
 var http = require('http');
 
 /**

@@ -17,101 +17,133 @@
 </head>
 
 <body class="nav-md">
-    <div class="container body">
-        <div class="main_container">
-            <% include ../common/nav.ejs %>
+<div class="container body">
+    <div class="main_container">
+        <% include ../common/nav.ejs %>
 
+        <!-- page content -->
+        <div class="right_col" role="main">
 
+            <form method="post">
+                <div class="container">
+                    <div class="row inbox">
+                        <% if (message && message != "") { %>
+                        <div class="alert alert-danger text-center"><%= message %></div>
+                        <% } %>
+                        <h6 id="error" class="alert alert-danger text-center" style="display: none;">경고 메시지 </h6>
+                        <div class="col-md-3 col-sm-3 col-xs-12">
 
-                <!-- page content -->
-                <div class="right_col" role="main">
-
-
-                    <div class="container">
-                        <div class="row inbox">
-                            <div class="col-md-3 col-sm-3 col-xs-12">
-                                <div class="panel panel-default">
-                                    <div class="panel-body contacts">
-                                        <a href="#" class="btn btn-success btn-block"> + Contact</a>
-                                        <ul>
-                                            <li><span class="label label-danger"></span> Adam Alister</li>
-                                            <li><span class="label label-default"></span> Alphonse Ivo</li>
-                                            <li><span class="label label-success"></span> Anton Phunihel</li>
-                                            <li><span class="label label-success"></span> Ajith Hristijan</li>
-                                            <li><span class="label label-warning"></span> Bao Gaspar</li>
-                                            <li><span class="label label-default"></span> Bernhard Shelah</li>
-                                            <li><span class="label label-success"></span> Bünyamin Kasper</li>
-                                            <li><span class="label label-danger"></span> Carlito Roffe</li>
-                                            <li><span class="label label-danger"></span> Chidubem Gottlob</li>
-                                            <li><span class="label label-warning"></span> Dederick Mihail</li>
-                                            <li><span class="label label-success"></span> Felice Arseniy</li>
-                                            <li><span class="label label-default"></span> Grahame Miodrag</li>
-                                            <li><span class="label label-default"></span> Hristofor Sergio</li>
-                                            <li><span class="label label-danger"></span> Scottie Maximilian</li>
-                                            <li><span class="label label-danger"></span> Sullivan Robert</li>
-                                            <li><span class="label label-danger"></span> Thancmar Theophanes</li>
-                                            <li><span class="label label-warning"></span> Tullio Luka</li>
-                                            <li><span class="label label-success"></span> Walerian Khwaja</li>
-                                        </ul>
-
+                            <div class="panel panel-default">
+                                <div class="panel-body contacts">
+                                    <div class="input-group">
+                                        <input id="searchText" type="text" class="form-control">
+                                        <span class="input-group-btn">
+                                              <button id="search" type="button" class="btn btn-primary">찾기</button>
+                                          </span>
                                     </div>
+                                    <span class="btn btn-success btn-block">수신자</span>
+                                    <ul id="userList">
 
+                                    </ul>
                                 </div>
 
                             </div>
-                            <!--/.col-->
 
-                            <div class="col-md-9 col-sm-9 col-xs-12">
-                                <div id="sendType" class="btn-group" data-toggle="buttons">
-                                    <label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-                                        <input type="radio" name="sendType" value="mail"> &nbsp; 메일 &nbsp;</label>
-                                    <label class="btn btn-warning" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-                                        <input type="radio" name="sendType" value="message"> &nbsp; 문자 &nbsp;</label>
-                                </div>
-                                <p>
-                                </p>
-                                <div class="panel panel-default">
-                                    <div class="panel-body message">
-                                        <p class="text-center">새로운 메시지</p>
-                                        <form class="form-horizontal" role="form">
-                                            <div class="form-group">
-                                                <label for="to" class="col-sm-1  control-label">수신:</label>
-                                                <div class="col-sm-11 col-md-11 col-xs-111">
-                                                    <input type="email" class="form-control select2-offscreen" id="to" placeholder="Type email" tabindex="-1">
-                                                </div>
-                                            </div>
-                                        </form>
-
-                                        <div class="col-sm-11 col-md-11 col-xs-11 col-sm-offset-1">
-                                            <br>
-                                            <div class="form-group">
-                                                <textarea class="form-control" id="message" name="body" rows="12" placeholder="Click here to reply"></textarea>
-                                            </div>
-                                            <div class="form-group">
-                                                <button type="submit" class="btn btn-success">보내기</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--/.col-->
                         </div>
+                        <!--/.col-->
+
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                            <p>
+                            </p>
+                            <div class="panel panel-default">
+                                <div class="panel-body message">
+                                    <p class="text-center">새로운 메시지</p>
+                                    <div class="col-sm-11 col-md-11 col-xs-11 col-sm-offset-1">
+                                        <br>
+                                        <div class="form-group">
+                                            <input type="text" id="title" name="title" placeholder="제목을 입력해주세요."
+                                                   class="form-control col-md-7 col-xs-12">
+                                            <br/>
+                                            <br/>
+                                            <textarea class="form-control" id="message" name="content" rows="12"
+                                                      placeholder="내용을 입력해주세요"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <button id="sendButton" type="submit" class="btn btn-success ">보내기</button>
+                                        </div>
+                                        <label>
+                                            <input type="radio" checked="" value="email" id="type1" name="type">이메일
+                                        </label>
+                                        <label>
+                                            <input type="radio" value="message" id="type2" name="type">메시지
+                                        </label>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/.col-->
+
                     </div>
-
                 </div>
-                <!-- /page content -->
+            </form>
         </div>
-        <!-- footer content -->
-        <footer>
-            <div class="pull-right">
-                성공회대학교 동문회 관리 시스템
-            </div>
-            <div class="clearfix"></div>
-        </footer>
-        <!-- /footer content -->
+        <!-- /page content -->
     </div>
+    <!-- footer content -->
+    <footer>
+        <div class="pull-right">
+            성공회대학교 동문회 관리 시스템
+        </div>
+        <div class="clearfix"></div>
+    </footer>
+    <!-- /footer content -->
+</div>
 
-    <% include ../common/script.ejs %>
+<% include ../common/script.ejs %>
+<script>
+    $(function () {
+        //input tag 엔터 눌렀을때 자동 submit 막기
+        $(function () {
+            $("input:text").keydown(function (evt) {
+                if (evt.keyCode == 13)
+                    return false;
+            });
+        });
+
+        //search 버튼 클릭시
+        $("#search").click(function () {
+            $.ajax({
+                url: '/admin/search',
+                data: {"content": $("#searchText").val()},
+                //서버가 리턴하는 데이터 타입( xml, json, script, html)
+                dataType: 'json',
+                //서버로 전송할 데이터 타입(POST,GET)
+                type: 'POST',
+                // ajax 통신에 성공했을 때 호출될 이벤트 핸들러
+                success: function (result) {
+                    $("#searchText").val("");
+                    if (result['result'] == true) {
+                        $("#error").css("display", "none");
+
+                        var rows = result['rows'];
+                        //수신 리스트 추가
+                        for (var i = 0; i < rows.length; i++) {
+                            $('#userList').append('<li class="user" id="user' + rows[i].id + '"><span class="label label-default"></span>' + rows[i].name + " " + '<input type="hidden" name="email" value="' + rows[i].email + '"/></li>');
+                        }
+                    } else {
+                        //찾기 실패시 메시지 출력
+                        var message = result["message"];
+                        $('#error').text(message);
+                        $("#error").css("display", "");
+                    }
+                }
+            });
+        });
+
+
+    });
+</script>
 </body>
 
 </html>

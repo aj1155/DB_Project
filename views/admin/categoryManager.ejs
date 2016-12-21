@@ -82,22 +82,23 @@
                                         <div class="col-md-12 col-sm-8 col-xs-12 form-group pull-right top_search">
                                             <div class="form-group"  style="background: #fff; margin-top: 10px;">
                                                 <div class="col-md-4 col-sm-4 col-xs-4">
-                                                    <select class="form-control">
-                                                        <option>검색 조건</option>
-                                                        <option>이름 검색</option>
-                                                        <option>전화번호 검색</option>
-                                                        <option>기수 검색</option>
+                                                  <form action="/admin/categoryManagerListSelectOptions">
+                                                    <select name="srchType" class="form-control">
+                                                      <option value="0" <%= srchType == "0" ? "selected" : "" %>>검색 조건</option>
+                                                      <option value="1" <%= srchType == "1" ? "selected" : "" %>>이름 검색</option>
+                                                      <option value="2" <%= srchType == "2" ? "selected" : "" %>>직위 검색</option>
+                                                      <option value="3" <%= srchType == "3" ? "selected" : "" %>>핸드폰 번호 검색</option>
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="input-group">
-                                                <input type="text" class="form-control" placeholder="검색">
+                                                <input type="text" name="srchText" class="form-control" value="<%= srchText %>" placeholder="검색">
                                                 <span class="input-group-btn">
-                                                    <button class="btn btn-default" type="button">찾기</button>
+                                                    <button class="btn btn-default" type="submit">찾기</button>
                                                 </span>
                                             </div>
+                                          </form>
                                         </div>
-
 
                                         <table id="datatable-checkbox" class="table table-striped table-bordered bulk_action">
                                           <thead>
@@ -108,7 +109,7 @@
                                               <th>이메일</th>
                                             </tr>
                                           </thead>
-                                          <tbody>
+                                          <tbody id="dataList">
                                           <% if(userList!=null && userList!=""){%>
                                               <% userList.forEach(function(user,idx){ %>
                                             <tr onClick="location.href='/admin/categoryManagerAdd/<%=user.id%>'" style="cursor:pointer;">
@@ -121,6 +122,7 @@
                                           <% } %>
                                           </tbody>
                                         </table>
+                                        <button id="more" type="button" value="<%=count%>" class="btn btn-default" style="float:right;">더보기...</button>
 
 
                                     </div>
@@ -172,20 +174,22 @@
                                         <div class="col-md-8 col-sm-8 col-xs-12 form-group pull-right top_search">
                                             <div class="form-group"  style="background: #fff; margin-top: 10px;">
                                                 <div class="col-md-4 col-sm-4 col-xs-4">
-                                                    <select class="form-control">
-                                                        <option>검색 조건</option>
-                                                        <option>이름 검색</option>
-                                                        <option>전화번호 검색</option>
-                                                        <option>기수 검색</option>
+                                                  <form action="/admin/categoryManagerEditListSelectOptions">
+                                                    <select name="srchType2" class="form-control">
+                                                      <option value="0" <%= srchType2 == "0" ? "selected" : "" %>>검색 조건</option>
+                                                      <option value="1" <%= srchType2 == "1" ? "selected" : "" %>>이름 검색</option>
+                                                      <option value="2" <%= srchType2 == "2" ? "selected" : "" %>>기수 검색</option>
+                                                      <option value="3" <%= srchType2 == "3" ? "selected" : "" %>>핸드폰 번호 검색</option>
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="input-group">
-                                                <input type="text" class="form-control" placeholder="검색">
+                                                <input type="text" name="srchText2" class="form-control" placeholder="검색" value='<%=srchText2%>'>
                                                 <span class="input-group-btn">
-                                                    <button class="btn btn-default" type="button">찾기</button>
+                                                    <button class="btn btn-default" type="submit">찾기</button>
                                                 </span>
                                             </div>
+                                          </form>
                                         </div>
                                         <table id="datatable-checkbox" class="table table-striped table-bordered bulk_action">
                                           <thead>
@@ -196,22 +200,18 @@
                                               <th>임원 전화번호</th>
                                               <th>임원 이메일</th>
                                               <th>임원 직책</th>
-                                              <th>임원 id</th>
-                                              <th>임원 user_id</th>
                                             </tr>
                                           </thead>
                                           <tbody>
-                                          <% if(categoryManagerList!=null && categoryManagerList!=""){%>
-                                              <% categoryManagerList.forEach(function(manager,idx){ %>
-                                            <tr  onClick="location.href='/admin/categoryManagerEdit/<%=manager.user_id%>'" style="cursor:pointer;">
-                                                 <td><input type="checkbox" class="flat" name="table_records" value="<%=manager.id%>"></td>
-                                                 <td><%=manager.name%></td>
-                                                 <td><%=manager.grade%></td>
-                                                 <td><%=manager.phone_number%></td>
-                                                 <td><%=manager.email%></td>
-                                                 <td><%=manager.position%></td>
-                                                 <td><%=manager.id%></td>
-                                                 <td><%=manager.user_id%></td>
+                                          <% if(categoryManagerEditList!=null && categoryManagerEditList!=""){%>
+                                              <% categoryManagerEditList.forEach(function(managerEdit,idx){ %>
+                                            <tr  onClick="location.href='/admin/categoryManagerEdit/<%=managerEdit.user_id%>'" style="cursor:pointer;">
+                                                 <td><input type="checkbox" class="flat" name="table_records" value="<%=managerEdit.id%>"></td>
+                                                 <td><%=managerEdit.name%></td>
+                                                 <td><%=managerEdit.grade%></td>
+                                                 <td><%=managerEdit.phone_number%></td>
+                                                 <td><%=managerEdit.email%></td>
+                                                 <td><%=managerEdit.position%></td>
                                             </tr>
                                               <% }) %>
                                           <% } %>
@@ -224,7 +224,7 @@
                                         </div>
                                       </div>
                                     </div>
-                                    <button id="add" type="button" class="btn btn-default" style="float:right;">더보기...</button>
+                                    <!-- <button id="add" type="button" class="btn btn-default" style="float:right;">더보기...</button> -->
                                   </div>
 
                                 </div>

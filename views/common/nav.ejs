@@ -14,10 +14,10 @@
         <div class="profile">
             <div class="profile_pic">
                 <!--이미지 태그에 데이터 넣는거 하기 -->
-                <img id="profile" src ="/res/production/images/user.png" alt="..." class="img-circle profile_img">
+                <img id="profile" src="/res/production/images/user.png" alt="..." class="img-circle profile_img">
             </div>
             <div class="profile_info">
-                <span id="name" >사용자</span>
+                <span id="name">사용자</span>
             </div>
         </div>
         <!-- /menu profile quick info -->
@@ -28,7 +28,7 @@
         <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
             <div class="menu_section">
                 <h3 id="grade">기수</h3>
-                <h3 id="admin" style="display:none;" >관리자</h3>
+                <h3 id="admin" style="display:none;">관리자</h3>
                 <ul class="nav side-menu">
                     <li>
                         <a>
@@ -124,6 +124,9 @@
                             <li data-url="/admin/gradeManager">
                                 <a>기수별 임원 관리</a>
                             </li>
+                            <li data-url="/admin/send">
+                                <a>메일 문자 보내기</a>
+                            </li>
                         </ul>
                     </li>
                 </ul>
@@ -148,7 +151,7 @@
                 <li class="">
                     <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown"
                        aria-expanded="false">
-                        <img id="headProfile" src ="/res/production/images/user.png" alt="">
+                        <img id="headProfile" src="/res/production/images/user.png" alt="">
                         <span id="headName">사용자</span>
                         <span class=" fa fa-angle-down"></span>
                     </a>
@@ -174,32 +177,32 @@
             //서버가 리턴하는 데이터 타입( xml, json, script, html)
             dataType: 'json',
             //서버로 전송할 데이터 타입(POST,GET)
-            type: 'POST',
+            type: 'GET',
             // ajax 통신에 성공했을 때 호출될 이벤트 핸들러
             success: function (result) {
-                if (result['result'] == true) {
+                if (result.result == true) {
                     //img src에 데이터 넣기
-                    $('#profile').attr("src",result['profile']);
-                    $('#headProfile').attr("src",result['profile']);
+                    $('#profile').attr("src", result['profile']);
+                    $('#headProfile').attr("src", result['profile']);
                     $('#headName').text(result['name']);
                     $('#name').text(result['name']);
-                    $('#grade').text(result['grade']+"기");
+                    $('#grade').text(result['grade'] + "기");
                     //max 기수만큼 리스트 만듬
-                    for(var i = 0; i < result['maxGrade']; i++) {
-                        $('#grade_list1').append('<li class="sub_menu" name="' + (i+1) + '" ' + '><a href="/users/userGradeList/<%= user.category_id %>/'+(i+1)+'">'+(i+1)+'기</a></li>');
-                        $('#grade_list2').append('<li><a href="/users/userManagerList/<%= user.category_id %>/'+(i+1)+'">'+(i+1)+'기</a></li>');
+                    for (var i = 0; i < result['maxGrade']; i++) {
+                        $('#grade_list1').append('<li class="sub_menu" name="' + (i + 1) + '" ' + '><a href="/users/userGradeList/<%= user.category_id %>/' + (i + 1) + '">' + (i + 1) + '기</a></li>');
+                        $('#grade_list2').append('<li><a href="/users/userManagerList/<%= user.category_id %>/' + (i + 1) + '">' + (i + 1) + '기</a></li>');
                     }
                     //관리자 페이지 보이기
-                    if(result['is_admin'] == 1){
-                        $("#admin_menu").css("display","inline");
+                    if (result['is_admin'] == 1) {
+                        $("#admin_menu").css("display", "inline");
                         $("#grade").hide();
                         $("#admin").show();
                     }
                     $('#board_list').append('<li><a href="/board/list/<%= user.category_id * 2 %>">공지사항</a><li>');
                     $('#board_list').append('<li><a href="/board/list/<%= user.category_id * 2 - 1 %>">자유게시판</a></li>');
                     $("#categoryName").append(result['cat_name']);
-                    $("#categoryManager").append(result['cat_name']+' 임원명단');
-                    $('#categoryManage').append(result['cat_name']+' 임원관리');
+                    $("#categoryManager").append(result['cat_name'] + ' 임원명단');
+                    $('#categoryManage').append(result['cat_name'] + ' 임원관리');
                 }
             }
         });
