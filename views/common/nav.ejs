@@ -174,10 +174,10 @@
             //서버가 리턴하는 데이터 타입( xml, json, script, html)
             dataType: 'json',
             //서버로 전송할 데이터 타입(POST,GET)
-            type: 'POST',
+            type: 'GET',
             // ajax 통신에 성공했을 때 호출될 이벤트 핸들러
             success: function (result) {
-                if (result['result'] == true) {
+                if (result.result == true) {
                     //img src에 데이터 넣기
                     $('#profile').attr("src",result['profile']);
                     $('#headProfile').attr("src",result['profile']);
