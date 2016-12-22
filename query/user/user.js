@@ -448,8 +448,9 @@ user.GradeManagerNameSearch = function(name, callback) {
   });
 };
 
-user.loginId_update=function(id,phone_number,callback){
+user.loginId_update=function(phone_number,id,callback){
   pool.getConnection(function(err,connection){
+    console.log(phone_number);
     var query="UPDATE user SET login_id=? where id=?";
     connection.query(query,[phone_number,id],function(err,result){
       if(err){

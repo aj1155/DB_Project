@@ -12,6 +12,9 @@ var multiparty = require('multiparty');
 var fs = require('fs');
 var formidable = require('formidable');
 var mime = require('mime');
+var boardAuthDAO = require('../../query/boardauth/boardauth');
+var categoryManagerDAO = require('../../query/categoryManager/categoryManager');
+var gradeManagerDAO = require('../../query/grademanager/grademanager');
 /*session user정보를 local에 저장하여 ejs파일로
  명시적으로 넘겨주지않아도 자동적으로 넘어감 세션값 사용시 user로 꺼내쓰면됨*/
 router.use(function (req, res, next) {
@@ -35,16 +38,48 @@ router.get('/list/:board_id',function(req,res,next){
   var currentPage=1;
   var pageSize = 15;
   var params=[currentPage,srchType,srchText,pageSize,board_id];
+  var au=0;
   boardDAO.selectList(params,function(rows){
-    res.render('board/list',{board_id:board_id,row:rows,currentPage:currentPage,srchType:srchType,srchText:"",currentPage:currentPage,is_admin:req.user.is_admin});
+    categoryManagerDAO.select(req.user.id,'회장',req.user.category_id,function(c){
+      if(c=='success'){
+        au=1;
+      }
+      gradeManagerDAO.select(req.user.id,'회장',req.user.category_id,function(g){
+        if(g=='success'){
+          au=1;
+        }
+      boardAuthDAO.selectByBoard_id(board_id,function(auth){
+        res.render('board/list',{board_id:board_id,row:rows,currentPage:currentPage,srchType:srchType,srchText:"",currentPage:currentPage,is_admin:req.user.is_admin,board_auth:auth.manager,a:au});
+      });
+    });
+    });
   });
 });
 
 router.post('/list/:board_id',function(req,res,next){
+  var board_id=req.params.board_id;
   var params=[1,req.body.srchType,req.body.srchText,15,req.params.board_id];
+  console.log(req.body.srchType);
+  console.log(req.body.srchText);
+  console.log(req.params.board_id);
+  console.log(params);
+  var au=0;
   boardDAO.selectList(params,function(rows){
-    res.render('board/list',{
-      row:rows,board_id:req.params.board_id,srchText:req.body.srchText,srchType:req.body.srchType,currentPage:1,is_admin:req.user.is_admin
+    console.log(rows);
+    categoryManagerDAO.select(req.user.id,'회장',req.user.category_id,function(c){
+      if(c=='success'){
+        au=1;
+      }
+      gradeManagerDAO.select(req.user.id,'회장',req.user.category_id,function(g){
+        if(g=='success'){
+          au=1;
+        }
+          boardAuthDAO.selectByBoard_id(board_id,function(auth){
+            res.render('board/list',{
+              row:rows,board_id:board_id,srchText:req.body.srchText,srchType:req.body.srchType,currentPage:1,is_admin:req.user.is_admin,board_auth:auth.manager,a:au
+            });
+        });
+      });
     });
   });
 });

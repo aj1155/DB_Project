@@ -719,14 +719,12 @@ router.get('/loginIdrequest', function(req, res, next) {
 });
 
 router.get('/request/:user_id',function(req,res,next){
-  var user_id=req.params.user_id;
-  var p=req.user.phone_number;
-  var p1=p.split('-');
-  var phone_number=p1[0]+p1[1]+p1[2];
-  console.log("phone_number="+phone_number);
-  userDao.loginId_update(user_id,phone_number,function(r){
-    user_requestDAO.delete(user_id,function(result){
-      res.json("success");
+  user_requestDAO.select_one(req.params.user_id,function(results){
+    var phone_number=results.phone_number;
+    userDao.loginId_update(results[0].loginId2,req.params.user_id,function(r){
+      user_requestDAO.delete(req.params.user_id,function(result){
+        res.json("success");
+      });
     });
   });
 });
