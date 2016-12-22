@@ -116,24 +116,28 @@ router.post('/ipfind', function (req, res, next) {
     var category_id = req.body.category;
 
     userDao.GetUser(login_id, category_id, function (result) {
-
+          console.log("1")
         //아이디가 없는경우
         if (result == null) {
             req.flash('error', "아이디가 없습니다.");
             return res.redirect('/home/ipfind');
         }
+        console.log("2")
         //에러 발생시
         if (!result) {
             req.flash('error', "다시 확인해주세요.");
             return res.redirect('/home/ipfind');
+            console.log("3")
         }
-
+console.log("4")
         //성공한 경우
         if (result.email == email) {
             encode.MakeURL(login_id, category_id, function (result) {
+              console.log("5")
                 //TODO: 주소 변경하기
                 var sendURL = "http://localhost:3000/home/initpass/" + result;
                 mail.send("성공회대학교 비밀번호 초기화 이메일 입니다.", email, "클릭하여 비밀번호를 초기화 해주세요 \n" + '<html><a href=' + '"' + sendURL + '"' + 'target="_blank">비밀번호 초기화 페이지</a></html>',function(result){
+console.log("6")
                     if(result == true){
                         req.flash('error', "이메일을 확인하여 비밀번호를 초기화 하고 로그인해주세요.");
                         return res.redirect('/home/ipfind');
