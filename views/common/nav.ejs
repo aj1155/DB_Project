@@ -201,8 +201,8 @@
                         $("#grade").hide();
                         $("#admin").show();
                     }
-                    $('#board_list').append('<li><a href="/board/list/<%= user.category_id * 2 %>">공지사항</a><li>');
-                    $('#board_list').append('<li><a href="/board/list/<%= user.category_id * 2 - 1 %>">자유게시판</a></li>');
+                    $('#board_list').append('<li><a href="/board/list/<%= user.category_id * 2 - 1 %>">공지사항</a><li>');
+                    $('#board_list').append('<li><a href="/board/list/<%= user.category_id * 2 %>">자유게시판</a></li>');
                     $("#categoryName").append(result['cat_name']);
                     $("#categoryManager").append(result['cat_name'] + ' 임원명단');
                     $('#categoryManage').append(result['cat_name'] + ' 임원관리');

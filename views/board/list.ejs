@@ -33,9 +33,9 @@
                   <div class="x_panel">
                     <div class="x_title">
                       <%if(board_id%2==0){%>
-                      <h2>공지사항</h2>
+                      <h2>자유게시판</h2>
                       <%}else{%>
-                        <h2>자유게시판</h2>
+                        <h2>공지사항</h2>
                       <%}%>
                       <div class="clearfix"></div>
                     </div>
@@ -90,7 +90,7 @@
                   </div>
                   </div>
                   <div class="pull-right">
-                    <%if(is_admin==1 || board_id%2!=0){%>
+                    <%if((a==1 && board_auth==1) || is_admin==1 || board_id%2!=1 ){%>
                     <a class="btn btn-primary" href="/board/write/<%=board_id%>">글쓰기</a>
                     <%}%>
                     <span id="listSubmit"><a>더보기</a></button>

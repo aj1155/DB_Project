@@ -45,4 +45,17 @@ user_request.delete=function(user_id,callback){
   });
 };
 
+user_request.select_one=function(user_id,callback){
+  var query="SELECT * FROM user_request where user_id=?";
+  pool.getConnection(function(err,connection){
+    connection.query(query,user_id,function(err,results){
+      if(err){
+        console.log(err);
+      }else{
+        callback(results);
+        connection.release();
+      }
+    });
+  });
+};
 module.exports = user_request;
