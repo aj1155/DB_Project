@@ -230,8 +230,11 @@ router.get('/gradeManager', function (req, res, next) {
                     res.render('admin/gradeManager', {
                         userList: rows,
                         gradeManagerList: result,
+                        gradeManagerEditList:result,
                         srchType: 0,
                         srchText: "",
+                        srchType2: 0,
+                        srchText2: "",
                         msg: "",
                         type: "",
                         count: 10
@@ -341,7 +344,13 @@ router.get('/categoryManager', function (req, res, next) {
                         userList: rows,
                         msg: "",
                         type: "",
-                        categoryManagerList: result
+                        categoryManagerList: result,
+                        categoryManagerEditList : result,
+                        srchType: 0,
+                        srchText: "",
+                        srchType2: 0,
+                        srchText2: "",
+                        count : 10
                     });
                 });
             });
@@ -790,6 +799,46 @@ router.get('/categoryManagerListMore', function (req, res, next) {
         }
         res.json(data);
     });
+});
+
+router.get('/gradeManagerListSelectOptions',function(req,res,next){
+  var category_id = req.user.category_id;
+  var srchType = req.query.srchType;
+  var srchText = req.query.srchText;
+  if(req.query.srchType==null) srchType = 0;
+  var count = 5;
+  var param=[
+    srchType,srchText,category_id,0,count
+  ];
+  userDao.FindAllGradeManager(req.user.category_id, function(result2) {
+    userDao.selectAllOptions(param,function(result){
+      if(result[0].length>0){
+        res.render('admin/gradeManager', {userList:result[0], gradeManagerList:result2, gradeManagerEditList:result2, srchType:srchType,srchText:srchText,msg:"",type:"",count:result[0].length,srchType2:0,srchText2:""});
+      }else{
+        res.render('admin/gradeManager', {userList:"", gradeManagerList:result2, gradeManagerEditList:result2, srchType:srchType,srchText:srchText,msg:"",type:"",count:10,srchType2:0,srchText2:""});
+      }
+    });
+  });
+});
+
+router.get('/categoryManagerListSelectOptions',function(req,res,next){
+  var category_id = req.user.category_id;
+  var srchType = req.query.srchType;
+  var srchText = req.query.srchText;
+  if(req.query.srchType==null) srchType = 0;
+  var count = 5;
+  var param=[
+    srchType,srchText,category_id,0,count
+  ];
+  userDao.FindAllCategoryManager(req.user.category_id, function(result2) {
+    userDao.selectAllOptions(param,function(result){
+      if(result[0].length>0){
+        res.render('admin/categoryManager', {userList:result[0],categoryManagerList:result2, categoryManagerEditList:result2, srchType:srchType,srchText:srchText,msg:"",type:"",count:result[0].length,srchType2:0, srchText2:""});
+      }else{
+        res.render('admin/categoryManager', {userList:"",categoryManagerList:result2, categoryManagerEditList:result2, srchType:srchType,srchText:srchText,msg:"",type:"",count:10,srchType2:0, srchText2:""});
+      }
+    });
+  });
 });
 
 router.get('/gradeManagerEditListSelectOptions', function (req, res, next) {

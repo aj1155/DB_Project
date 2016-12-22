@@ -8,7 +8,7 @@ var path = require('path');
 var mime = require('mime');
 var formidable = require('formidable');
 var im = require('imagemagick');
-var baseImageDir = "../DB_Project/public/res/production/images/guide/";
+var baseImageDir = "C:/Users/강철진/StudyNodejs/DB_Project_git/public/res/production/images/guide/";
 
 function getUploadForm(req,res,next){
   res.render('index',{title:'File Upload'});
@@ -28,7 +28,7 @@ function uploadFile(req,res,next){
   }
 
   var form = new formidable.IncomingForm();
-  var dirPath = "../DB_Project/public/res/production/images/guide/";
+  var dirPath = "C:/Users/강철진/StudyNodejs/DB_Project_git/public/res/production/images/guide/";
   form.uploadDir = path.normalize(dirPath);   // 업로드 디렉토리
   form.keepExtensions = true;                                 // 파일 확장자 유지
   form.multiples = true;                                      // multiple upload
@@ -63,11 +63,11 @@ function uploadFile(req,res,next){
         else{
 
             /*image resize*/
-            var route = "../DB_Project/public/res/production/images/guide/sin.jpg";
+            var route = "C:/Users/강철진/StudyNodejs/DB_Project_git/public/res/production/images/guide/sin.jpg";
             im.convert([ route, '-resize', '260x402',route],
             function(err, stdout){
               if (err) throw err;
-              route = "../DB_Project/public/res/production/images/guide/kim.jpg";
+              route = "C:/Users/강철진/StudyNodejs/DB_Project_git/public/res/production/images/guide/kim.jpg";
               im.convert([route, '-resize', '260x402',route],
               function(err, stdout){
                 if (err) throw err;
@@ -93,7 +93,7 @@ function uploadFile(req,res,next){
     else{
       // 업로드된 파일을(files.pict) /images디렉토리로 옮긴다.
       // 업로드 되는 파일명을 추출해서 이미지가 저장될 경로를 더해준다.
-      var destPath = path.normalize("../DB_Project/public/profileImage/"+path.basename(files.pict.path));
+      var destPath = path.normalize("C:/Users/강철진/StudyNodejs/DB_Project_git/public/profileImage/"+path.basename(files.pict.path));
       // 임시 폴더에 저장된 이미지 파일을 이미지 경로로 이동시킨다.
       console.log(files.pict);
       fstools.move(files.pict.path, destPath, function(err){

@@ -22,6 +22,7 @@ var upload = multer({storage:storage});
 var user_requestDAO=require('../../query/user_request/user_request.js');
 var crypto = require('crypto');
 
+
 /*session user정보를 local에 저장하여 ejs파일로
 명시적으로 넘겨주지않아도 자동적으로 넘어감 세션값 사용시 user로 꺼내쓰면됨*/
 router.use(function(req, res, next) {
@@ -203,7 +204,15 @@ router.post('/edit',function(req,res,next){
 router.post('/profile',upload.any(),function(req,res,next){
   userDao.UpdateIsimg(req.user.id,function(result){
     if(result){
-      return res.redirect('/users/edit');
+      gm('../public/profileImage/'+req.user.id+'_Profile.jpg')
+      .resize(200,200,'!')
+      .write('../public/profileImage/'+req.user.id+'_Profile.jpg',function(err){
+        if(!err){
+          console.log('done-resize image');
+          return res.redirect('/users/edit');
+        }
+      });
+      //return res.redirect('/users/edit');
     }
   });
   // console.log('../public/profileImage/'+req.user.id+'_Profile.jpg');
