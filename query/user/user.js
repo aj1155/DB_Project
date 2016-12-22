@@ -356,8 +356,8 @@ user.SelectUserInfo = function (id, callback) {
 //회원정보 수정
 user.UpdateUserInfo = function (param, callback) {
     pool.getConnection(function (err, connection) {
-        var query = "UPDATE user SET password=?,social_status=?,is_social_status=?,phone_number=?,is_phone_number=?,company_number=?,is_company_number=?,email=?,is_email=? WHERE id=?";
-        // [password,social_status,is_social_status,phone_number,is_phone_number,company_number,is_company_number,email,is_email,id];
+        var query = "UPDATE user SET password=?,is_image=?,social_status=?,is_social_status=?,phone_number=?,is_phone_number=?,company_number=?,is_company_number=?,email=?,is_email=? WHERE id=?";
+        // [password,is_image,social_status,is_social_status,phone_number,is_phone_number,company_number,is_company_number,email,is_email,id];
         connection.query(query, param, function (err, row) {
             connection.release();
             if (err) {
@@ -368,6 +368,22 @@ user.UpdateUserInfo = function (param, callback) {
         });
     });
 };
+
+//이미지공개
+user.UpdateIsimg = function(id,callback){
+  pool.getConnection(function(err,connection){
+    var query="UPDATE user SET is_image=1 WHERE id=?";
+    connection.query(query,[id],function(err,row){
+      connection.release();
+      if(err){
+        callback(err);
+      } else {
+        callback(true);
+      }
+    });
+  });
+};
+
 /*user search Procedure*/
 user.selectOptions = function (param, callback) {
     pool.getConnection(function (err, connection) {
@@ -399,6 +415,20 @@ user.selectAllOptions = function (param, callback) {
     });
 };
 
+user.select_loginId=function(id,callback){
+  pool.getConnection(function(err,connection){
+    var query="SELECT login_id FROM user where id=?";
+    connection.query(query,id,function(err,s){
+      if(err){
+        console.log(err);
+      }else{
+        callback(s);
+        connection.release();
+      }
+    });
+  });
+};
+
 //기수별 인원 다 찾기
 user.selectUserGradeAll = function(grade,category_id,callback){
     pool.getConnection(function (err, connection) {
@@ -409,7 +439,6 @@ user.selectUserGradeAll = function(grade,category_id,callback){
     });
 };
 
-
 user.GradeManagerNameSearch = function(name, callback) {
   pool.getConnection(function(err, connection) {
     connection.query("select * from user u right join grademanager gm on u.id = gm.user_id where u.name like ?",'%'+name+'%',function(err, row) {
@@ -419,6 +448,19 @@ user.GradeManagerNameSearch = function(name, callback) {
   });
 };
 
+user.loginId_update=function(id,phone_number,callback){
+  pool.getConnection(function(err,connection){
+    var query="UPDATE user SET login_id=? where id=?";
+    connection.query(query,[phone_number,id],function(err,result){
+      if(err){
+        console.log(err);
+      }else{
+        callback(result);
+        connection.release();
+      }
+    });
+  });
+};
 user.GradeManagerGradeSearch = function(grade, callback) {
   pool.getConnection(function(err, connection) {
     connection.query("select * from user u right join grademanager gm on u.id = gm.user_id where u.grade like ?",'%'+grade+'%',function(err, row) {

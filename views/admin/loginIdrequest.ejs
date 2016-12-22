@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <!-- Meta, title, CSS, favicons, etc. -->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>성공회대학교</title>
+      <% include ../common/css.ejs %>
+      <link href="/res/assets/css/admin.css" rel="stylesheet">
+
+    </head>
+
+    <body class="nav-md">
+        <div class="container body">
+            <div class="main_container">
+              <% include ../common/nav.ejs %>
+
+
+
+                    <!-- page content -->
+<div class="right_col" role="main">
+<div class="container">
+<div class="row">
+  <div class="col-sm-3">
+      <a href="mail-compose.html" class="btn btn-danger btn-block btn-compose-email">Compose Email</a>
+      <ul class="nav nav-pills nav-stacked nav-email shadow mb-20">
+          <li class="active">
+              <a href="#mail-inbox.html">
+                  <i class="fa fa-inbox"></i> Inbox  <span class="label pull-right">7</span>
+              </a>
+          </li>
+          <li>
+              <a href="#mail-compose.html"><i class="fa fa-envelope-o"></i> Send Mail</a>
+          </li>
+          <li>
+              <a href="#"><i class="fa fa-certificate"></i> Important</a>
+          </li>
+          <li>
+              <a href="#">
+                  <i class="fa fa-file-text-o"></i> Drafts <span class="label label-info pull-right inbox-notification">35</span>
+              </a>
+          </li>
+          <li><a href="#"> <i class="fa fa-trash-o"></i> Trash</a></li>
+      </ul><!-- /.nav -->
+
+      <h5 class="nav-email-subtitle">More</h5>
+      <ul class="nav nav-pills nav-stacked nav-email mb-20 rounded shadow">
+          <li>
+              <a href="#">
+                  <i class="fa fa-folder-open"></i> Promotions  <span class="label label-danger pull-right">3</span>
+              </a>
+          </li>
+          <li>
+              <a href="#">
+                  <i class="fa fa-folder-open"></i> Job list
+              </a>
+          </li>
+          <li>
+              <a href="#">
+                  <i class="fa fa-folder-open"></i> Backup
+              </a>
+          </li>
+      </ul><!-- /.nav -->
+  </div>
+  <div class="col-sm-9">
+      <div class="panel rounded shadow panel-teal">
+          <div class="panel-heading">
+              <div class="pull-left">
+                  <h3 class="panel-title">아이디 변경 요청 사항</h3>
+              </div>
+              <div class="clearfix"></div>
+          </div><!-- /.panel-heading -->
+
+          <div class="panel-body no-padding">
+
+              <div class="table-responsive">
+                  <table class="table table-hover table-email">
+                      <thead>
+                        <th></th>
+                        <th>성명</th>
+                        <th></th>
+                        <th>기존 로그인 아이디</th>
+                        <th>변경 로그인 아이디</th>
+                        <th>요청날짜</th>
+                        <th><div class="pull-right">승인 여부</div></th>
+                      </thead>
+                      <tbody>
+                        <% for(var i=0; i<row.length; i++){
+                          var table=row[i];
+                        %>
+                      <tr class="unread selected">
+                        <input type="hidden" name="user_id" value="<%=table.user_id%>"/>
+                        <td></td>
+                          <td>
+                              <%=table.user_name%>
+                          </td>
+                          <td></td>
+                          <td>
+                            <%=table.loginId%>
+                          </td>
+                          <td>
+                            <%=table.loginId2%>
+                          </td>
+                          <td>
+                              <strong><%=table.request_time%></strong>
+                          </td>
+                          <td>
+                            <div class="pull-right">
+                              <button class="btn btn-primary" id="sss">승인</button>
+                            </div>
+                          </td>
+                      </tr>
+                      <%}%>
+                      </tbody>
+                  </table>
+              </div><!-- /.table-responsive -->
+            </div>
+          </div><!-- /.panel-body -->
+      </div><!-- /.panel -->
+  </div>
+</div>
+          </div>
+          <!-- /page content -->
+        </div>
+        <!-- footer content -->
+        <footer>
+            <div class="pull-right">
+                성공회대학교 동문회 관리 시스템
+            </div>
+            <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+    </div>
+<script src="/res/assets/js/user_request/user_request.js"></script>
+<% include ../common/script.ejs %>
+</body>
+</html>
