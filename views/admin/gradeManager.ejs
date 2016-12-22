@@ -202,8 +202,8 @@
                                             </tr>
                                           </thead>
                                           <tbody>
-                                          <% if(gradeEditManagerList!=null && gradeEditManagerList!=""){%>
-                                              <% gradeEditManagerList.forEach(function(managerEdit,idx){ %>
+                                          <% if(gradeManagerEditList!=null && gradeManagerEditList!=""){%>
+                                              <% gradeManagerEditList.forEach(function(managerEdit,idx){ %>
                                             <tr onClick="location.href='/admin/gradeManagerEdit/<%=managerEdit.user_id%>'" style="cursor:pointer;">
                                                  <td><input type="checkbox" class="flat" name="table_records" value="<%=managerEdit.id%>"></td>
                                                  <td><%=managerEdit.user_name%></td>
